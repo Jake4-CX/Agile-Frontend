@@ -1,13 +1,53 @@
+import React, { useState } from 'react'
+import { createBrowserRouter, createRoutesFromElements, Route, Link, Outlet, RouterProvider } from 'react-router-dom'
+import { Home, dataLoader } from './views/Home'
+import { Login } from './views/verification/Login'
+import { Register } from './views/verification/Register'
+import { Forgot } from './views/verification/Forgot'
+import { Reset } from './views/verification/Reset'
+import axios from './axios'
+import { PageNotFound } from './views/PageNotFound'
+
 function App() {
 
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path='/' element={<Root />}>
+        <Route index element={<Home />}/>
+        <Route path='/login' element={<Login />}/>
+        <Route path='/register' element={<Register />}/>
+        <Route path='/forgot' element={ <Forgot /> }/>
+        <Route path='/reset/:token' element={ <Reset /> }/>
+        <Route path='*' element={<PageNotFound />}/>
+      </Route>
+    )
+  )
+
   return (
-    <body className="h-screen w-screen bg-slate-300">
-    <div className="flex items-center justify-center h-screen">
-      <div className="bg-white rounded-lg shadow-lg p-8 hover:bg-slate-100 duration-300">
-        <h1 className="font-bold cursor-pointer">React TypeScript Template</h1>
-      </div>
+    <div className='App'>
+      <RouterProvider router={router}/>
+
     </div>
-    </body>
+  )
+}
+
+function wait(duration: number) {
+  return new Promise(resolve => setTimeout(resolve, duration))
+}
+
+const Root = () => {
+  return (
+    <>
+      {/* <div>
+        <Link to="/"> Home </Link>
+        <Link to="/login"> Login </Link>
+        <Link to="/register"> Register </Link>
+      </div> */}
+
+      <div>
+        <Outlet />
+      </div>
+    </>
   )
 }
 

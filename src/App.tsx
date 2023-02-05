@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { createBrowserRouter, createRoutesFromElements, Route, Link, Outlet, RouterProvider } from 'react-router-dom'
-import { Home, dataLoader } from './views/Home'
+import { Home } from './views/Home'
 import { Login } from './views/verification/Login'
 import { Register } from './views/verification/Register'
 import { Forgot } from './views/verification/Forgot'

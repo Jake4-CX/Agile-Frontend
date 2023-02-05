@@ -1,12 +1,13 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-export const Forgot = (props) => {
+export const Forgot = (props: any) => {
 
   const [email, setEmail] = useState('')
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
     try {
       const res = await axios.post('/auth/forgot', { email })

@@ -8,3 +8,9 @@
 }
 
 @tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+}

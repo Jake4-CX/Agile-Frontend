@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-export const Register = (props) => {
+export const Register = (props: any) => {
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export const Register = (props) => {
 
           <section className='mt-6'>
             <div className='flex flex-col'>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={() => handleSubmit}>
 
                 {/* Email */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>

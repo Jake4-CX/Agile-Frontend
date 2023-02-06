@@ -95,6 +95,31 @@ export const Home = (props: any) => {
                   </div>
                 </div>
             </div>
+
+            {/* Statistics */}
+            <div className="flex flex-col min-h-[320px] bg-slate-400 pt-12 px-12 pb-6">
+              <h1 className="text-5xl font-bold text-black">Statistics</h1>
+              <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
+
+              <div className="grid lg:grid-cols-3 grid-cols-1 gap-6 lg:gap-24 pt-4">
+
+                <div className="flex flex-col justify-center items-center border-2 border-dashed rounded-lg h-[180px] text-center">
+                  <h3 className="text-5xl font-medium text-white">100</h3>
+                  <p className="text-base">Reports in the past week</p>
+                </div>
+
+                <div className="flex flex-col justify-center items-center border-2 border-dashed rounded-lg h-[180px] text-center">
+                  <h3 className="text-5xl font-medium text-white">239</h3>
+                  <p className="text-base">Completed in the past month</p>
+                </div>
+
+                <div className="flex flex-col justify-center items-center border-2 border-dashed rounded-lg h-[180px] text-center">
+                  <h3 className="text-5xl font-medium text-white">5,430</h3>
+                  <p className="text-base">Total reports submitted</p>
+                </div>
+
+              </div>
+            </div>
           </section>
         </div>
         

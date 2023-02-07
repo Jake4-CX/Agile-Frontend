@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import axios from '../../axios'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
-export const Login = (props) => {
+export const Login = (props: any) => {
 
   const navigate = useNavigate();
 
@@ -16,15 +17,24 @@ export const Login = (props) => {
     console.log(email, password)
 
     axios.post('/users/login', {
-      email: email,
-      password: password,
+      user_email: email,
+      user_password: password,
     }).then((res) => {
       console.log(res)
+
+      if (res.status === 200) {
+        localStorage.setItem('token', res.data.token);
+        toast.success("You have logged in successfully!");
+        navigate('/');
+      } else {
+        toast.error("An error occoured");
+      }
     }).catch((err) => {
       console.log(err)
 
       if (err.response.status === 500) {
         console.log(err.response.data.message);
+        toast.error("Invalid credentials!");
       }
     });
 

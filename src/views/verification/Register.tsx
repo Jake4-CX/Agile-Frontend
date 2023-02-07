@@ -1,3 +1,4 @@
+import axios from '../../axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +14,21 @@ export const Register = (props: any) => {
   const handleSubmit = (e: Event) => {
     e.preventDefault();
     console.log(email, password)
+
+    axios.post('/users/register', {
+      user_email: email,
+      user_password: password,
+      first_name: firstName,
+      last_name: lastName
+    }).then((res) => {
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
+
+      if (err.response.status === 500) {
+        console.log(err.response.data.message);
+      }
+    });
   }
 
 
@@ -29,7 +45,7 @@ export const Register = (props: any) => {
 
           <section className='mt-6'>
             <div className='flex flex-col'>
-              <form onSubmit={() => handleSubmit}>
+              <form onSubmit={handleSubmit}>
 
                 {/* Email */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>
@@ -40,16 +56,14 @@ export const Register = (props: any) => {
                 {/* firstName */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>
                   <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='firstName'>First Name</label>
-                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={firstName} onChange={(e) => setEmail(e.target.value)} type='text' placeholder='John' />
+                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={firstName} onChange={(e) => setFirstName(e.target.value)} type='text' placeholder='John' />
                 </div>
 
                 {/* lastName */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>
                   <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='lastName'>Last Name</label>
-                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={lastName} onChange={(e) => setEmail(e.target.value)} type='text' placeholder='Smith' />
+                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={lastName} onChange={(e) => setLastName(e.target.value)} type='text' placeholder='Smith' />
                 </div>
-
-
 
                 {/* Password */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>

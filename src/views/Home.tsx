@@ -97,7 +97,7 @@ export const Home = (props: any) => {
             </div>
 
             {/* Statistics */}
-            <div className="flex flex-col min-h-[320px] bg-slate-400 pt-12 px-12 pb-6">
+            <div className="flex flex-col min-h-[320px] bg-slate-400 pt-12 px-12 pb-12">
               <h1 className="text-5xl font-bold text-black">Statistics</h1>
               <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
 

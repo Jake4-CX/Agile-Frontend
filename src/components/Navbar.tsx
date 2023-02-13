@@ -20,12 +20,12 @@ export function Navbar() {
     <>
       <header className="bg-gray-600 border-b border-gray-400 py-4 z-20">
         <div className="flex items-center justify-between xl:max-w-7xl max-w-full px-[8%] xl:mx-auto flex-wrap w-full">
-          <img src="https://www.fixmystreet.com/cobrands/fixmystreet.com/images/site-logo-homepage.png" alt="logo" className="w-36 ml-8" />
+          <img src="https://www.fixmystreet.com/cobrands/fixmystreet.com/images/site-logo-homepage.png" alt="logo" className="w-36" />
           {
             isBurger ? (
-              <ImCross className="lg:hidden block text-white hover:text-slate-300 text-2xl mr-8 cursor-pointer duration-150" onClick={() => setIsBurger(!isBurger)} />
+              <ImCross className="lg:hidden block text-white hover:text-slate-300 text-2xl cursor-pointer duration-150" onClick={() => setIsBurger(!isBurger)} />
             ) : (
-              <FiMenu className="lg:hidden block text-white hover:text-slate-300 text-3xl mr-8 cursor-pointer duration-150" onClick={() => setIsBurger(!isBurger)} />
+              <FiMenu className="lg:hidden block text-white hover:text-slate-300 text-3xl cursor-pointer duration-150" onClick={() => setIsBurger(!isBurger)} />
             )
           }
 

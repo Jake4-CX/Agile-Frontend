@@ -54,7 +54,7 @@ export const Login = (props: any) => {
 
           <section className='mt-6'>
             <div className='flex flex-col'>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={() => handleSubmit}>
 
                 {/* Email */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>

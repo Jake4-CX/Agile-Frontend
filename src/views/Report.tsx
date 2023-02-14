@@ -1,14 +1,20 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify'
 import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import axios from "../axios";
 
 export const Report = (props: any) => {
 
   const map_center = useMemo(() => ({lat: 51.898944022703, lng: -2.0743560791015625}), [])
   var [markerPosition, setMarkerPosition] = useState({lat: 51.898944022703, lng: -2.0743560791015625})
+  var [markerAddress, setMarkerAddress] = useState({})
+
+  useEffect(() => {
+    getAddress(markerPosition.lat, markerPosition.lng)
+  }, [markerPosition])
 
   const {isLoaded} = useLoadScript({googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY}) // AIzaSyAMkITHwvzXynS_SG4BVyFzaZp4Z9vju1c
   return (
@@ -32,11 +38,43 @@ export const Report = (props: any) => {
               ) : (
                 <>
                   <div className="flex relative justify-center items-center z-10">
-                    <div className="bg-slate-50 shadow-lg rounded-lg p-12 absolute mt-52">
+                    <div className="bg-slate-50 shadow-lg rounded-lg px-12 py-6 absolute mt-[456px]">
                       <h1 className="font-bold text-2xl text-left">Report</h1>
                       <hr className="border-black"/>
-                      <p className="">Latitude: {markerPosition.lat.toFixed(6)}</p>
-                      <p className="">Longitude: {markerPosition.lng.toFixed(6)}</p>
+                      <form>
+
+                        {/* Location */}
+                        <p className="">Location: {formatAddress()}</p>
+                        <p className="">Latitude: {markerPosition.lat.toFixed(6)}</p>
+                        <p className="">Longitude: {markerPosition.lng.toFixed(6)}</p>
+
+                        {/* Report Category - Dropdown box */}
+                        <div className="flex flex-col">
+                          <label className="font-bold text-left">Category</label>
+                          <select className="border-2 border-black rounded-lg p-2">
+                            <option value="1">Category 1</option>
+                            <option value="2">Category 2</option>
+                            <option value="3">Category 3</option>
+                          </select>
+                        </div>
+
+                        {/* Description */}
+                        <div className="flex flex-col">
+                          <label className="font-bold text-left">Description</label>
+                          <textarea className="border-2 border-black rounded-lg p-2" placeholder="Description"></textarea>
+                        </div>
+
+                        {/* Photograph upload */}
+                        <div className="flex flex-col">
+                          <label className="font-bold text-left">Photographs</label>
+                          <input className="border-2 border-black rounded-lg p-2" type="file" accept="image/*" />
+                        </div>
+
+                        {/* Submit button for form */}
+                        <div className="flex justify-center">
+                          <button className="bg-black text-white rounded-lg p-2 mt-4" type="submit">Submit</button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                   <GoogleMap zoom={12} center={map_center} mapContainerClassName="w-full h-[75vh]" options={{streetViewControl: false, mapTypeControl: false, fullscreenControl: false, minZoom:8, maxZoom:20}} mapTypeId="">
@@ -51,5 +89,41 @@ export const Report = (props: any) => {
       <Footer />
     </>
   )
+
+  function getAddress(lat: number, lng: number) {
+    axios.get(`https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}`)
+    .then((response) => {
+      if (response.data.error) {
+        toast.error(response.data.error)
+        return;
+      }
+      if (response.data.address) {
+        setMarkerAddress(response.data.address)
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  function formatAddress() {
+    const addr = markerAddress;
+    const placeTypes = ["shop", "amenity", "building", "leisure", "tourism", "historic", "man_made", "aeroway", "military", "office", "highway"];
+  
+    let formattedAddress = '';
+    
+    if (addr.house_number) {
+      formattedAddress += addr.house_number + ' ';
+    }
+  
+    formattedAddress = placeTypes.filter(placeType => addr[placeType]).map(placeType => addr[placeType] + ', ').join('') + formattedAddress;
+    formattedAddress += addr.road ? addr.road + ', ' : '';
+    formattedAddress += addr.quarter ? addr.quarter + ', ' : '';
+    formattedAddress += addr.town ? addr.town + ', ' : '';
+    formattedAddress += addr.city ? addr.city + ', ' : '';
+    formattedAddress += addr.postcode ? addr.postcode : '';
+  
+    return formattedAddress.trim().replace(/,$/, '');
+  }
   
 }

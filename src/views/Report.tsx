@@ -10,7 +10,7 @@ export const Report = (props: any) => {
 
   const map_center = useMemo(() => ({lat: 51.898944022703, lng: -2.0743560791015625}), [])
   var [markerPosition, setMarkerPosition] = useState({lat: 51.898944022703, lng: -2.0743560791015625})
-  var [markerAddress, setMarkerAddress] = useState({})
+  var [markerAddress, setMarkerAddress] = useState({} as Address)
 
   useEffect(() => {
     getAddress(markerPosition.lat, markerPosition.lng)
@@ -78,7 +78,7 @@ export const Report = (props: any) => {
                     </div>
                   </div>
                   <GoogleMap zoom={12} center={map_center} mapContainerClassName="w-full h-[75vh]" options={{streetViewControl: false, mapTypeControl: false, fullscreenControl: false, minZoom:8, maxZoom:20}} mapTypeId="">
-                    <MarkerF position={markerPosition} options={{draggable: true}} onDragEnd={(marker) => setMarkerPosition({lat: marker.latLng?.lat(), lng: marker.latLng?.lng()})} icon={{url: 'assets/images/orange_pointer_maps.png', scaledSize: {width: 22, height: 34}}} />
+                    <MarkerF position={markerPosition} options={{draggable: true}} onDragEnd={(marker) => setMarkerPosition({lat: marker.latLng?.lat() ?? 51.898944022703, lng: marker.latLng?.lng() ?? -2.0743560791015625})} icon={{url: 'assets/images/orange_pointer_maps.png', scaledSize: new window.google.maps.Size(22, 34)}} />
                   </GoogleMap>
                 </>
               )
@@ -126,4 +126,24 @@ export const Report = (props: any) => {
     return formattedAddress.trim().replace(/,$/, '');
   }
   
+}
+
+interface Address {
+  shop?: string;
+  amenity?: string;
+  building?: string;
+  leisure?: string;
+  tourism?: string;
+  historic?: string;
+  man_made?: string;
+  aeroway?: string;
+  military?: string;
+  office?: string;
+  highway?: string;
+  house_number?: string;
+  road?: string;
+  quarter?: string;
+  town?: string;
+  city?: string;
+  postcode?: string;
 }

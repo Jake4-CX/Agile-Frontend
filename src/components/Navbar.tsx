@@ -20,7 +20,7 @@ export function Navbar() {
     <>
       <header className="bg-gray-600 border-b border-gray-400 py-4 z-20">
         <div className="flex items-center justify-between xl:max-w-7xl max-w-full px-[8%] xl:mx-auto flex-wrap w-full">
-          <img src="https://www.fixmystreet.com/cobrands/fixmystreet.com/images/site-logo-homepage.png" alt="logo" className="w-36" />
+          <img src="https://www.fixmystreet.com/cobrands/fixmystreet.com/images/site-logo-homepage.png" alt="logo" className="w-36" onClick={() => navigate("/")} />
           {
             isBurger ? (
               <ImCross className="lg:hidden block text-white hover:text-slate-300 text-2xl cursor-pointer duration-150" onClick={() => setIsBurger(!isBurger)} />
@@ -39,7 +39,7 @@ export function Navbar() {
                 ))
               }
               <li key={navLinks.length + 1} className="lg:ml-4">
-                <a onClick={() => navigate("/login")} className="lg:px-6 py-2 block bg-blue-700 text-white font-medium rounded-xl cursor-pointer duration-150 text-center">Login</a>
+                <a onClick={() => navigate("/login")} className="lg:px-6 py-2 block bg-blue-700 text-white font-medium rounded-xl cursor-pointer duration-150 hover:bg-indigo-700 text-center">Login</a>
               </li>
             </ul>
           </nav>

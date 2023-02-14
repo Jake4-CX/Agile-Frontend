@@ -8,6 +8,7 @@ import { Reset } from './views/verification/Reset'
 import axios from './axios'
 import { PageNotFound } from './views/PageNotFound'
 import { Logout } from './views/verification/Logout'
+import { Report } from './views/Report'
 
 function App() {
 
@@ -21,6 +22,8 @@ function App() {
         <Route path='/logout' element={ <Logout /> }/>
         <Route path='/reset/:token' element={ <Reset /> }/>
         <Route path='*' element={<PageNotFound />}/>
+
+        <Route path='/report' element={<Report />}/>
       </Route>
     )
   )

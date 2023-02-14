@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import axios from "../axios";
+import axios from "../API/axios";
 
 export const Report = (props: any) => {
 
@@ -107,8 +107,8 @@ export const Report = (props: any) => {
   }
 
   function formatAddress() {
-    const addr = markerAddress;
-    const placeTypes = ["shop", "amenity", "building", "leisure", "tourism", "historic", "man_made", "aeroway", "military", "office", "highway"];
+    const addr: any = markerAddress;
+    const placeTypes: string[] = ["shop", "amenity", "building", "leisure", "tourism", "historic", "man_made", "aeroway", "military", "office", "highway"];
   
     let formattedAddress = '';
     
@@ -116,7 +116,7 @@ export const Report = (props: any) => {
       formattedAddress += addr.house_number + ' ';
     }
   
-    formattedAddress = placeTypes.filter(placeType => addr[placeType]).map(placeType => addr[placeType] + ', ').join('') + formattedAddress;
+    formattedAddress = placeTypes.filter(type => addr[type]).map(type => addr[type] + ', ').join('') + formattedAddress;
     formattedAddress += addr.road ? addr.road + ', ' : '';
     formattedAddress += addr.quarter ? addr.quarter + ', ' : '';
     formattedAddress += addr.town ? addr.town + ', ' : '';

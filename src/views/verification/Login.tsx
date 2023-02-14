@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
-import axios from '../../axios'
+import axios from '../../API/axios'
 import { useNavigate } from 'react-router-dom'
+import { UseAuth } from '../../API/Services/UseAuth'
 import { toast } from 'react-toastify'
 
 
@@ -12,32 +13,23 @@ export const Login = (props: any) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e: any) => {
+  const {loginRequest} = UseAuth()
+
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log(email, password)
 
-    axios.post('/users/login', {
-      user_email: email,
-      user_password: password,
-    }).then((res) => {
-      console.log(res)
+    try {
+      const resp = await loginRequest(email, password)
+      localStorage.setItem('token', resp.data.token);
+      toast.success("You have logged in successfully!");
+      navigate('/');
 
-      if (res.status === 200) {
-        localStorage.setItem('token', res.data.token);
-        toast.success("You have logged in successfully!");
-        navigate('/');
-      } else {
-        toast.error("An error occoured");
-      }
-    }).catch((err) => {
+    } catch(err: any) {
       console.log(err)
-
-      if (err.response.status === 500) {
-        console.log(err.response.data.message);
-        toast.error("Invalid credentials!");
-      }
-    });
-
+      err.response.status === 401 ? toast.error("Invalid credentials!") : toast.error("Something went wrong!");
+    }
 
   }
 

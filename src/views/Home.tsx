@@ -45,14 +45,14 @@ export const Home = (props: any) => {
               <div className="flex flex-row justify-center items-center mt-4">
                 <div className="flex flex-row justify-center items-center bg-white rounded-lg shadow-lg">
                   <input type="text" placeholder="Enter your postcode" className="p-4 rounded-l-lg w-[300px] focus:outline-none" />
-                  <button className="bg-[#353535] hover:bg-[#454545] duration-150 rounded-r-lg p-4 text-white font-bold">Search</button>
+                  <button className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold">Search</button>
                 </div>
               </div>
 
               {/* Use current location button */}
               <div className="flex flex-row justify-center items-center mt-4">
                 
-                <div onClick={() => navigate("/report")} className="bg-[#353535] hover:bg-[#454545] duration-150 rounded-lg p-4 text-white text-sm font-bold flex flex-row cursor-pointer">
+                <div onClick={() => navigate("/report")} className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-lg p-4 text-white text-sm font-bold flex flex-row cursor-pointer">
                   <FaCompass className="m-auto mr-2"/>
                   <p>Use my current location</p>
                 </div>

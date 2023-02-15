@@ -31,9 +31,11 @@ export const Home = (props: any) => {
           {/* Navbar */}
           <Navbar />
 
-          <section className="-mt-2 min-h-full flex-grow">
+          <section className="min-h-full flex-grow">
             {/* Hero section */}
-            <div className="flex flex-col justify-center items-center h-[540px] bg-slate-400">
+            <div className="flex flex-col justify-center items-center h-[540px] bg-gray-600 backdrop-blur-0 relative">
+              {/* Hero background image */}
+              <div className="absolute inset-0 bg-[url('/assets/images/hero_bg.jpg')] bg-center bg-cover backdrop-opacity-25 blur-[3px] opacity-60 -z-10"></div>
               <div className="flex flex-col justify-center items-center">
                 <h1 className="text-5xl font-bold text-white ">Fix My Street</h1>
                 <p className="text-white">Report a problem in your area</p>
@@ -43,14 +45,14 @@ export const Home = (props: any) => {
               <div className="flex flex-row justify-center items-center mt-4">
                 <div className="flex flex-row justify-center items-center bg-white rounded-lg shadow-lg">
                   <input type="text" placeholder="Enter your postcode" className="p-4 rounded-l-lg w-[300px] focus:outline-none" />
-                  <button className="bg-sky-400 hover:bg-blue-500 duration-150 rounded-r-lg p-4 text-white font-bold">Search</button>
+                  <button className="bg-[#353535] hover:bg-[#454545] duration-150 rounded-r-lg p-4 text-white font-bold">Search</button>
                 </div>
               </div>
 
               {/* Use current location button */}
               <div className="flex flex-row justify-center items-center mt-4">
                 
-                <div onClick={() => navigate("/report")} className="bg-sky-400 hover:bg-blue-500 duration-150 rounded-lg p-4 text-white text-sm font-bold flex flex-row cursor-pointer">
+                <div onClick={() => navigate("/report")} className="bg-[#353535] hover:bg-[#454545] duration-150 rounded-lg p-4 text-white text-sm font-bold flex flex-row cursor-pointer">
                   <FaCompass className="m-auto mr-2"/>
                   <p>Use my current location</p>
                 </div>
@@ -58,7 +60,7 @@ export const Home = (props: any) => {
             </div>
 
             {/* About */}
-            <div className="flex flex-col py-16 mx-8 lg:px-16 min-h-[540px] flex-grow">
+            <div className="flex flex-col py-16 mx-8 lg:px-16 min-h-[540px] flex-grow bg-white">
                 <h1 className="text-5xl font-bold text-black">How to report a problem</h1>
                 <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
 
@@ -97,7 +99,7 @@ export const Home = (props: any) => {
             </div>
 
             {/* Statistics */}
-            <div className="flex flex-col min-h-[320px] bg-slate-400 pt-12 px-12 pb-12">
+            <div className="flex flex-col min-h-[320px] bg-[#87A9A8] pt-12 px-12 pb-12">
               <h1 className="text-5xl font-bold text-black">Statistics</h1>
               <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
 

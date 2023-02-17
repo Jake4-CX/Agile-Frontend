@@ -16,7 +16,7 @@ export const Report = (props: any) => {
     getAddress(markerPosition.lat, markerPosition.lng)
   }, [markerPosition])
 
-  const {isLoaded} = useLoadScript({googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY}) // AIzaSyAMkITHwvzXynS_SG4BVyFzaZp4Z9vju1c
+  const {isLoaded} = useLoadScript({googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY})
   return (
     <>
       {/* Background image */}

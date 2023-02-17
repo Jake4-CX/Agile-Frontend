@@ -37,8 +37,11 @@ export const Report = (props: any) => {
               </div>
               ) : (
                 <>
-                  <div className="flex relative justify-center items-center z-10">
-                    <div className="bg-slate-50 shadow-lg rounded-lg px-12 py-6 absolute mt-[456px]">
+                  <GoogleMap zoom={12} center={map_center} mapContainerClassName="w-full h-[75vh]" options={{streetViewControl: false, mapTypeControl: false, fullscreenControl: false, minZoom:8, maxZoom:20}} mapTypeId="">
+                    <MarkerF position={markerPosition} options={{draggable: true}} onDragEnd={(marker) => setMarkerPosition({lat: marker.latLng?.lat() ?? 51.898944022703, lng: marker.latLng?.lng() ?? -2.0743560791015625})} icon={{url: 'assets/images/orange_pointer_maps.png', scaledSize: new window.google.maps.Size(22, 34)}} />
+                  </GoogleMap>
+                  <div className="flex justify-center items-center">
+                    <div className="bg-slate-50 shadow-lg rounded-lg px-12 py-6 my-[52px]">
                       <h1 className="font-bold text-2xl text-left">Report</h1>
                       <hr className="border-black"/>
                       <form>
@@ -77,9 +80,6 @@ export const Report = (props: any) => {
                       </form>
                     </div>
                   </div>
-                  <GoogleMap zoom={12} center={map_center} mapContainerClassName="w-full h-[75vh]" options={{streetViewControl: false, mapTypeControl: false, fullscreenControl: false, minZoom:8, maxZoom:20}} mapTypeId="">
-                    <MarkerF position={markerPosition} options={{draggable: true}} onDragEnd={(marker) => setMarkerPosition({lat: marker.latLng?.lat() ?? 51.898944022703, lng: marker.latLng?.lng() ?? -2.0743560791015625})} icon={{url: 'assets/images/orange_pointer_maps.png', scaledSize: new window.google.maps.Size(22, 34)}} />
-                  </GoogleMap>
                 </>
               )
             }

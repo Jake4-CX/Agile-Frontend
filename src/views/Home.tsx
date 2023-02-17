@@ -12,7 +12,7 @@ export const Home = (props: any) => {
     {"title": "Enter a nearby UK postcode, or street name and area", "description": "some description if needed"},
     {"title": "Locate the problem on a map of the area", "description": "some description if needed"},
     {"title": "Describe the problem and submit", "description": "some description if needed"},
-    {"title": "We'll connfirm the report and Gloucestershire Council will investigate", "description": "some description if needed"}
+    {"title": "We'll confirm the report and Gloucestershire Council will investigate", "description": "some description if needed"}
   ]
 
   const recentReports = [

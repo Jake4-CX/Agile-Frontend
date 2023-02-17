@@ -1,6 +1,8 @@
 import axios from '../../API/axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { UseAuth } from '../../API/Services/UseAuth';
+import { toast } from 'react-toastify'
 
 export const Register = (props: any) => {
 
@@ -11,24 +13,26 @@ export const Register = (props: any) => {
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
 
+  const {registerRequest} = UseAuth()
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(email, password)
 
-    axios.post('/users/register', {
-      user_email: email,
-      user_password: password,
-      first_name: firstName,
-      last_name: lastName
-    }).then((res) => {
-      console.log(res)
-    }).catch((err) => {
+    // Check if all data is not empty
+    if (!email || !password || !firstName || !lastName) {
+      toast.error("You are required to enter all fields!");
+      return;
+    }
+
+    try {
+      registerRequest(email, password, firstName, lastName)
+      toast.success("You have registered successfully!");
+      navigate('/login');
+    } catch (err: any) {
       console.log(err)
+      err.response.status === 401 ? toast.error("Failed to register account") : toast.error("Something went wrong!");
+    }
 
-      if (err.response.status === 500) {
-        console.log(err.response.data.message);
-      }
-    });
   }
 
 
@@ -49,26 +53,26 @@ export const Register = (props: any) => {
 
                 {/* Email */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='email'>Email</label>
-                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={email} onChange={(e) => setEmail(e.target.value)} type='email' placeholder='your@email.com' />
+                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='email'>Email<a className='text-red-700 font-medium'>*</a></label>
+                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={email} onChange={(e) => setEmail(e.target.value)} type='email' name='email' placeholder='your@email.com' required />
                 </div>
 
                 {/* firstName */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='firstName'>First Name</label>
-                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={firstName} onChange={(e) => setFirstName(e.target.value)} type='text' placeholder='John' />
+                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='firstName'>First Name<a className='text-red-700 font-medium'>*</a></label>
+                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={firstName} onChange={(e) => setFirstName(e.target.value)} type='text' name='firstName' placeholder='John' required />
                 </div>
 
                 {/* lastName */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='lastName'>Last Name</label>
-                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={lastName} onChange={(e) => setLastName(e.target.value)} type='text' placeholder='Smith' />
+                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='lastName'>Last Name<a className='text-red-700 font-medium'>*</a></label>
+                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={lastName} onChange={(e) => setLastName(e.target.value)} type='text' name='lastName' placeholder='Smith' required />
                 </div>
 
                 {/* Password */}
                 <div className='mb-6 pt-6 rounded bg-gray-200'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='password'>Password</label>
-                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={password} onChange={(e) => setPassword(e.target.value)} type='password' placeholder='password' />
+                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='password'>Password<a className='text-red-700 font-medium'>*</a></label>
+                  <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={password} onChange={(e) => setPassword(e.target.value)} type='password' name='password' placeholder='password' required />
                 </div>
 
                 {/* Forgot password */}

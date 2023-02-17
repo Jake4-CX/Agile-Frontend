@@ -28,7 +28,7 @@ export const Login = (props: any) => {
 
     } catch(err: any) {
       console.log(err)
-      err.response.status === 401 ? toast.error("Invalid credentials!") : toast.error("Something went wrong!");
+      err.response.status === 401 ? toast.error("Invalid Username or Password!") : toast.error("Something went wrong!");
     }
 
   }

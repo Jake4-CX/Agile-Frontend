@@ -9,6 +9,7 @@ import axios from './API/axios'
 import { PageNotFound } from './views/PageNotFound'
 import { Logout } from './views/verification/Logout'
 import { Report } from './views/Report'
+import { Template } from './views/Template'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/forgot' element={ <Forgot /> }/>
         <Route path='/logout' element={ <Logout /> }/>
         <Route path='/reset/:token' element={ <Reset /> }/>
+        <Route path='/template' element={ <Template /> }/>
         <Route path='*' element={<PageNotFound />}/>
 
         <Route path='/report' element={<Report />}/>

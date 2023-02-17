@@ -7,6 +7,15 @@ export const UseAuth = () => {
       user_password: password,
     })
   }
+
+  const registerRequest = (email: string, password: string, firstName: string, lastName: string) => {
+    return axios.post('/users/register', {
+      user_email: email,
+      user_password: password,
+      first_name: firstName,
+      last_name: lastName
+    })
+  }
   
-return {loginRequest};
+return {loginRequest, registerRequest};
 }

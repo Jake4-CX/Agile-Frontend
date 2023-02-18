@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Build Vite Application
+name: Build and deploy Vite Application
 
 on:
   push:
@@ -30,9 +30,11 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
-        server: uogs.co.uk
-        username: ct503823grp2-ct5038
-        password: 7fsW5g%2%2
-        local-dir: ./dist/
+        server: ${{ SFTP_HOST }}
+        port: 22
+        username: ${{ SFTP_USER }} 
+        password: ${{ SFTP_PASSWORD }}
+        local_path: './dist/*'
+        sftp_only: true

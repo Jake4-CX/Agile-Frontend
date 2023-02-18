@@ -32,9 +32,9 @@ jobs:
     - name: 📂 Sync files
       uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
-        server: ${{ SFTP_HOST }}
+        server: ${{ secrets.SFTP_HOST }}
         port: 22
-        username: ${{ SFTP_USER }} 
-        password: ${{ SFTP_PASSWORD }}
+        username: ${{ secrets.SFTP_USER }} 
+        password: ${{ secrets.SFTP_PASSWORD }}
         local_path: './dist/*'
         sftp_only: true

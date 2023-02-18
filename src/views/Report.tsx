@@ -37,7 +37,7 @@ export const Report = (props: any) => {
               </div>
               ) : (
                 <>
-                  <GoogleMap zoom={12} center={map_center} mapContainerClassName="w-full h-[75vh]" options={{streetViewControl: false, mapTypeControl: false, fullscreenControl: false, minZoom:8, maxZoom:20}} mapTypeId="">
+                  <GoogleMap zoom={12} center={map_center} mapContainerClassName="w-full h-[50vh]" options={{streetViewControl: false, mapTypeControl: false, fullscreenControl: false, minZoom:8, maxZoom:20}} mapTypeId="">
                     <MarkerF position={markerPosition} options={{draggable: true}} onDragEnd={(marker) => setMarkerPosition({lat: marker.latLng?.lat() ?? 51.898944022703, lng: marker.latLng?.lng() ?? -2.0743560791015625})} icon={{url: 'assets/images/orange_pointer_maps.png', scaledSize: new window.google.maps.Size(22, 34)}} />
                   </GoogleMap>
                   <div className="flex justify-center items-center">
@@ -85,8 +85,8 @@ export const Report = (props: any) => {
             }
           </section>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 

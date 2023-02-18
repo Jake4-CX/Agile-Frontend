@@ -10,6 +10,7 @@ import { PageNotFound } from './views/PageNotFound'
 import { Logout } from './views/verification/Logout'
 import { Report } from './views/Report'
 import { Template } from './views/Template'
+import { Dashboard } from './views/Dashboard'
 
 function App() {
 
@@ -23,9 +24,15 @@ function App() {
         <Route path='/logout' element={ <Logout /> }/>
         <Route path='/reset/:token' element={ <Reset /> }/>
         <Route path='/template' element={ <Template /> }/>
-        <Route path='*' element={<PageNotFound />}/>
 
         <Route path='/report' element={<Report />}/>
+
+        {/* Protected Routes */}
+        <Route path='/dashboard' element={<Dashboard />}/>
+
+
+        {/* 404 Page */}
+        <Route path='*' element={<PageNotFound />}/>
       </Route>
     )
   )

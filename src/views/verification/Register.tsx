@@ -15,7 +15,7 @@ export const Register = (props: any) => {
 
   const {registerRequest} = UseAuth()
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     // Check if all data is not empty
@@ -25,12 +25,13 @@ export const Register = (props: any) => {
     }
 
     try {
-      registerRequest(email, password, firstName, lastName)
+      const resp = await registerRequest(email, password, firstName, lastName)
       toast.success("You have registered successfully!");
       navigate('/login');
     } catch (err: any) {
       console.log(err)
-      err.response.status === 401 ? toast.error("Failed to register account") : toast.error("Something went wrong!");
+      err.response === undefined ? toast.error("Unable to query API") :
+      (err.response.status === 401 ? toast.error(err.response.data.message) : toast.error("Something went wrong!"));
     }
 
   }

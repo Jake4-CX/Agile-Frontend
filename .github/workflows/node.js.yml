@@ -37,4 +37,5 @@ jobs:
         username: ${{ secrets.SFTP_USER }} 
         password: ${{ secrets.SFTP_PASSWORD }}
         local_path: './dist/*'
+        remote_path: '/var/www/vhosts/ct503823grp2-ct5038.uogs.co.uk/httpdocs'
         sftp_only: true

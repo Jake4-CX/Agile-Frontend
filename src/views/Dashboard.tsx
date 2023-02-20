@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../API/axios";
 import { Footer } from "../components/Footer";
+import { MyReports } from "../components/MyReports";
 import { Navbar } from "../components/Navbar";
 
 export const Dashboard = (props: any) => {
@@ -18,7 +19,27 @@ export const Dashboard = (props: any) => {
 
           <section className="flex-grow">
             <div className="flex flex-col justify-center items-center">
-              <p>This is the dashboard page</p>
+              <h1 className="text-3xl font-bold ml-0 m-auto px-4 pt-8 pb-2">Dashboard</h1>
+              <hr className="border-gray-300 border-x-2" />
+              {/* My Reports */}  
+              <div className="bg-gray-200 rounded-lg shadow-lg px-6 py-4 w-7/12 h-[428px] my-4">
+                <h2 className="text-2xl font-medium text-[#000]">Your Reports</h2>
+                <hr className="border-gray-300 border-x-2" />
+
+                <div className="flex items-center justify-center">
+                  {/* Table */}
+                  <div className="flex flex-col mt-4 w-full items-center">
+                    {/* Potentially turn MyReports into a shared table and provide table results as a prop */}
+                    <MyReports /> 
+                  </div>
+                </div>
+              </div>
+
+              {/* Recent reports in my area */}
+              <div className="bg-gray-200 rounded-lg shadow-lg px-6 py-4 w-7/12 h-[428px] my-4">
+                <h2 className="text-2xl font-medium text-[#000]">Recent reports in your area</h2>
+                <hr className="border-gray-300 border-x-2" />
+              </div>
             </div>
           </section>
         </div>

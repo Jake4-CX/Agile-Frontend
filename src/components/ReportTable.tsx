@@ -2,16 +2,11 @@ import moment from "moment";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
-
-export const MyReports = (props: any) => {
+export const ReportTable = (props: any) => {
 
   const navigate = useNavigate();
 
-  var [reports, setReports] = useState<Report[]>([
-    { id: 1, title: "Report 1", reportType: reportTypes.Graffiti, reportStatus: reportStatuses.open, reportLocation: {lat: 50, lng: 0, address: "Cheltenham Town Hall, Imperial Square, Cheltenham, GL50 1QA"}, date: new Date() },
-    { id: 2, title: "Report 2", reportType: reportTypes.Flytipping, reportStatus: reportStatuses.closed, reportLocation: {lat: 50, lng: 0, address: "Lansdown House, 48 Lansdown Road, Cheltenham, GL50 2PP"}, date: new Date() },
-    { id: 3, title: "Report 3", reportType: reportTypes.Pothole, reportStatus: reportStatuses.closed, reportLocation: {lat: 50, lng: 0, address: "John Lewis, 123 High Street, Cheltenham, GL50 1DQ"}, date: new Date() }
-  ])
+  var yourReports = props.data;
 
   return (
     <>
@@ -43,7 +38,7 @@ export const MyReports = (props: any) => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {
-                  reports.map((report: Report) => {
+                  yourReports.map((report: Report) => {
                     return (
                       <tr>
                         <td className="px-6 py-4 whitespace-nowrap">

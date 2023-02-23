@@ -50,7 +50,7 @@ export const ReportTable = (props: any) => {
                           {moment(report.date).startOf('hour').fromNow()}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <a className="text-indigo-600 hover:text-indigo-900" onClick={() => navigate('/reports/' + report.id)}>View</a>
+                          <a className="text-indigo-600 hover:text-indigo-900 cursor-pointer" onClick={() => navigate('/reports/' + report.id)}>View</a>
                         </td>
                       </tr>
                     )

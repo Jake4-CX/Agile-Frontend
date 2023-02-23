@@ -11,6 +11,8 @@ import { Logout } from './views/verification/Logout'
 import { Report } from './views/Report'
 import { Template } from './views/Template'
 import { Dashboard } from './views/Dashboard'
+import { Reports } from './views/Reports'
+import { ViewReport } from './views/ViewReport'
 
 function App() {
 
@@ -26,6 +28,10 @@ function App() {
         <Route path='/template' element={ <Template /> }/>
 
         <Route path='/report' element={<Report />}/>
+
+        {/* Dynamic Routes */}
+        <Route path='/reports' element={<Reports />}/>
+        <Route path='/reports/:report_id' element={<ViewReport />}/>
 
         {/* Protected Routes */}
         <Route path='/dashboard' element={<Dashboard />}/>

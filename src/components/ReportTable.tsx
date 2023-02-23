@@ -16,24 +16,13 @@ export const ReportTable = (props: any) => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 table-auto">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Id
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Report Type
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Address
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th scope="col" className="relative px-6 py-3">
-                    <span className="sr-only">View</span>
-                  </th>
+                  {
+                    ["Id", "Report Type", "Address", "Status", "Date", ""].map((header: string) => (
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        {header}
+                      </th>
+                    ))
+                  }
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -58,7 +47,7 @@ export const ReportTable = (props: any) => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          { moment(report.date).startOf('hour').fromNow() }
+                          {moment(report.date).startOf('hour').fromNow()}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <a className="text-indigo-600 hover:text-indigo-900" onClick={() => navigate('/reports/' + report.id)}>View</a>

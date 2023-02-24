@@ -56,7 +56,7 @@ export const Dashboard = (props: any) => {
                 {/* Grid container */}
                 <div className="mx-4 my-2">
                   {/* Row Grid of 1x4 */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 w-ful">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 w-full">
 
                     <div className="bg-white rounded-md shadow-lg px-6 py-4 w-72 h-36 hover:bg-slate-50 duration-200">
                       <div className="flex flex-row items-center justify-between h-full w-full text-center">
@@ -89,7 +89,7 @@ export const Dashboard = (props: any) => {
 
 
               {/* My Reports */}
-              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-9/12 h-[428px] my-4">
+              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
                 <h2 className="text-2xl font-medium text-[#838383]">Your Reports</h2>
                 <hr className="border-[#dfdbdb] border-x-2" />
 
@@ -102,7 +102,7 @@ export const Dashboard = (props: any) => {
               </div>
 
               {/* Recent reports in my area */}
-              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-9/12 h-[428px] my-4">
+              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
                 <h2 className="text-2xl font-medium text-[#838383]">Recent reports in your area</h2>
                 <hr className="border-[#dfdbdb] border-x-2" />
 

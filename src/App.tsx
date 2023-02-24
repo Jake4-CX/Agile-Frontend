@@ -19,33 +19,33 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<Root />}>
-        <Route index element={<Home />}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/register' element={<Register />}/>
-        <Route path='/forgot' element={ <Forgot /> }/>
-        <Route path='/logout' element={ <Logout /> }/>
-        <Route path='/reset/:token' element={ <Reset /> }/>
-        <Route path='/template' element={ <Template /> }/>
+        <Route index element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/forgot' element={<Forgot />} />
+        <Route path='/logout' element={<Logout />} />
+        <Route path='/reset/:token' element={<Reset />} />
+        <Route path='/template' element={<Template />} />
 
-        <Route path='/report' element={<Report />}/>
-
-        {/* Dynamic Routes */}
-        <Route path='/reports' element={<Reports />}/>
-        <Route path='/reports/:report_id' element={<ViewReport />}/>
+        <Route path='/report' element={<Report />} />
 
         {/* Protected Routes */}
-        <Route path='/dashboard' element={<Dashboard />}/>
+        <Route path='/dashboard' element={<Dashboard />} />
+
+        {/* Dynamic Routes */}
+        <Route path='/reports' element={<Reports />} />
+        <Route path='/reports/:report_id' element={<ViewReport />} />
 
 
         {/* 404 Page */}
-        <Route path='*' element={<PageNotFound />}/>
+        <Route path='*' element={<PageNotFound />} />
       </Route>
     )
   )
 
   return (
     <div className='App'>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
 
     </div>
   )

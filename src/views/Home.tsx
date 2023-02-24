@@ -3,8 +3,11 @@ import { Navbar } from "../components/Navbar";
 
 import { FaCompass } from "react-icons/fa";
 import { Footer } from "../components/Footer";
+import { useState } from "react";
 
 export const Home = (props: any) => {
+
+  const [postalCode, setPostalCode] = useState('')
 
   const navigate = useNavigate();
 
@@ -19,6 +22,13 @@ export const Home = (props: any) => {
     {"title": "Pothole on the road", "description": "some description if needed", "image": "/assets/images/example_problem_small.jpeg"},
     {"title": "Pothole on the road", "description": "some description if needed", "image": "/assets/images/example_problem_small.jpeg"}
   ]
+
+  function searchPostalCode(e: any) {
+    e.preventDefault()
+    console.log(postalCode) 
+    // navigate("/report")
+    
+  }
 
 
   return (
@@ -44,8 +54,8 @@ export const Home = (props: any) => {
               {/* Search bar */}
               <div className="flex flex-row justify-center items-center mt-4">
                 <div className="flex flex-row justify-center items-center bg-white rounded-lg shadow-lg">
-                  <input type="text" placeholder="Enter your postcode" className="p-4 rounded-l-lg w-[300px] focus:outline-none" />
-                  <button className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold">Search</button>
+                  <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} type="text" placeholder="Enter your postcode" className="p-4 rounded-l-lg w-[300px] focus:outline-none" />
+                  <button className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold" onClick={() => searchPostalCode}>Search</button>
                 </div>
               </div>
 

@@ -14,3 +14,25 @@
     font-family: 'Roboto', sans-serif;
   }
 }
+
+
+.class1{
+  color: white;
+
+  
+}
+  
+  table {
+  border: 2px solid red;
+  width: 95%;
+  height: 200px;
+  }
+  
+  th {
+  border-bottom: 1px solid white;
+  }
+  
+  td {
+  text-align: center;
+  }
+  

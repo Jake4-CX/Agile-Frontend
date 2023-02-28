@@ -13,6 +13,7 @@ import { Template } from './views/Template'
 import { Dashboard } from './views/Dashboard'
 import { Reports } from './views/Reports'
 import { ViewReport } from './views/ViewReport'
+import { AdminPage } from './views/AdminPage'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         <Route path='/template' element={ <Template /> }/>
 
         <Route path='/report' element={<Report />}/>
+        <Route path='/AdminPage' element={ <AdminPage />}/>  
 
         {/* Dynamic Routes */}
         <Route path='/reports' element={<Reports />}/>

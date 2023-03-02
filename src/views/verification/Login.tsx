@@ -24,7 +24,10 @@ export const Login = (props: any) => {
 
     try {
       const resp = await loginRequest(email, password)
-      localStorage.setItem('token', resp.data.token);
+      localStorage.setItem('accessToken', resp.data.tokens.accessToken);
+      localStorage.setItem('refreshToken', resp.data.tokens.refreshToken);
+      delete resp.data.tokens;
+      localStorage.setItem('user', JSON.stringify(resp.data));
       toast.success("You have logged in successfully!");
       navigate('/');
 

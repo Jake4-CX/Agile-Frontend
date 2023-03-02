@@ -16,6 +16,10 @@ export const UseAuth = () => {
       last_name: lastName
     })
   }
+
+  const getCurrentUser = () => {
+    return localStorage.getItem('user') !== null ? JSON.parse(localStorage.getItem('user') || '{}') as Users : null;
+  }
   
-return {loginRequest, registerRequest};
+return {loginRequest, registerRequest, getCurrentUser};
 }

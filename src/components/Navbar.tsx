@@ -4,14 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { ImCross } from "react-icons/im";
 
+import { UseAuth } from "../API/Services/UseAuth";
+
 export function Navbar() {
 
   const navigate = useNavigate();
+  const { getCurrentUser } = UseAuth();
 
   const navLinks = [
-    {"title": "Home", "link": "/"},
-    {"title": "All reports", "link": "/reports"},
-    {"title": "Help", "link": "/help"}
+    { "title": "Home", "link": "/" },
+    { "title": "All reports", "link": "/reports" },
+    { "title": "Help", "link": "/help" }
   ]
 
   const [isBurger, setIsBurger] = useState(false);
@@ -29,7 +32,7 @@ export function Navbar() {
             )
           }
 
-          <nav className={ `${isBurger ? "block" : "hidden"} lg:flex lg:items-center lg:w-auto w-full`}>
+          <nav className={`${isBurger ? "block" : "hidden"} lg:flex lg:items-center lg:w-auto w-full`}>
             <ul className="text-base text-gray-700 lg:flex lg:justify-between">
               {
                 navLinks.map((link, index) => (
@@ -39,7 +42,17 @@ export function Navbar() {
                 ))
               }
               <li key={navLinks.length + 1} className="lg:ml-4">
-                <a onClick={() => navigate("/login")} className="block lg:px-6 py-2 bg-[#353535] hover:bg-[#3f3f3f] text-white text-center font-medium capitalize rounded-xl cursor-pointer duration-150">Login</a>
+                {
+                  getCurrentUser() ? (
+                    <>
+                      <a onClick={() => navigate("/profile")} className="block lg:px-6 py-2 bg-[#353535] hover:bg-[#3f3f3f] text-white text-center font-medium capitalize rounded-xl cursor-pointer duration-150">Profile</a>
+                    </>
+                  ) : (
+                    <>
+                      <a onClick={() => navigate("/login")} className="block lg:px-6 py-2 bg-[#353535] hover:bg-[#3f3f3f] text-white text-center font-medium capitalize rounded-xl cursor-pointer duration-150">Login</a>
+                    </>
+                  )
+                }
               </li>
             </ul>
           </nav>

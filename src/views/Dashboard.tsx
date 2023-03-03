@@ -56,27 +56,21 @@ export const Dashboard = (props: any) => {
                 {/* Grid container */}
                 <div className="mx-4 my-2">
                   {/* Row Grid of 1x4 */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 w-full">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
 
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-72 h-36 hover:bg-slate-50 duration-200">
+                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
                       <div className="flex flex-row items-center justify-between h-full w-full text-center">
                         <h2 className="w-full">You submitted <a className="font-medium text-lg">3</a> reports in the past <a className="font-medium text-lg">30</a> days</h2>
                       </div>
                     </div>
 
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-72 h-36 hover:bg-slate-50 duration-200">
+                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
                       <div className="flex flex-row items-center justify-between h-full w-full text-center">
                         <h2 className="w-full"><a className="font-medium text-lg">1</a> of these reports has been fixed</h2>
                       </div>
                     </div>
 
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-72 h-36 hover:bg-slate-50 duration-200">
-                      <div className="flex flex-row items-center justify-between h-full w-full text-center">
-                        <h2 className="w-full">Another message</h2>
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-72 h-36 hover:bg-slate-50 duration-200">
+                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
                       <div className="flex flex-row items-center justify-between h-full w-full text-center">
                         <h2 className="w-full">Your local council is <a className="font-medium text-lg">Gloucestershire County Council</a></h2>
                       </div>

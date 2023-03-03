@@ -53,7 +53,7 @@ export const Login = (props: any) => {
           <section className="flex-grow">
             <div className="flex flex-col justify-center items-center">
 
-              <div className='flex justify-center items-center h-screen w-full'>
+              <div className='flex flex-grow justify-center items-center h-[960px] max-h-screen w-full'>
                 <main className='rounded-t-2xl rounded-b-md bg-white mx-auto p-8 md:pt-12 shadow-2xl w-11/12 max-w-lg'>
                   <section>
                     <h3 className='text-2xl font-bold'>Login</h3>

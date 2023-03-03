@@ -15,3 +15,7 @@ interface AccountRoles {
   role_name: string;
   role_weight: number;
 }
+
+interface RequireAuth {
+  allowedRoles?: any
+}

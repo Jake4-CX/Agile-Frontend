@@ -13,6 +13,7 @@ import { Template } from './views/Template'
 import { Dashboard } from './views/Dashboard'
 import { Reports } from './views/Reports'
 import { ViewReport } from './views/ViewReport'
+import { RequireAuth } from './components/RequireAuth'
 
 function App() {
 
@@ -29,12 +30,15 @@ function App() {
 
         <Route path='/report' element={<Report />} />
 
-        {/* Protected Routes */}
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route element={<RequireAuth allowedRoles={["User", "Employee", "Manager", "Administrator"]} />}>
 
-        {/* Dynamic Routes */}
-        <Route path='/reports' element={<Reports />} />
-        <Route path='/reports/:report_id' element={<ViewReport />} />
+          {/* Protected Routes */}
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/reports' element={<Reports />} />
+          <Route path='/reports/:report_id' element={<ViewReport />} />
+        </Route>
+
+        <Route path='/unauthorized' element={<PageNotFound />} />
 
 
         {/* 404 Page */}

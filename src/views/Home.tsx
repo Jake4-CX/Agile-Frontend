@@ -34,7 +34,7 @@ export const Home = (props: any) => {
   return (
     <>
       {/* Background image */}
-      <div className="fixed inset-0 -z-20 w-full h-full bg-white dark:bg-[#1d2029]"></div>
+      <div className="fixed inset-0 -z-20 w-full h-full bg-[#f8f8f8] dark:bg-[#1d2029]"></div>
       <div className="flex flex-col min-h-screen">
         <div className="px-0 mx-auto w-full 2xl:w-4/6 flex flex-col flex-grow">
 
@@ -70,7 +70,7 @@ export const Home = (props: any) => {
             </div>
 
             {/* About */}
-            <div className="flex flex-col py-16 mx-8 lg:px-16 min-h-[540px] flex-grow bg-white">
+            <div className="flex flex-col py-16 px-8 lg:px-16 min-h-[540px] flex-grow bg-[#f8f8f8]">
                 <h1 className="text-5xl font-bold text-black">How to report a problem</h1>
                 <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
 

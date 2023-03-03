@@ -45,7 +45,7 @@ export function Navbar() {
                 {
                   getCurrentUser() ? (
                     <>
-                      <a onClick={() => navigate("/profile")} className="block lg:px-6 py-2 bg-[#353535] hover:bg-[#3f3f3f] text-white text-center font-medium capitalize rounded-xl cursor-pointer duration-150">Profile</a>
+                      <a onClick={() => navigate("/dashboard")} className="block lg:px-6 py-2 bg-[#353535] hover:bg-[#3f3f3f] text-white text-center font-medium capitalize rounded-xl cursor-pointer duration-150">Dashboard</a>
                     </>
                   ) : (
                     <>

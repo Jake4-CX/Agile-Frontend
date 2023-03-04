@@ -14,7 +14,7 @@ import { Dashboard } from './views/Dashboard'
 import { Reports } from './views/Reports'
 import { ViewReport } from './views/ViewReport'
 import { RequireAuth } from './components/RequireAuth'
-
+import { HelpPage } from './views/HelpPage'
 function App() {
 
   const router = createBrowserRouter(
@@ -29,7 +29,7 @@ function App() {
         <Route path='/template' element={<Template />} />
 
         <Route path='/report' element={<Report />} />
-
+        <Route path='/HelpPage' element={<HelpPage />} />
         <Route element={<RequireAuth allowedRoles={["User", "Employee", "Manager", "Administrator"]} />}>
 
           {/* Protected Routes */}

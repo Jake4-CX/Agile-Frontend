@@ -5,6 +5,7 @@ import { ReportService } from "../API/Services/ReportService"
 import { ImageService } from "../API/Services/ImageService"
 import { Navbar } from "../components/Navbar"
 import { Footer } from "../components/Footer"
+import moment from "moment"
 
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { ViewReportCarousel } from "../components/ViewReportCarousel"
@@ -94,11 +95,11 @@ export const ViewReport = (props: any) => {
           <section className="min-h-full flex-grow">
 
             {/* Create a grid using tailwind css with 2 columns and 3 rows. The first div will be 1 column and 1 row, the second div 1 column and 2 row and the final div 2 column and 1 row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-6 gap-4 h-[70vh] mt-12">
-              <div className="col-span-1 row-span-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-6 gap-4 h-[100vh] lg:h-[70vh] mt-12">
+              <div className="col-span-1 row-span-2 md:row-span-3">
                 <div className="flex w-full h-full bg-gray-200 rounded p-6">
                   {
-                    reportImages !== undefined && report && (
+                    report && (
                       <>
                         <div className="w-full h-full">
                           <div className="w-full h-full p-3">
@@ -110,26 +111,55 @@ export const ViewReport = (props: any) => {
                   }
                 </div>
               </div>
-              <div className="col-span-1 row-span-4">
+              <div className="col-span-1 row-span-2 md:row-span-4">
                 <div className="flex w-full h-full bg-gray-200 rounded p-6">
 
                   {
                     report !== undefined && (
-                      <div key={report.id}>
-                        <div className="">
-                          <p>Report UUID: {report.report_uuid}</p>
-                          <p>Report Type: {report.report_type.report_type_name}</p>
-                          <p>Report Description: {report.report_description}</p>
-                          <p>Report Status: {report.report_status ? "Fixed" : "Waiting"}</p>
+                      <div key={report.id} className="w-full">
+
+                        <div className="flex flex-row bg-gray-300 rounded-lg p-2 w-full lg:w-2/3 xl:w-1/2 space-x-3">
+                          <img className="pointer-events-none flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src="/assets/images/default-user-icon.jpg" alt="avatar" />
+                          <div className="flex flex-col justify-between">
+                            <p className="text-md font-semibold">Reported by: {report.user.first_name}</p>
+                            <p className="text-xs">Reported on: {moment(report.report_date).calendar()}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col justify-between p-6">
+                          <div className="flex flex-row space-x-2">
+                            <span className="font-semibold my-auto">Status: </span>
+                            <div className={`w-fit rounded-full px-2 capitalize font-semibold ${report.report_status ? 'text-green-800 bg-green-100' : 'text-orange-800 bg-orange-100'}`}>
+                              <span>{report.report_status ? "Resolved" : "In Progress"}</span>
+                            </div>
+                          </div>
+
+                          {/* Report Type */}
+                          <div className="flex flex-col my-4">
+                            <label className="font-bold text-left">Report Type</label>
+                            REPORT TYPE
+                          </div>
+
+                          {/* Report Severity */}
+                          <div className="flex flex-col my-4">
+                            <label className="font-bold text-left">Report Severity</label>
+                            {report.report_severity}
+                          </div>
+
+                          {/* Description */}
+                          <div className="flex flex-col my-4">
+                            <label className="font-bold text-left">Description</label>
+                            <textarea className="rounded-lg bg-white py-2 px-3 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-0 sm:text-sm h-[90px] m-h-[120px] resize-none" placeholder="Loading..." value={report.report_description} disabled />
+                          </div>
+
                           <p>Report Location: {report.report_latitude} , {report.report_longitude}</p>
-                          <p>Reported by: N/A</p>
                         </div>
                       </div>
                     )
                   }
                 </div>
               </div>
-              <div className="md:col-span-2 row-span-2">
+              <div className="col-span-1 md:col-span-2 row-span-2">
                 <div className="flex w-full h-full bg-gray-200 rounded-xl shadow-lg p-3">
                   {
                     !isLoaded ? (

@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { toast } from 'react-toastify'
 import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
-import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import axios from "../API/axios";
 
 import { Combobox, Listbox, Transition } from '@headlessui/react'
@@ -13,12 +12,18 @@ import { FileUpload } from "../components/FileUpload";
 import { ImCross } from "react-icons/im";
 import { ReportService } from "../API/Services/ReportService";
 import { ImageService } from "../API/Services/ImageService";
+import { ReportMap } from "../components/ReportMap";
 
 export const Report = (props: any) => {
 
-  const map_center = useMemo(() => ({ lat: 51.898944022703, lng: -2.0743560791015625 }), [])
-  var [markerPosition, setMarkerPosition] = useState({ lat: 51.898944022703, lng: -2.0743560791015625 })
+  const location = useLocation();
+
+  const [mapCenter, setMapCenter] = useState({} as { lat: number, lng: number })
+  var [markerPosition, setMarkerPosition] = useState({} as { lat: number, lng: number })
   var [markerAddress, setMarkerAddress] = useState({} as Address)
+  const [loadMap, setLoadMap] = useState(false)
+
+
   var [reportDescription, setReportDescription] = useState("")
   const [files, setFiles] = useState()
 
@@ -26,6 +31,70 @@ export const Report = (props: any) => {
   const [categories, setCategories] = useState([{ id: 0, report_type_name: "Loading report types...", report_type_description: "" }] as ReportType[])
   const [selectedCategory, setSelectedCategory] = useState({ id: 0, report_type_name: "Select a category", report_type_description: "abc" } as ReportType)
   const [severity, setSeverity] = useState(5)
+
+
+  // On page load, get location from one of three ways:
+  // 1. If user has entered a postcode, it will be in 'location.state.postalCode'
+  // 2. If user has pressed 'Use my location', 'location.state.useMyLocation' will be true and then we use navigator.geolocation.getCurrentPosition
+  // 3. If user has not entered a postcode or pressed 'Use my location', we use the default location (51.898944022703, -2.0743560791015625)
+
+  useEffect(() => {
+
+    const getLocation = async () => {
+      const fallbackLocation = { lat: 51.898944022703, lng: -2.0743560791015625 }
+
+      // Get lat lng from user's location
+      if (location.state !== null && location.state.useMyLocation === true) {
+        console.log("Getting location from user's location")
+        navigator.geolocation.getCurrentPosition(function (position) {
+          setMapCenter({ lat: position.coords.latitude, lng: position.coords.longitude })
+        });
+
+        // Get lat lng from postcode
+      } else if (location.state !== null && location.state.postalCode !== '') {
+        console.log("Getting location from postcode (", location.state.postalCode, ")")
+
+        try {
+          const response = await getGeoLocation(location.state.postalCode)
+          setMapCenter({ lat: parseFloat(response.data[0].lat), lng: parseFloat(response.data[0].lon) })
+
+        } catch (e: any) {
+          if (e.response) {
+            console.warn("Error getting lat lng for postal code: ", e.response.data)
+          }
+          toast.warn("Failed to get location from postal code")
+          console.warn("Failed to get lat lng for postal code, using default location")
+          setMapCenter(fallbackLocation)
+        }
+
+        // Default location
+      } else {
+        console.log("Getting location from default location")
+        setMapCenter(fallbackLocation)
+        // getAddress(tempMapCenter.lat, tempMapCenter.lng)
+      }
+    }
+
+    getLocation()
+    console.log("Triggered")
+  }, [])
+
+  useEffect(() => {
+
+    if (mapCenter !== undefined && mapCenter.lat !== undefined) {
+      console.log("Is this the location? ", mapCenter)
+      setMarkerPosition(mapCenter)
+      setLoadMap(true)
+    }
+  }, [mapCenter])
+
+  useEffect(() => {
+    console.log("marker location: ", markerPosition)
+    loadMap && getAddress(markerPosition.lat, markerPosition.lng)
+  }, [markerPosition])
+
+
+  // Get report types
 
   useEffect(() => {
     const getCategories = async () => {
@@ -48,10 +117,8 @@ export const Report = (props: any) => {
 
   }, [])
 
-  useEffect(() => {
-    getAddress(markerPosition.lat, markerPosition.lng)
-  }, [markerPosition])
 
+  // Handle form submit
   const handleSubmit = async (e: any) => { // Report form submit (and upload images)
     e.preventDefault();
 
@@ -72,7 +139,7 @@ export const Report = (props: any) => {
       report_description: reportDescription,
       report_latitude: markerPosition.lat,
       report_longitude: markerPosition.lng,
-      report_serverity: severity
+      report_severity: severity
     }
 
 
@@ -127,7 +194,6 @@ export const Report = (props: any) => {
     }
   }
 
-  const { isLoaded } = useLoadScript({ googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY })
   return (
     <>
       {/* Background image */}
@@ -139,21 +205,19 @@ export const Report = (props: any) => {
           <Navbar />
 
           <section className="min-h-full flex-grow">
-            <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-1 lg:space-x-6 space-y-6 lg:space-y-0 w-full h-full justify-center items-center mt-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-1 lg:space-x-6 space-y-6 lg:space-y-0 w-full h-full justify-center items-center lg:mt-12">
               <div className="col-span-1 row-span-1 bg-[#f8f8f8] dark:bg-[#1d2029]">
                 {
-                  !isLoaded ? (
+                  loadMap ? (
+                    <>
+                      <ReportMap mapCenter={mapCenter} markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
+                    </>
+                  ) : (
                     <div className="flex flex-col justify-center items-center">
-                      <div className="bg-slate-50 shadow-lg w-full h-[87vh] lg:h-[65vh] rounded-xl p-12 justify-center items-center">
-                        <h1 className="font-bold text-5xl text-center">Loading</h1>
+                      <div className="bg-slate-50 shadow-lg w-full h-[87vh] lg:h-[65vh] rounded-b-xl lg:rounded-xl p-12 justify-center items-center">
+                        <h1 className="font-bold text-5xl text-center">Quering API</h1>
                       </div>
                     </div>
-                  ) : (
-                    <>
-                      <GoogleMap zoom={12} center={map_center} mapContainerClassName="w-full h-[87vh] lg:h-[65vh] rounded-xl shadow-lg" options={{ streetViewControl: false, mapTypeControl: false, fullscreenControl: false, minZoom: 8, maxZoom: 20 }} mapTypeId="">
-                        <MarkerF position={markerPosition} options={{ draggable: true }} onDragEnd={(marker) => setMarkerPosition({ lat: marker.latLng?.lat() ?? 51.898944022703, lng: marker.latLng?.lng() ?? -2.0743560791015625 })} icon={{ url: '/assets/images/orange_pointer_maps.png', scaledSize: new window.google.maps.Size(22, 34) }} />
-                      </GoogleMap>
-                    </>
                   )
                 }
               </div>
@@ -163,15 +227,15 @@ export const Report = (props: any) => {
                   <div className="flex justify-center items-center w-full h-full">
                     <div className="bg-slate-50 shadow-lg rounded-lg px-12 py-6 w-full h-full">
                       <h1 className="font-bold text-2xl text-left">Report</h1>
-                      <hr className="border-black" />
+                      <hr className="border-slate-300" />
                       <form onSubmit={handleSubmit} className="">
 
                         <div className="flex-auto mb-auto">
 
                           {/* Location */}
                           <p className="truncate overflow-hidden ...">Location: {formatAddress()}</p>
-                          <p className="">Latitude: {markerPosition.lat.toFixed(6)}</p>
-                          <p className="">Longitude: {markerPosition.lng.toFixed(6)}</p>
+                          <p className="">Latitude: {markerPosition.lat}</p>
+                          <p className="">Longitude: {markerPosition.lng}</p>
 
                           <div className="mt-6 space-y-4">
                             {/* Report Category - Dropdown box */}
@@ -283,6 +347,10 @@ export const Report = (props: any) => {
       .catch((error) => {
         console.warn("getAddress error: ", error)
       })
+  }
+
+  async function getGeoLocation(address: string) {
+    return axios.get(`https://geocode.maps.co/search?q=${address}`)
   }
 
   function formatAddress() {

@@ -4,6 +4,7 @@ import { Navbar } from "../components/Navbar";
 import { FaCompass } from "react-icons/fa";
 import { Footer } from "../components/Footer";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const Home = (props: any) => {
 
@@ -25,9 +26,23 @@ export const Home = (props: any) => {
 
   function searchPostalCode(e: any) {
     e.preventDefault()
-    console.log(postalCode) 
-    // navigate("/report")
-    
+    console.log(postalCode)
+
+    const postcodeRegex = /^(([A-Z]{1,2}\d[A-Z\d]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|PCRN|TKCA) ?\d[A-Z]{2}|BFPO ?\d{1,4}|(KY\d|MSR|VG|AI)[ -]?\d{4}|[A-Z]{2} ?\d{2}|GE ?CX|GIR ?0A{2}|SAN ?TA1)$/    // UK postcode regex
+
+    if (postalCode !== '') {
+      if (postcodeRegex.test(postalCode)) {
+        navigate("/report", {state: {postalCode: postalCode.replace(/^([A-Z]{1,2}\d[A-Z\d]?|[A-Z]{1,2}) ?(\d[A-Z]{2})$/, '$1 $2')}})
+      } else {
+        toast.warn("Invalid postcode")
+        console.log('Invalid postcode')
+      }
+    }
+  }
+
+  function useLocation(e: any) {
+    e.preventDefault()
+    navigate("/report", {state: {useMyLocation: true}})
   }
 
 
@@ -55,14 +70,14 @@ export const Home = (props: any) => {
               <div className="flex flex-row justify-center items-center mt-4">
                 <div className="flex flex-row justify-center items-center bg-white rounded-lg shadow-lg">
                   <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} type="text" placeholder="Enter your postcode" className="p-4 rounded-l-lg w-[300px] focus:outline-none" />
-                  <button className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold" onClick={() => searchPostalCode}>Search</button>
+                  <button className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold" onClick={searchPostalCode}>Search</button>
                 </div>
               </div>
 
               {/* Use current location button */}
               <div className="flex flex-row justify-center items-center mt-4">
                 
-                <div onClick={() => navigate("/report")} className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-lg p-4 text-white text-sm font-bold flex flex-row cursor-pointer">
+                <div onClick={useLocation} className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-lg p-4 text-white text-sm font-bold flex flex-row cursor-pointer">
                   <FaCompass className="m-auto mr-2"/>
                   <p>Use my current location</p>
                 </div>

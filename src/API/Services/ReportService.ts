@@ -2,7 +2,7 @@ import axios from "../axios";
 
 export const ReportService = () => {
 
-  const createUserReportRequest = (data: {report_type_id: number, report_description: string, report_latitude: number, report_longitude: number, report_serverity: number}) => {
+  const createUserReportRequest = (data: {report_type_id: number, report_description: string, report_latitude: number, report_longitude: number, report_severity: number}) => {
     return axios.post('/reports/report', data);
   }
 

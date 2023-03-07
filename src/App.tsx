@@ -29,7 +29,7 @@ function App() {
         <Route path='/template' element={<Template />} />
 
         <Route path='/report' element={<Report />} />
-        <Route path='/HelpPage' element={<HelpPage />} />
+        <Route path='/help' element={<HelpPage />} />
         <Route element={<RequireAuth allowedRoles={["User", "Employee", "Manager", "Administrator"]} />}>
 
           {/* Protected Routes */}

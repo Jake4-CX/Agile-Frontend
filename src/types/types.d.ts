@@ -50,12 +50,14 @@ interface Report {
   id: number;
   report_uuid: string;
   report_type: ReportType;
+  report_severity: number;
   report_description: string;
   report_date: Date;
   report_status: boolean;
   report_latitude: number;
   report_longitude: number;
   image_group: ImageGroup;
+  user: Users;
 }
 
 interface ReportType {

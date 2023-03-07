@@ -35,7 +35,7 @@ function App() {
           {/* Protected Routes */}
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/reports' element={<Reports />} />
-          <Route path='/reports/:report_id' element={<ViewReport />} />
+          <Route path='/reports/:report_uuid' element={<ViewReport />} />
         </Route>
 
         <Route path='/unauthorized' element={<PageNotFound />} />

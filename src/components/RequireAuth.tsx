@@ -8,10 +8,9 @@ export const RequireAuth = (props: any) => {
   const location = useLocation()
 
   const allowedRoles = props.allowedRoles as String[]
-  console.log(allowedRoles)
 
   return (
-    user !== null ? (
+    user !== null && user.account_role ? (
       allowedRoles.includes(user.account_role.role_name) ? (
         <Outlet />
       ) : (

@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
-import axios from '../../API/axios'
 import { useNavigate } from 'react-router-dom'
 import { UseAuth } from '../../API/Services/UseAuth'
 import { toast } from 'react-toastify'

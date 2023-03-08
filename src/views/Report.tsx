@@ -156,7 +156,7 @@ export const Report = (props: any) => {
           const image_group_id: number = response.data.image_group.id;
 
           const uploadFiles = files as File[];
-          Array.from(uploadFiles).map((file: File) => {
+          Array.from(uploadFiles).map(async (file: File) => {
             console.log("FileName: ", file.name)
 
             if (!([["image/jpeg", "image/png", "image/gif"].includes(file.type)])) {
@@ -171,8 +171,12 @@ export const Report = (props: any) => {
               formData.append("image", file)
 
               try {
-                uploadImageRequest(formData, image_group_id)
-                console.log("Image uploaded successfully!")
+                const resp = await uploadImageRequest(formData, image_group_id)
+                if (resp.status === 200) {
+                  console.log("Image uploaded successfully!")
+                } else {
+                  console.log("Image upload failed - ", resp.data.message)
+                }
               } catch (e: any) {
                 console.warn("Error uploading image: ", e.message)
               }

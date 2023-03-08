@@ -27,9 +27,15 @@ export const Register = (props: any) => {
     }
 
     try {
-      const resp = await registerRequest(email, password, firstName, lastName)
-      toast.success("You have registered successfully!");
-      navigate('/login');
+      const resp = await registerRequest(email, password, firstName, lastName) as any
+      if (resp.status === 200) {
+        toast.success("You have registered successfully!");
+        navigate('/login');
+      } else {
+        console.log(resp)
+        toast.error(resp.response.data.message);
+      }
+
     } catch (err: any) {
       console.log(err)
       err.response === undefined ? toast.error("Unable to query API") :

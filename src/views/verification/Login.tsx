@@ -4,6 +4,7 @@ import { UseAuth } from '../../API/Services/UseAuth'
 import { toast } from 'react-toastify'
 import { Navbar } from '../../components/Navbar'
 import { Footer } from '../../components/Footer'
+import axios from '../../API/axios'
 
 
 export const Login = (props: any) => {
@@ -21,18 +22,23 @@ export const Login = (props: any) => {
     console.log(email, password)
 
     try {
-      const resp = await loginRequest(email, password)
-      localStorage.setItem('accessToken', resp.data.tokens.accessToken);
-      localStorage.setItem('refreshToken', resp.data.tokens.refreshToken);
-      delete resp.data.tokens;
-      localStorage.setItem('user', JSON.stringify(resp.data));
-      toast.success("You have logged in successfully!");
-      navigate('/');
+      const resp = await loginRequest(email, password) as any
+
+      if (resp.status === 200) {
+        localStorage.setItem('accessToken', resp.data.tokens.accessToken);
+        localStorage.setItem('refreshToken', resp.data.tokens.refreshToken);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`
+        delete resp.data.tokens;
+        localStorage.setItem('user', JSON.stringify(resp.data));
+        toast.success("You have logged in successfully!");
+        navigate('/');
+      } else {
+        toast.error(resp.response.data.message);
+      }
 
     } catch (err: any) {
-      console.log(err)
-      err.response === undefined ? toast.error("Failed to query API") :
-        (err.response.status === 401 ? toast.error(err.response.data.message) : toast.error("Something went wrong!"));
+      console.log("Something went wrong?")
+      toast.error("Failed to query API")
     }
 
   }

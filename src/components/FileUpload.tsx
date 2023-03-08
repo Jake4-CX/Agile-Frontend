@@ -78,7 +78,7 @@ export const FileUpload = ({ files, setFiles }: any) => {
   function uploadPhotos() {
     return (
       <>
-        <div className="flex flex-wrap mt-6 mb-12 justify-center"
+        <div className="flex flex-wrap mt-6 mb-6 justify-center"
           onClick={() => uploadFileRef.current?.click()}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
@@ -102,11 +102,11 @@ export const FileUpload = ({ files, setFiles }: any) => {
   function previewPhotos() {
     return (
       <>
-        <div className="flex flex-wrap mt-6 mb-12 justify-center">
+        <div className="flex flex-wrap mt-6 mb-2 justify-center">
           {
-            files && Array.from(files).map((file: any) => (
+            files && Array.from(files).map((file: any, index: number) => (
               <>
-                <div className={`w-full max-w-full p-3 md:w-1/2 ${files.length > 2 ? 'xl:w-1/3' : (files.length == 2 ? 'xl:w-1/2' : 'xl:w-full')}`}>
+                <div key={index} className={`w-full max-w-full p-3 md:w-1/2 ${files.length > 2 ? 'xl:w-1/3' : (files.length == 2 ? 'xl:w-1/2' : 'xl:w-full')}`}>
                   <div className="bg-white rounded-lg shadow-lg m-w-sm hover:shadow-2xl transition duration-300 relative">
                     <div className="rounded-t-lg w-full bg-cover bg-no-repeat bg-center object-fill h-48" style={{ backgroundImage: 'url(' + URL.createObjectURL(file) + ')' }} />
                     <ImCross className="z-10 absolute top-3 right-3 text-xl text-gray-50 hover:text-red-500 transition duration-300 cursor-pointer" onClick={() => removeFile(file)} />

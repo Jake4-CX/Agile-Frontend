@@ -76,20 +76,17 @@ export const Report = (props: any) => {
     }
 
     getLocation()
-    console.log("Triggered")
   }, [])
 
   useEffect(() => {
 
     if (mapCenter !== undefined && mapCenter.lat !== undefined) {
-      console.log("Is this the location? ", mapCenter)
       setMarkerPosition(mapCenter)
       setLoadMap(true)
     }
   }, [mapCenter])
 
   useEffect(() => {
-    console.log("marker location: ", markerPosition)
     loadMap && getAddress(markerPosition.lat, markerPosition.lng)
   }, [markerPosition])
 

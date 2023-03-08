@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 export const Home = (props: any) => {
 
   const [postalCode, setPostalCode] = useState('')
+  const postcodeRegex = /^(([A-Z]{1,2}\d[A-Z\d]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|PCRN|TKCA) ?\d[A-Z]{2}|BFPO ?\d{1,4}|(KY\d|MSR|VG|AI)[ -]?\d{4}|[A-Z]{2} ?\d{2}|GE ?CX|GIR ?0A{2}|SAN ?TA1)$/    // UK postcode regex
 
   const navigate = useNavigate();
 
@@ -27,8 +28,6 @@ export const Home = (props: any) => {
   function searchPostalCode(e: any) {
     e.preventDefault()
     console.log(postalCode)
-
-    const postcodeRegex = /^(([A-Z]{1,2}\d[A-Z\d]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|PCRN|TKCA) ?\d[A-Z]{2}|BFPO ?\d{1,4}|(KY\d|MSR|VG|AI)[ -]?\d{4}|[A-Z]{2} ?\d{2}|GE ?CX|GIR ?0A{2}|SAN ?TA1)$/    // UK postcode regex
 
     if (postalCode !== '') {
       if (postcodeRegex.test(postalCode)) {
@@ -69,7 +68,7 @@ export const Home = (props: any) => {
               {/* Search bar */}
               <div className="flex flex-row justify-center items-center mt-4">
                 <div className="flex flex-row justify-center items-center bg-white rounded-lg shadow-lg">
-                  <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} type="text" placeholder="Enter your postcode" className="p-4 rounded-l-lg w-[300px] focus:outline-none" />
+                  <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} type="text" placeholder="Enter your postcode" className={`p-4 rounded-l-lg w-[300px] focus:outline-none duration-500 ${postalCode != '' && (!postcodeRegex.test(postalCode) ? 'bg-red-50' : 'bg-green-50')}`} />
                   <button className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold" onClick={searchPostalCode}>Search</button>
                 </div>
               </div>
@@ -94,7 +93,7 @@ export const Home = (props: any) => {
                   <div className="flex flex-col px-12 py-8">
                   {
                   steps.map((step, index) => (
-                    <div className="flex flex-row">
+                    <div key={index} className="flex flex-row">
                       <h2 className="font-bold text-3xl">{index + 1}</h2>
                       <div className="flex flex-col ml-4">
                         <p className="text-lg my-auto">{step.title}</p>
@@ -110,7 +109,7 @@ export const Home = (props: any) => {
                     <h1 className="text-2xl font-bold text-black">Recently reported problems</h1>
                     {
                       recentReports.map((report, index) => (
-                        <div className="flex flex-row my-2 hover:bg-slate-200 duration-150 cursor-pointer">
+                        <div key={index} className="flex flex-row my-2 hover:bg-slate-200 duration-150 cursor-pointer">
                           <div className="flex flex-col">
                             <h3 className="text-lg font-semibold">{report.title}</h3>
                             <a className="text-sm">{report.description}</a>

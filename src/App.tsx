@@ -15,7 +15,15 @@ import { Reports } from './views/Reports'
 import { ViewReport } from './views/ViewReport'
 import { RequireAuth } from './components/RequireAuth'
 import { HelpPage } from './views/HelpPage'
+import { PerRole } from './components/PerRole'
 function App() {
+
+  const dashboardRoleRoutes = [
+    { role: "User", element: <Dashboard /> },
+    { role: "Employee", element: <Dashboard /> },
+    { role: "Manager", element: <Dashboard /> },
+    { role: "Administrator", element: <HelpPage /> },
+  ] as { role: String, element: JSX.Element }[]
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -33,7 +41,10 @@ function App() {
         <Route element={<RequireAuth allowedRoles={["User", "Employee", "Manager", "Administrator"]} />}>
 
           {/* Protected Routes */}
-          <Route path='/dashboard' element={<Dashboard />} />
+
+          {/* Dashboard switcher */}
+          <Route path='/dashboard' element={<PerRole roleElements={dashboardRoleRoutes}/>} />
+
           <Route path='/reports' element={<Reports />} />
           <Route path='/reports/:report_uuid' element={<ViewReport />} />
         </Route>

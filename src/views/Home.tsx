@@ -68,7 +68,7 @@ export const Home = (props: any) => {
               {/* Search bar */}
               <div className="flex flex-row justify-center items-center mt-4">
                 <div className="flex flex-row justify-center items-center bg-white rounded-lg shadow-lg">
-                  <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} type="text" placeholder="Enter your postcode" className={`p-4 rounded-l-lg w-[300px] focus:outline-none duration-500 ${postalCode != '' && (!postcodeRegex.test(postalCode) ? 'bg-red-50' : 'bg-green-50')}`} />
+                  <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} type="text" placeholder="Enter your postcode" className={`p-4 rounded-l-lg w-[300px] focus:outline-none duration-500 ${postalCode != '' && (!postcodeRegex.test(postalCode.toUpperCase()) ? 'bg-red-50' : 'bg-green-50')}`} />
                   <button className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold" onClick={searchPostalCode}>Search</button>
                 </div>
               </div>

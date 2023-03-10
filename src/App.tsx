@@ -16,6 +16,7 @@ import { ViewReport } from './views/ViewReport'
 import { RequireAuth } from './components/RequireAuth'
 import { HelpPage } from './views/HelpPage'
 import { PerRole } from './components/PerRole'
+import { AdminDashboard } from './views/AdminDashboard'
 function App() {
 
   const dashboardRoleRoutes = [

@@ -12,7 +12,7 @@ import moment from "moment";
 export const Home = (props: any) => {
 
   const [reports, setReports] = useState<Report[]>([])
-  const [reportImages, setReportImages] = useState<{[key: number]: Image[]}>({})
+  const [reportImages, setReportImages] = useState<{ [key: number]: Image[] }>({})
   const [postalCode, setPostalCode] = useState('')
   const postcodeRegex = /^(([A-Z]{1,2}\d[A-Z\d]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|PCRN|TKCA) ?\d[A-Z]{2}|BFPO ?\d{1,4}|(KY\d|MSR|VG|AI)[ -]?\d{4}|[A-Z]{2} ?\d{2}|GE ?CX|GIR ?0A{2}|SAN ?TA1)$/    // UK postcode regex
 
@@ -23,10 +23,10 @@ export const Home = (props: any) => {
   const baseUrl: string = import.meta.env.VITE_API_URL as string
 
   const steps = [
-    {"title": "Enter a nearby UK postcode, or street name and area", "description": "some description if needed"},
-    {"title": "Locate the problem on a map of the area", "description": "some description if needed"},
-    {"title": "Describe the problem and submit", "description": "some description if needed"},
-    {"title": "We'll confirm the report and Gloucestershire Council will investigate", "description": "some description if needed"}
+    { "title": "Enter a nearby UK postcode, or street name and area", "description": "some description if needed" },
+    { "title": "Locate the problem on a map of the area", "description": "some description if needed" },
+    { "title": "Describe the problem and submit", "description": "some description if needed" },
+    { "title": "We'll confirm the report and Gloucestershire Council will investigate", "description": "some description if needed" }
   ]
 
   function searchPostalCode(e: any) {
@@ -35,7 +35,7 @@ export const Home = (props: any) => {
 
     if (postalCode !== '') {
       if (postcodeRegex.test(postalCode.toUpperCase())) {
-        navigate("/report", {state: {postalCode: postalCode.toUpperCase().replace(/^([A-Z]{1,2}\d[A-Z\d]?|[A-Z]{1,2}) ?(\d[A-Z]{2})$/, '$1 $2')}})
+        navigate("/report", { state: { postalCode: postalCode.toUpperCase().replace(/^([A-Z]{1,2}\d[A-Z\d]?|[A-Z]{1,2}) ?(\d[A-Z]{2})$/, '$1 $2') } })
       } else {
         toast.warn("Invalid postcode")
         console.log('Invalid postcode')
@@ -45,7 +45,7 @@ export const Home = (props: any) => {
 
   function useLocation(e: any) {
     e.preventDefault()
-    navigate("/report", {state: {useMyLocation: true}})
+    navigate("/report", { state: { useMyLocation: true } })
   }
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export const Home = (props: any) => {
         return getImages(report.image_group.id);
       });
       const results = await Promise.all(imagePromises);
-      const imageDict: {[key: number]: Image[]} = {};
+      const imageDict: { [key: number]: Image[] } = {};
       reports.forEach((report: Report, index: number) => {
         imageDict[report.image_group.id] = results[index].data;
       });
@@ -118,58 +118,63 @@ export const Home = (props: any) => {
 
               {/* Use current location button */}
               <div className="flex flex-row justify-center items-center mt-4">
-                
+
                 <div onClick={useLocation} className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-lg p-4 text-white text-sm font-bold flex flex-row cursor-pointer">
-                  <FaCompass className="m-auto mr-2"/>
+                  <FaCompass className="m-auto mr-2" />
                   <p>Use my current location</p>
                 </div>
               </div>
             </div>
 
             {/* About */}
-            <div className="flex flex-col py-16 px-8 lg:px-16 min-h-[540px] flex-grow bg-[#f8f8f8]">
-                <h1 className="text-5xl font-bold text-black">How to report a problem</h1>
-                <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
+            <div className="flex flex-col py-16 px-6 lg:px-8 min-h-[540px] flex-grow bg-[#f8f8f8]">
+              <h1 className="text-5xl font-bold text-black">How to report a problem</h1>
+              <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
 
-                <div className="grid lg:grid-cols-2">
-                  {/* Steps */}
-                  <div className="flex flex-col px-12 py-8">
+              <div className="grid lg:grid-cols-2">
+                {/* Steps */}
+                <div className="flex flex-col px-8 py-8">
                   {
-                  steps.map((step, index) => (
-                    <div key={index} className="flex flex-row">
-                      <h2 className="font-bold text-3xl">{index + 1}</h2>
-                      <div className="flex flex-col ml-4">
-                        <p className="text-lg my-auto">{step.title}</p>
-                        <p className="text-sm">{step.description}</p>
+                    steps.map((step, index) => (
+                      <div key={index} className="flex flex-row">
+                        <h2 className="font-bold text-3xl">{index + 1}</h2>
+                        <div className="flex flex-col ml-4">
+                          <p className="text-lg my-auto">{step.title}</p>
+                          <p className="text-sm">{step.description}</p>
+                        </div>
                       </div>
-                    </div>
                     ))
-                    }
-                  </div>
+                  }
+                </div>
 
-                  {/* Recently reported problems table */}
-                  <div className="flex flex-col px-12 py-8">
-                    <h1 className="text-2xl font-bold text-black">Recently reported problems</h1>
-                    {
-                      reports.slice(0, 6).map((report, index) => (
-                        <div key={index} className="flex flex-row my-2 hover:bg-slate-200 duration-150 cursor-pointer" onClick={() => navigate("reports/" + report.report_uuid)}>
-                          <div className="flex flex-col">
-                            <h3 className="text-lg font-semibold">{report.report_type.report_type_name}</h3>
-                            <p className="text-sm"><span className="font-semibold">Date:</span> { moment(report.report_date).calendar() }</p>
-                            <a className="text-sm truncate overflow-hidden ...">{report.report_description}</a>
-                          </div>
+                {/* Recently reported problems table */}
+                <div className="flex flex-col px-8 py-8">
+                  <h1 className="text-2xl font-bold text-black">Recently reported problems</h1>
+
+                  {
+                    reports.slice(0, 3).map((report, index) => (
+                      <div key={index} className="grid grid-cols-1 grid-rows-3 sm:grid-cols-3 sm:grid-rows-1 my-2 hover:bg-slate-200 duration-150 cursor-pointer p-2 rounded-lg" onClick={() => navigate("reports/" + report.report_uuid)}>
+                        <div className="flex flex-col col-span-2">
+                          <h3 className="text-lg font-semibold">{report.report_type.report_type_name}</h3>
+                          <p className="text-sm"><span className="font-semibold">Date:</span> {moment(report.report_date).calendar()}</p>
+                          <a className="text-sm truncate overflow-hidden ...">{report.report_description}</a>
+                        </div>
+                        <div className="flex col-span-1 row-span-2 sm:row-span-1">
                           {
                             reportImages[report.image_group.id] && reportImages[report.image_group.id].length > 0 ? (
-                              <img src={ baseUrl + "images/" + reportImages[report.image_group.id][0].image_uuid + "." + reportImages[report.image_group.id][0].image_file_type } alt="report" className="w-24 h-16 mr-0 m-auto" />
+                              // <img src={ baseUrl + "images/" + reportImages[report.image_group.id][0].image_uuid + "." + reportImages[report.image_group.id][0].image_file_type } alt="report" className="w-full h-full sm:w-24 sm:h-16 mr-0 m-auto cols-span-1" />
+                              <div className="w-full h-full mr-0 m-auto bg-cover bg-center bg-no-repeat rounded-sm" style={{ backgroundImage: `url('${baseUrl + "images/" + reportImages[report.image_group.id][0].image_uuid + "." + reportImages[report.image_group.id][0].image_file_type}')` }}></div>
                             ) : (
                               <div className="w-24 h-16 mr-0 m-auto"></div>
                             )
                           }
+                        </div>
                       </div>
-                      ))
-                    }
-                  </div>
+                    ))
+                  }
+
                 </div>
+              </div>
             </div>
 
             {/* Statistics */}
@@ -198,7 +203,7 @@ export const Home = (props: any) => {
             </div>
           </section>
         </div>
-        
+
         {/* Footer */}
         <Footer />
       </div>

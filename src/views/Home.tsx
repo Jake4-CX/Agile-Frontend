@@ -3,15 +3,24 @@ import { Navbar } from "../components/Navbar";
 
 import { FaCompass } from "react-icons/fa";
 import { Footer } from "../components/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { ReportService } from "../API/Services/ReportService";
+import { ImageService } from "../API/Services/ImageService";
+import moment from "moment";
 
 export const Home = (props: any) => {
 
+  const [reports, setReports] = useState<Report[]>([])
+  const [reportImages, setReportImages] = useState<{[key: number]: Image[]}>({})
   const [postalCode, setPostalCode] = useState('')
   const postcodeRegex = /^(([A-Z]{1,2}\d[A-Z\d]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|PCRN|TKCA) ?\d[A-Z]{2}|BFPO ?\d{1,4}|(KY\d|MSR|VG|AI)[ -]?\d{4}|[A-Z]{2} ?\d{2}|GE ?CX|GIR ?0A{2}|SAN ?TA1)$/    // UK postcode regex
 
   const navigate = useNavigate();
+  const { getAllReportsRequest } = ReportService()
+  const { getImagesByImageGroupRequest } = ImageService()
+
+  const baseUrl: string = import.meta.env.VITE_API_URL as string
 
   const steps = [
     {"title": "Enter a nearby UK postcode, or street name and area", "description": "some description if needed"},
@@ -20,18 +29,13 @@ export const Home = (props: any) => {
     {"title": "We'll confirm the report and Gloucestershire Council will investigate", "description": "some description if needed"}
   ]
 
-  const recentReports = [
-    {"title": "Pothole on the road", "description": "some description if needed", "image": "/assets/images/example_problem_small.jpeg"},
-    {"title": "Pothole on the road", "description": "some description if needed", "image": "/assets/images/example_problem_small.jpeg"}
-  ]
-
   function searchPostalCode(e: any) {
     e.preventDefault()
     console.log(postalCode)
 
     if (postalCode !== '') {
-      if (postcodeRegex.test(postalCode)) {
-        navigate("/report", {state: {postalCode: postalCode.replace(/^([A-Z]{1,2}\d[A-Z\d]?|[A-Z]{1,2}) ?(\d[A-Z]{2})$/, '$1 $2')}})
+      if (postcodeRegex.test(postalCode.toUpperCase())) {
+        navigate("/report", {state: {postalCode: postalCode.toUpperCase().replace(/^([A-Z]{1,2}\d[A-Z\d]?|[A-Z]{1,2}) ?(\d[A-Z]{2})$/, '$1 $2')}})
       } else {
         toast.warn("Invalid postcode")
         console.log('Invalid postcode')
@@ -43,6 +47,43 @@ export const Home = (props: any) => {
     e.preventDefault()
     navigate("/report", {state: {useMyLocation: true}})
   }
+
+  useEffect(() => {
+    const getAllReports = async () => {
+      try {
+        const response = await getAllReportsRequest()
+
+        if (response.status === 200) {
+          setReports(response.data as Report[])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getAllReports()
+  }, [])
+
+  useEffect(() => {
+    const getImages = async (group_id: number) => {
+      return await getImagesByImageGroupRequest(group_id)
+    }
+
+    async function fetchImages() {
+      const imagePromises = reports.map((report: Report) => {
+        return getImages(report.image_group.id);
+      });
+      const results = await Promise.all(imagePromises);
+      const imageDict: {[key: number]: Image[]} = {};
+      reports.forEach((report: Report, index: number) => {
+        imageDict[report.image_group.id] = results[index].data;
+      });
+      setReportImages(imageDict);
+    }
+
+    fetchImages()
+
+  }, [reports])
 
 
   return (
@@ -68,8 +109,10 @@ export const Home = (props: any) => {
               {/* Search bar */}
               <div className="flex flex-row justify-center items-center mt-4">
                 <div className="flex flex-row justify-center items-center bg-white rounded-lg shadow-lg">
-                  <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} type="text" placeholder="Enter your postcode" className={`p-4 rounded-l-lg w-[300px] focus:outline-none duration-500 ${postalCode != '' && (!postcodeRegex.test(postalCode.toUpperCase()) ? 'bg-red-50' : 'bg-green-50')}`} />
-                  <button className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold" onClick={searchPostalCode}>Search</button>
+                  <form onSubmit={searchPostalCode}>
+                    <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} type="text" placeholder="Enter your postcode" className={`p-4 rounded-l-lg w-[300px] focus:outline-none duration-500 ${postalCode != '' && (!postcodeRegex.test(postalCode.toUpperCase()) ? 'bg-red-50' : 'bg-green-50')}`} />
+                    <button type='submit' className="bg-[#2b84f0] hover:bg-[#2e7ee0] duration-150 rounded-r-lg p-4 text-white font-bold">Search</button>
+                  </form>
                 </div>
               </div>
 
@@ -108,13 +151,20 @@ export const Home = (props: any) => {
                   <div className="flex flex-col px-12 py-8">
                     <h1 className="text-2xl font-bold text-black">Recently reported problems</h1>
                     {
-                      recentReports.map((report, index) => (
-                        <div key={index} className="flex flex-row my-2 hover:bg-slate-200 duration-150 cursor-pointer">
+                      reports.slice(0, 6).map((report, index) => (
+                        <div key={index} className="flex flex-row my-2 hover:bg-slate-200 duration-150 cursor-pointer" onClick={() => navigate("reports/" + report.report_uuid)}>
                           <div className="flex flex-col">
-                            <h3 className="text-lg font-semibold">{report.title}</h3>
-                            <a className="text-sm">{report.description}</a>
+                            <h3 className="text-lg font-semibold">{report.report_type.report_type_name}</h3>
+                            <p className="text-sm"><span className="font-semibold">Date:</span> { moment(report.report_date).calendar() }</p>
+                            <a className="text-sm truncate overflow-hidden ...">{report.report_description}</a>
                           </div>
-                          <img src={report.image} alt="report" className="w-24 h-16 mr-0 m-auto" />
+                          {
+                            reportImages[report.image_group.id] && reportImages[report.image_group.id].length > 0 ? (
+                              <img src={ baseUrl + "images/" + reportImages[report.image_group.id][0].image_uuid + "." + reportImages[report.image_group.id][0].image_file_type } alt="report" className="w-24 h-16 mr-0 m-auto" />
+                            ) : (
+                              <div className="w-24 h-16 mr-0 m-auto"></div>
+                            )
+                          }
                       </div>
                       ))
                     }

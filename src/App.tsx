@@ -22,7 +22,7 @@ function App() {
     { role: "User", element: <Dashboard /> },
     { role: "Employee", element: <Dashboard /> },
     { role: "Manager", element: <Dashboard /> },
-    { role: "Administrator", element: <HelpPage /> },
+    { role: "Administrator", element: <Dashboard /> },
   ] as { role: String, element: JSX.Element }[]
 
   const router = createBrowserRouter(
@@ -38,15 +38,15 @@ function App() {
 
         <Route path='/report' element={<Report />} />
         <Route path='/help' element={<HelpPage />} />
+
+        <Route path='/reports' element={<Reports />} />
+        <Route path='/reports/:report_uuid' element={<ViewReport />} />
         <Route element={<RequireAuth allowedRoles={["User", "Employee", "Manager", "Administrator"]} />}>
 
           {/* Protected Routes */}
 
           {/* Dashboard switcher */}
           <Route path='/dashboard' element={<PerRole roleElements={dashboardRoleRoutes}/>} />
-
-          <Route path='/reports' element={<Reports />} />
-          <Route path='/reports/:report_uuid' element={<ViewReport />} />
         </Route>
 
         <Route path='/unauthorized' element={<PageNotFound />} />

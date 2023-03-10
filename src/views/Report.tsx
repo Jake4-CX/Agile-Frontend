@@ -13,10 +13,12 @@ import { ImCross } from "react-icons/im";
 import { ReportService } from "../API/Services/ReportService";
 import { ImageService } from "../API/Services/ImageService";
 import { ReportMap } from "../components/ReportMap";
+import { UseAuth } from "../API/Services/UseAuth";
 
 export const Report = (props: any) => {
 
   const location = useLocation();
+  const user = UseAuth().getCurrentUser();
 
   const [mapCenter, setMapCenter] = useState({} as { lat: number, lng: number })
   var [markerPosition, setMarkerPosition] = useState({} as { lat: number, lng: number })
@@ -118,6 +120,11 @@ export const Report = (props: any) => {
   // Handle form submit
   const handleSubmit = async (e: any) => { // Report form submit (and upload images)
     e.preventDefault();
+
+    if (!user) {
+      toast.warn("Please log in to submit a report")
+      return
+    }
 
     if (selectedCategory.id === 0) {
       toast.warn("Please select a report category")

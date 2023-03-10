@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { Navbar } from '../../components/Navbar'
 import { Footer } from '../../components/Footer'
 import axios from '../../API/axios'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 
 export const Login = (props: any) => {
@@ -13,6 +14,8 @@ export const Login = (props: any) => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [recaptchaToken, setRecaptchaToken] = useState('')
+  const recaptchaRef = React.createRef<ReCAPTCHA>()
 
   const { loginRequest } = UseAuth()
 
@@ -21,8 +24,16 @@ export const Login = (props: any) => {
     e.preventDefault();
     console.log(email, password)
 
+    if (recaptchaToken === '') {
+      toast.error("Please verify that you are not a robot")
+      return
+    }
+
     try {
-      const resp = await loginRequest(email, password) as any
+      const resp = await loginRequest(email, password, recaptchaToken) as any
+
+      recaptchaRef.current?.reset()
+      setRecaptchaToken('')
 
       if (resp.status === 200) {
         localStorage.setItem('accessToken', resp.data.tokens.accessToken);
@@ -90,10 +101,21 @@ export const Login = (props: any) => {
                         </div>
 
                         <button className='w-full block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200' type='submit'>Login</button>
+
+                        {/* ReCaptcha */}
+                        <div className='flex items-center justify-center mt-4'>
+                          <ReCAPTCHA
+                            ref={recaptchaRef}
+                            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                            onChange={(token) => token && setRecaptchaToken(token)}
+                            onExpired={() => setRecaptchaToken('')}
+                          />
+                        </div>
+
                       </form>
 
                       {/* Sign up */}
-                      <div className='max-w-lg mx-auto text-center mt-12 mb-6'>
+                      <div className='max-w-lg mx-auto text-center my-6'>
                         <p className='text-gray-700'>
                           Don't have an account?&nbsp;
                           <a className='transition duration-500 font-bold hover:underline hover:text-gray-800 cursor-pointer' onClick={() => navigate('/register')}>Sign up.</a>

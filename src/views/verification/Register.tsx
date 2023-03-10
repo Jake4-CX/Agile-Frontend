@@ -5,6 +5,7 @@ import { UseAuth } from '../../API/Services/UseAuth';
 import { toast } from 'react-toastify'
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export const Register = (props: any) => {
 
@@ -14,6 +15,9 @@ export const Register = (props: any) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
+
+  const [recaptchaToken, setRecaptchaToken] = useState('')
+  const recaptchaRef = React.createRef<ReCAPTCHA>()
 
   const { registerRequest } = UseAuth()
 
@@ -26,8 +30,17 @@ export const Register = (props: any) => {
       return;
     }
 
+    if (recaptchaToken === '') {
+      toast.error("Please verify that you are not a robot")
+      return
+    }
+
     try {
-      const resp = await registerRequest(email, password, firstName, lastName) as any
+      const resp = await registerRequest(email, password, firstName, lastName, recaptchaToken) as any
+
+      recaptchaRef.current?.reset()
+      setRecaptchaToken('')
+
       if (resp.status === 200) {
         toast.success("You have registered successfully!");
         navigate('/login');
@@ -104,7 +117,18 @@ export const Register = (props: any) => {
                           </p>
                         </div>
 
-                        <button className='w-full block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200' type='submit'>Login</button>
+                        <button className='w-full block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200' type='submit'>Register</button>
+                        
+                        {/* ReCaptcha */}
+                        <div className='flex items-center justify-center mt-4'>
+                          <ReCAPTCHA
+                            ref={recaptchaRef}
+                            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                            onChange={(token) => token && setRecaptchaToken(token)}
+                            onExpired={() => setRecaptchaToken('')}
+                          />
+                        </div>
+
                       </form>
 
                       {/* Sign up */}

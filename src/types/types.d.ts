@@ -58,6 +58,7 @@ interface Report {
   report_longitude: number;
   image_group: ImageGroup;
   user: Users;
+  report_votes?: { upvotes: number; downvotes: number; }
 }
 
 interface ReportType {

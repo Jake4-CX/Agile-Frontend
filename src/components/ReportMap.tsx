@@ -4,6 +4,8 @@ import { toast } from 'react-toastify'
 import { GoogleMap, useLoadScript, MarkerF, InfoWindow, Circle, InfoWindowF } from "@react-google-maps/api";
 import { ReportService } from "../API/Services/ReportService";
 import moment from "moment";
+import { FaThumbsDown, FaThumbsUp } from "react-icons/fa";
+import { ImageService } from "../API/Services/ImageService";
 
 export const ReportMap = (props: any) => {
 
@@ -76,28 +78,57 @@ export const ReportMap = (props: any) => {
             ))}
             {
               selectedReport && (
-                <InfoWindowF position={loc(selectedReport.report_latitude, selectedReport.report_longitude)} onCloseClick={() => setSelectedReport(null)} options={{ maxWidth: 320 }}>
+                <InfoWindowF position={loc(selectedReport.report_latitude, selectedReport.report_longitude)} onCloseClick={() => setSelectedReport(null)} options={{ maxWidth: 380 }}>
                   <>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col w-full">
                       <div id="Header">
                         <h1 className="font-bold text-xl text-center">Report</h1>
                       </div>
-                      <div id="Body">
-                        {/* Report Type */}
-                        <div className="">
-                          <span className="font-semibold">Report Type: </span>
-                          <span className="capitalize">{selectedReport.report_type.report_type_name}</span>
+                      <div id="Body" className="grid grid-cols-12">
+                        <div className="flex flex-col col-span-3">
                         </div>
+                        <div className="flex flex-col col-span-9">
+                          {/* Report Type */}
+                          <div className="">
+                            <span className="font-semibold">Report Type: </span>
+                            <span className="capitalize">{selectedReport.report_type.report_type_name}</span>
+                          </div>
 
-                        {/* Submitted at */}
-                        <div className="">
-                          <span className="font-semibold">Submitted at: </span>
-                          <span className="capitalize">{moment(selectedReport.report_date).calendar()}</span>
-                        </div>
-                        {/* Description */}
-                        <div className="">
-                          <span className="font-semibold">Description: </span>
-                          <span className="capitalize">{selectedReport.report_description}</span>
+                          {/* Submitted at */}
+                          <div className="line-clamp-1">
+                            <span className="font-semibold">Submitted at: </span>
+                            <span className="capitalize">{moment(selectedReport.report_date).calendar()}</span>
+                          </div>
+                          {/* Description */}
+                          <div className="line-clamp-5">
+                            <span className="font-semibold">Description: </span>
+                            <span className="capitalize">{selectedReport.report_description}</span>
+                          </div>
+
+                          {
+                            selectedReport.report_votes && (
+                              <>
+                                {/* Upvote / Downvote buttons with tooltip displaying the amount of votes */}
+                                <div className="flex flex-row justify-between">
+
+                                  <div className="">
+                                    <span className="font-semibold">Votes: </span>
+                                    <span className="text-sm">{(selectedReport.report_votes.upvotes - selectedReport.report_votes.downvotes)}</span>
+                                  </div>
+
+                                  <div className="flex flex-row">
+                                    <button className="flex flex-row items-center justify-center">
+                                      <FaThumbsUp className="w-4 h-4 text-slate-400 hover:text-green-500 transition duration-300" />
+                                    </button>
+                                    <button className="flex flex-row items-center justify-center ml-4">
+                                      <FaThumbsDown className="w-4 h-4 text-slate-400 hover:text-red-500 transition duration-300" />
+                                    </button>
+                                  </div>
+                                </div>
+                              </>
+                            )
+                          }
+
                         </div>
                       </div>
 

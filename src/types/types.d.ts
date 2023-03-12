@@ -58,7 +58,16 @@ interface Report {
   report_longitude: number;
   image_group: ImageGroup;
   user: Users;
+  report_images?: Image[];
   report_votes?: { upvotes: number; downvotes: number; }
+}
+
+interface ReportVote {
+  id: number;
+  report?: Report;
+  user?: Users;
+  vote_type: string;
+  vote_date: Date;
 }
 
 interface ReportType {

@@ -6,6 +6,7 @@ import { ReportService } from "../API/Services/ReportService";
 import moment from "moment";
 import { FaThumbsDown, FaThumbsUp } from "react-icons/fa";
 import { ImageService } from "../API/Services/ImageService";
+import { ReportVoteService } from "../API/Services/ReportVoteService";
 
 export const ReportMap = (props: any) => {
 
@@ -16,10 +17,14 @@ export const ReportMap = (props: any) => {
   const navigate = useNavigate()
 
   var [selectedReport, setSelectedReport] = useState<Report | null>(null)
+  var [selectedReportVotes, setSelectedReportVotes] = useState<{ votes: ReportVote[], user_voted?: boolean } | null>(null)
+  var [userLastVotedAt, setUserLastVotedAt] = useState<Date>(new Date(0))
 
   const { isLoaded } = useLoadScript({ googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY })
 
+  const { getReportVotesRequest, createReportVoteRequest, updateReportVoteRequest, deleteReportVoteRequest } = ReportVoteService()
   const { getAllReportsRequest } = ReportService()
+
   const [reports, setReports] = useState<Report[]>([])
 
   useEffect(() => {
@@ -78,14 +83,20 @@ export const ReportMap = (props: any) => {
             ))}
             {
               selectedReport && (
-                <InfoWindowF position={loc(selectedReport.report_latitude, selectedReport.report_longitude)} onCloseClick={() => setSelectedReport(null)} options={{ maxWidth: 380 }}>
+                <InfoWindowF position={loc(selectedReport.report_latitude, selectedReport.report_longitude)} onLoad={() => getReportVotes(selectedReport)} onCloseClick={() => setSelectedReport(null)} options={{ maxWidth: 380 }}>
                   <>
                     <div className="flex flex-col w-full">
                       <div id="Header">
                         <h1 className="font-bold text-xl text-center">Report</h1>
                       </div>
-                      <div id="Body" className="grid grid-cols-12">
+                      <div id="Body" className="grid grid-cols-12 gap-x-2">
                         <div className="flex flex-col col-span-3">
+                          {
+                            selectedReport.report_images && (
+                              <div className="w-full h-full bg-cover bg-center rounded" style={{backgroundImage: "url('" + import.meta.env.VITE_API_URL + "images/" + selectedReport.report_images[0].image_uuid + "." + selectedReport.report_images[0].image_file_type + "')"}} />
+                            )
+                          }
+                          
                         </div>
                         <div className="flex flex-col col-span-9">
                           {/* Report Type */}
@@ -117,10 +128,10 @@ export const ReportMap = (props: any) => {
                                   </div>
 
                                   <div className="flex flex-row">
-                                    <button className="flex flex-row items-center justify-center">
+                                    <button className="flex flex-row items-center justify-center" onClick={upvoteReport} disabled={((new Date().getTime() - userLastVotedAt.getTime()) / 1000) < 3}>
                                       <FaThumbsUp className="w-4 h-4 text-slate-400 hover:text-green-500 transition duration-300" />
                                     </button>
-                                    <button className="flex flex-row items-center justify-center ml-4">
+                                    <button className="flex flex-row items-center justify-center ml-4" onClick={downvoteReport} disabled={((new Date().getTime() - userLastVotedAt.getTime()) / 1000) < 3}>
                                       <FaThumbsDown className="w-4 h-4 text-slate-400 hover:text-red-500 transition duration-300" />
                                     </button>
                                   </div>
@@ -145,5 +156,154 @@ export const ReportMap = (props: any) => {
       </>
     )
   )
+
+  async function upvoteReport() {
+    console.log(selectedReport)
+
+    if (selectedReport) {
+      try {
+        setUserLastVotedAt(new Date())
+
+        if (selectedReportVotes?.user_voted) {
+          console.log('User already voted on this report')
+          const response = await deleteReportVoteRequest(selectedReport.report_uuid)
+
+          if (response.status === 200) {
+            console.log('Successfully removed vote from report')
+
+            selectedReport.report_votes && (
+              setSelectedReport({
+                ...selectedReport,
+                report_votes: {
+                  ...selectedReport.report_votes,
+                  upvotes: selectedReport.report_votes.upvotes - 1
+                }
+              })
+            )
+            getReportVotes(selectedReport)
+
+            toast.success('Successfully removed vote from report')
+
+          } else {
+            console.log('Failed to remove vote from report')
+            toast.error('Failed to remove vote from report')
+          }
+
+          return
+
+        } else {
+          console.log('User has not voted on this report')
+        }
+
+        const response = await createReportVoteRequest(selectedReport.report_uuid, 'upvote')
+
+        if (response.status === 200) {
+          console.log('Successfully upvoted report')
+
+          selectedReport.report_votes && (
+            setSelectedReport({
+              ...selectedReport,
+              report_votes: {
+                ...selectedReport.report_votes,
+                upvotes: selectedReport.report_votes.upvotes + 1
+              }
+            })
+          )
+          getReportVotes(selectedReport)
+
+          toast.success('Successfully upvoted report')
+
+        } else {
+          console.log('Failed to upvote report')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  async function downvoteReport() {
+    console.log(selectedReport)
+
+    if (selectedReport) {
+      try {
+
+        setUserLastVotedAt(new Date())
+        if (selectedReportVotes?.user_voted) {
+          console.log('User already voted on this report')
+
+          const response = await deleteReportVoteRequest(selectedReport.report_uuid)
+
+          if (response.status === 200) {
+            console.log('Successfully removed vote from report')
+
+            selectedReport.report_votes && (
+              setSelectedReport({
+                ...selectedReport,
+                report_votes: {
+                  ...selectedReport.report_votes,
+                  downvotes: selectedReport.report_votes.downvotes - 1
+                }
+              })
+            )
+            getReportVotes(selectedReport)
+
+            toast.success('Successfully removed vote from report')
+
+          } else {
+            console.log('Failed to remove vote from report')
+            toast.error('Failed to remove vote from report')
+          }
+
+          return
+
+        } else {
+          console.log('User has not voted on this report')
+        }
+
+        const response = await createReportVoteRequest(selectedReport.report_uuid, 'downvote')
+
+        if (response.status === 200) {
+          console.log('Successfully downvoted report')
+
+          selectedReport.report_votes && (
+            setSelectedReport({
+              ...selectedReport,
+              report_votes: {
+                ...selectedReport.report_votes,
+                downvotes: selectedReport.report_votes.downvotes + 1
+              }
+            })
+          )
+          getReportVotes(selectedReport)
+
+          toast.success('Successfully downvoted report')
+
+        } else {
+          console.log('Failed to downvote report')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  async function getReportVotes(report: Report | null) {
+    if (report) {
+      try {
+        const response = await getReportVotesRequest(report.report_uuid)
+
+        if (response.status === 200) {
+          console.log('Successfully got report votes')
+          setSelectedReportVotes(response.data)
+        } else {
+          console.log('Failed to get report votes')
+          setSelectedReportVotes(null)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
 
 }

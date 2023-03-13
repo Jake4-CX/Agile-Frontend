@@ -17,7 +17,7 @@ export const ReportMap = (props: any) => {
   const navigate = useNavigate()
 
   var [selectedReport, setSelectedReport] = useState<Report | null>(null)
-  var [selectedReportVotes, setSelectedReportVotes] = useState<{ votes: ReportVote[], user_voted?: boolean } | null>(null)
+  var [selectedReportVotes, setSelectedReportVotes] = useState<{ votes: ReportVote[], user_voted?: boolean, report_votes: {upvotes: number, downvotes: number} } | null>(null)
   var [userLastVotedAt, setUserLastVotedAt] = useState<Date>(new Date(0))
 
   const { isLoaded } = useLoadScript({ googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY })
@@ -124,14 +124,14 @@ export const ReportMap = (props: any) => {
 
                                   <div className="">
                                     <span className="font-semibold">Votes: </span>
-                                    <span className="text-sm">{(selectedReport.report_votes.upvotes - selectedReport.report_votes.downvotes)}</span>
+                                    <span className="text-sm">{ selectedReportVotes ? (selectedReportVotes.report_votes.upvotes - selectedReportVotes.report_votes.downvotes) : (selectedReport.report_votes.upvotes - selectedReport.report_votes.downvotes)}</span>
                                   </div>
 
                                   <div className="flex flex-row">
-                                    <button className="flex flex-row items-center justify-center" onClick={upvoteReport} disabled={((new Date().getTime() - userLastVotedAt.getTime()) / 1000) < 3}>
+                                    <button className="flex flex-row items-center justify-center" onClick={() => voteButtonClick("upvote")}>
                                       <FaThumbsUp className="w-4 h-4 text-slate-400 hover:text-green-500 transition duration-300" />
                                     </button>
-                                    <button className="flex flex-row items-center justify-center ml-4" onClick={downvoteReport} disabled={((new Date().getTime() - userLastVotedAt.getTime()) / 1000) < 3}>
+                                    <button className="flex flex-row items-center justify-center ml-4" onClick={() => voteButtonClick("downvote")}>
                                       <FaThumbsDown className="w-4 h-4 text-slate-400 hover:text-red-500 transition duration-300" />
                                     </button>
                                   </div>
@@ -157,12 +157,28 @@ export const ReportMap = (props: any) => {
     )
   )
 
-  async function upvoteReport() {
+  async function voteButtonClick(vote_type: string) {
+
+    const waitDuration: number = 3
+
+    const timeDifference: number = (new Date().getTime() - userLastVotedAt.getTime()) / 1000
+
+    if (timeDifference >= waitDuration) {
+      userVote(vote_type)
+      setUserLastVotedAt(new Date())
+
+    } else {
+      toast.error('You must wait ' + Math.round(((waitDuration - timeDifference) + Number.EPSILON * 100 / 100)) + ' seconds before voting again')
+    }
+  }
+
+
+  async function userVote(vote_type: string) {
     console.log(selectedReport)
 
     if (selectedReport) {
+
       try {
-        setUserLastVotedAt(new Date())
 
         if (selectedReportVotes?.user_voted) {
           console.log('User already voted on this report')
@@ -170,16 +186,6 @@ export const ReportMap = (props: any) => {
 
           if (response.status === 200) {
             console.log('Successfully removed vote from report')
-
-            selectedReport.report_votes && (
-              setSelectedReport({
-                ...selectedReport,
-                report_votes: {
-                  ...selectedReport.report_votes,
-                  upvotes: selectedReport.report_votes.upvotes - 1
-                }
-              })
-            )
             getReportVotes(selectedReport)
 
             toast.success('Successfully removed vote from report')
@@ -189,104 +195,37 @@ export const ReportMap = (props: any) => {
             toast.error('Failed to remove vote from report')
           }
 
-          return
+          return null
 
         } else {
-          console.log('User has not voted on this report')
-        }
-
-        const response = await createReportVoteRequest(selectedReport.report_uuid, 'upvote')
-
-        if (response.status === 200) {
-          console.log('Successfully upvoted report')
-
-          selectedReport.report_votes && (
-            setSelectedReport({
-              ...selectedReport,
-              report_votes: {
-                ...selectedReport.report_votes,
-                upvotes: selectedReport.report_votes.upvotes + 1
-              }
-            })
-          )
-          getReportVotes(selectedReport)
-
-          toast.success('Successfully upvoted report')
-
-        } else {
-          console.log('Failed to upvote report')
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
-
-  async function downvoteReport() {
-    console.log(selectedReport)
-
-    if (selectedReport) {
-      try {
-
-        setUserLastVotedAt(new Date())
-        if (selectedReportVotes?.user_voted) {
-          console.log('User already voted on this report')
-
-          const response = await deleteReportVoteRequest(selectedReport.report_uuid)
+          console.log('User has not voted on this report yet')
+          const response = await createReportVoteRequest(selectedReport.report_uuid, vote_type)
 
           if (response.status === 200) {
-            console.log('Successfully removed vote from report')
-
-            selectedReport.report_votes && (
-              setSelectedReport({
-                ...selectedReport,
-                report_votes: {
-                  ...selectedReport.report_votes,
-                  downvotes: selectedReport.report_votes.downvotes - 1
-                }
-              })
-            )
+            console.log('Successfully voted on report')
             getReportVotes(selectedReport)
 
-            toast.success('Successfully removed vote from report')
+            toast.success('Successfully voted on report')
 
           } else {
-            console.log('Failed to remove vote from report')
-            toast.error('Failed to remove vote from report')
+            console.log('Failed to vote on report')
+            toast.error('Failed to vote on report')
           }
 
-          return
-
-        } else {
-          console.log('User has not voted on this report')
+          return null
         }
 
-        const response = await createReportVoteRequest(selectedReport.report_uuid, 'downvote')
-
-        if (response.status === 200) {
-          console.log('Successfully downvoted report')
-
-          selectedReport.report_votes && (
-            setSelectedReport({
-              ...selectedReport,
-              report_votes: {
-                ...selectedReport.report_votes,
-                downvotes: selectedReport.report_votes.downvotes + 1
-              }
-            })
-          )
-          getReportVotes(selectedReport)
-
-          toast.success('Successfully downvoted report')
-
-        } else {
-          console.log('Failed to downvote report')
-        }
       } catch (error) {
-        console.log(error)
+        console.log("Catch Fail: ", error)
       }
+
+    } else {
+      console.log('No report selected')
     }
   }
+
+
+
 
   async function getReportVotes(report: Report | null) {
     if (report) {

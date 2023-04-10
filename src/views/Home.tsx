@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { ReportService } from "../API/Services/ReportService";
 import { ImageService } from "../API/Services/ImageService";
 import moment from "moment";
+import { Description } from "@headlessui/react/dist/components/description/description";
 
 export const Home = (props: any) => {
 
@@ -23,10 +24,10 @@ export const Home = (props: any) => {
   const baseUrl: string = import.meta.env.VITE_API_URL as string
 
   const steps = [
-    { "title": "Enter a nearby UK postcode, or street name and area", "description": "some description if needed" },
-    { "title": "Locate the problem on a map of the area", "description": "some description if needed" },
-    { "title": "Describe the problem and submit", "description": "some description if needed" },
-    { "title": "We'll confirm the report and Gloucestershire Council will investigate", "description": "some description if needed" }
+    { "title": "M4 Northbound", "description":" Lane 1-2 closed due to collision, 90 min delay" },
+    { "title": "C85 Kingsditch Lane/Wymans Lane", "description": "4:30pm until 7:30pm: Closed to traffic travelling south at its junction with Runnings Road" },
+    { "title": "A46 Southbound and the junction with the A436", "description": "Roadworks expect disruption everyday between 20:00 and 06:00 from 11 April 2023 to 15 April 2023All lanes will be closed" },
+    { "title": "M5 and the junction with the A417 north of Gloucester", "description": " Lane two will be closed, as Horticultural works are planned" }
   ]
 
   function searchPostalCode(e: any) {
@@ -102,8 +103,8 @@ export const Home = (props: any) => {
               {/* Hero background image */}
               <div className="absolute inset-0 bg-[url('/assets/images/hero_bg.jpg')] bg-center bg-cover backdrop-opacity-25 blur-[3px] opacity-60 -z-10"></div>
               <div className="flex flex-col justify-center items-center">
-                <h1 className="text-5xl font-bold text-white ">Fix My Street</h1>
-                <p className="text-white">Report a problem in your area</p>
+                <h1 className="text-4xl font-bold text-white ">Fix My Street</h1>
+                <p className="text-4xl text-white">Report a problem in your area here!</p>
               </div>
 
               {/* Search bar */}
@@ -128,8 +129,8 @@ export const Home = (props: any) => {
 
             {/* About */}
             <div className="flex flex-col py-16 px-6 lg:px-8 min-h-[540px] flex-grow bg-[#f8f8f8]">
-              <h1 className="text-5xl font-bold text-black">How to report a problem</h1>
-              <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
+              <h1 className="text-5xl font-bold text-black">Recent Road Closures</h1>
+              <p className=""></p>
 
               <div className="grid lg:grid-cols-2">
                 {/* Steps */}
@@ -147,9 +148,9 @@ export const Home = (props: any) => {
                   }
                 </div>
 
-                {/* Recently reported problems table */}
+                {/* Recently reported problems table - (andi) has removed this but we could use the space for something else */}
                 <div className="flex flex-col px-8 py-8">
-                  <h1 className="text-2xl font-bold text-black">Recently reported problems</h1>
+                  <h1 className="text-2xl font-bold text-black"></h1>
 
                   {
                     reports.slice(0, 3).map((report, index) => (
@@ -180,7 +181,7 @@ export const Home = (props: any) => {
             {/* Statistics */}
             <div className="flex flex-col min-h-[320px] bg-[#A2ACBD] pt-12 px-12 pb-12">
               <h1 className="text-5xl font-bold text-black">Statistics</h1>
-              <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
+              <p className="" ></p>
 
               <div className="grid lg:grid-cols-3 grid-cols-1 gap-6 lg:gap-24 pt-4">
 

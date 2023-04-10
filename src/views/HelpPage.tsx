@@ -25,7 +25,11 @@ export const HelpPage = (props: any) => {
 
               <div className="mt-6 ml-2">
                 <h2 className="text-1xl font-bold text-black">How do I report an issue?</h2>
-                <p className="">On the homepage there will be a button which says 'Report' this will lead you to a map where you can select your location and input details about the issue.</p>
+                <p className=""> 1 - Enter a nearby UK postcode, or street name and area</p>
+                <p className="">2 - Locate the problem on a map of the area</p>
+                <p className="">3 - Describe the problem and submit</p>
+                <p className="">4 - We'll confirm the report and Gloucestershire Council will investigate</p>
+
 
                 <h3 className="text-1xl font-bold text-black">How do I know my issue has been reported?</h3>
                 <p className=""> You will recieve an email confirming your issue has been reported.</p>
@@ -34,6 +38,8 @@ export const HelpPage = (props: any) => {
                 <p className="">Click on the Login button on the home page and look for 'Dont have an account?' and click 'Sign up'.</p>
                 <h4 className="text-1xl font-bold text-black">Can I view my previous reports?</h4>
                 <p className="">Yes. After you have registered for an account and logged in, all of your reports will be visible on your dashboard.</p>
+                <h5 className="text-1xl font-bold text-black">Can I make a report without an account?</h5>
+                <p className="">No. You will need to create an account to make a report however, you can see previously report issues from other people.</p>
               </div>
 
             </div>

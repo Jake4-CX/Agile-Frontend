@@ -21,18 +21,26 @@
 
   
 }
-  
+
+
   table {
-  border: 2px solid red;
+  border: 2px solid white;
   width: 95%;
   height: 200px;
   }
   
   th {
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid grey;
+  color: grey;
   }
   
   td {
   text-align: center;
+  border-bottom: 1px solid grey;
+
   }
   
+
+  tr{
+  
+  }

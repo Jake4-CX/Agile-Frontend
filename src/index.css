@@ -14,3 +14,26 @@
     font-family: 'Roboto', sans-serif;
   }
 }
+
+
+  table {
+  border: 2px solid white;
+  width: 95%;
+  height: 200px;
+  }
+  
+  th {
+  border-bottom: 1px solid grey;
+  color: white;
+  }
+  
+  td {
+  text-align: center;
+  border-bottom: 1px solid grey;
+
+  }
+  
+
+  tr{
+  
+  }

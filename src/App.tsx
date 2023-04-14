@@ -37,6 +37,7 @@ function App() {
         <Route path='/reset/:token' element={<Reset />} />
         <Route path='/template' element={<Template />} />
 
+        <Route path='/AdminDashboard' element={ <AdminDashboard />}/>  
         <Route path='/report' element={<Report />} />
         <Route path='/help' element={<HelpPage />} />
 

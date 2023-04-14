@@ -18,6 +18,7 @@ import { HelpPage } from './views/HelpPage'
 import { PerRole } from './components/PerRole'
 import { AdminDashboard } from './views/Admin/AdminDashboard'
 import { AdminUserDashboard } from './views/Admin/AdminUserDashboard'
+import { AdminUserDetailsDashboard } from './views/Admin/AdminUserDetailsDashboard'
 function App() {
 
   const dashboardRoleRoutes = [
@@ -39,6 +40,8 @@ function App() {
         <Route path='/template' element={<Template />} />
 
         <Route path='/AdminUserDashboard' element={ <AdminUserDashboard />}/>  
+        <Route path='/AdminUserDetailsDashboard' element={ <AdminUserDetailsDashboard />}/>  
+
         <Route path='/report' element={<Report />} />
         <Route path='/help' element={<HelpPage />} />
 

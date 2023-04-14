@@ -74,6 +74,7 @@ interface ReportType {
   id: number;
   report_type_name: string;
   report_type_description: string;
+  report_type_icon: string;
 }
 
 interface ImageGroup {

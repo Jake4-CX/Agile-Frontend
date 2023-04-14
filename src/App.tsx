@@ -16,15 +16,15 @@ import { ViewReport } from './views/ViewReport'
 import { RequireAuth } from './components/RequireAuth'
 import { HelpPage } from './views/HelpPage'
 import { PerRole } from './components/PerRole'
-import { AdminDashboard } from './views/AdminDashboard'
-import { AdminUserDashboard } from './views/AdminUserDashboard'
+import { AdminDashboard } from './views/Admin/AdminDashboard'
+import { AdminUserDashboard } from './views/Admin/AdminUserDashboard'
 function App() {
 
   const dashboardRoleRoutes = [
     { role: "User", element: <Dashboard /> },
     { role: "Employee", element: <Dashboard /> },
     { role: "Manager", element: <Dashboard /> },
-    { role: "Administrator", element: <Dashboard /> },
+    { role: "Administrator", element: <AdminDashboard /> },
   ] as { role: String, element: JSX.Element }[]
 
   const router = createBrowserRouter(
@@ -38,7 +38,6 @@ function App() {
         <Route path='/reset/:token' element={<Reset />} />
         <Route path='/template' element={<Template />} />
 
-        <Route path='/AdminDashboard' element={ <AdminDashboard />}/>  
         <Route path='/AdminUserDashboard' element={ <AdminUserDashboard />}/>  
         <Route path='/report' element={<Report />} />
         <Route path='/help' element={<HelpPage />} />

@@ -1,5 +1,4 @@
-import axios from '../../API/axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UseAuth } from '../../API/Services/UseAuth';
 import { toast } from 'react-toastify'
@@ -15,6 +14,8 @@ export const Register = (props: any) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
+
+  const passwordInput = React.createRef<HTMLInputElement>()
 
   const [recaptchaToken, setRecaptchaToken] = useState('')
   const recaptchaRef = React.createRef<ReCAPTCHA>()
@@ -56,6 +57,65 @@ export const Register = (props: any) => {
     }
 
   }
+
+  useEffect(() => {
+    if (password.length == 0 || password == "") {
+      passwordInput.current?.classList.remove("border-green-500")
+      passwordInput.current?.classList.remove("border-orange-500")
+      passwordInput.current?.classList.remove("border-yellow-500")
+      passwordInput.current?.classList.remove("border-red-500")
+      passwordInput.current?.classList.add("border-gray-300")
+
+      return;
+    };
+
+    const requirements = {
+      number: new RegExp('.*[0-9]').test(password),
+      lowerAlphabet: new RegExp('.*[a-z]').test(password),
+      upperAlphabet: new RegExp('.*[A-Z]').test(password),
+      symbols: new RegExp('.*[!@?#$£*]').test(password),
+      length: new RegExp('.{8,}').test(password),
+      recommendedLength: new RegExp('.{12,}').test(password)
+    }
+
+    var count = 0;
+
+    for (const key in requirements) {
+
+      if (requirements.hasOwnProperty(key)) {
+        if (requirements[key as keyof typeof requirements]) {
+          count++;
+        }
+
+      }
+    }
+
+    passwordInput.current?.classList.remove("border-gray-300")
+
+    passwordInput.current?.setCustomValidity(count < 3 ? "Password must contain at least 3 of the following: 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol, and 8 characters (12 recommended)" : "")
+    if (count < 3) {
+      passwordInput.current?.classList.remove("border-green-500")
+      passwordInput.current?.classList.remove("border-orange-500")
+      passwordInput.current?.classList.remove("border-yellow-500")
+      passwordInput.current?.classList.add("border-red-500")
+    } else if (count <= 4) {
+      passwordInput.current?.classList.remove("border-green-500")
+      passwordInput.current?.classList.remove("border-red-500")
+      passwordInput.current?.classList.remove("border-yellow-500")
+      passwordInput.current?.classList.add("border-orange-500")
+    } else if (count <= 5) {
+      passwordInput.current?.classList.remove("border-green-500")
+      passwordInput.current?.classList.remove("border-red-500")
+      passwordInput.current?.classList.remove("border-orange-500")
+      passwordInput.current?.classList.add("border-yellow-500")
+    } else {
+      passwordInput.current?.classList.remove("border-red-500")
+      passwordInput.current?.classList.remove("border-orange-500")
+      passwordInput.current?.classList.remove("border-yellow-500")
+      passwordInput.current?.classList.add("border-green-500")
+    }
+    
+  }, [password]);
 
 
   return (
@@ -107,7 +167,7 @@ export const Register = (props: any) => {
                         {/* Password */}
                         <div className='mb-6 pt-6 rounded bg-gray-200'>
                           <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='password'>Password<a className='text-red-700 font-medium'>*</a></label>
-                          <input className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={password} onChange={(e) => setPassword(e.target.value)} type='password' name='password' placeholder='password' required />
+                          <input ref={passwordInput} className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={password} onChange={(e) => setPassword(e.target.value)} type='password' name='password' placeholder='password' required />
                         </div>
 
                         {/* Forgot password */}

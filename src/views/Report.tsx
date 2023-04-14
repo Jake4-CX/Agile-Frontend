@@ -14,6 +14,7 @@ import { ReportService } from "../API/Services/ReportService";
 import { ImageService } from "../API/Services/ImageService";
 import { ReportMap } from "../components/ReportMap";
 import { UseAuth } from "../API/Services/UseAuth";
+import { GeneralLayout } from "../layouts/general";
 
 export const Report = (props: any) => {
 
@@ -203,95 +204,82 @@ export const Report = (props: any) => {
   }
 
   return (
-    <>
-      {/* Background image */}
-      <div className="fixed inset-0 -z-20 w-full h-full bg-[#f8f8f8] dark:bg-[#1d2029]"></div>
-      <div className="flex flex-col min-h-screen">
-        <div className="px-0 mx-auto w-full 2xl:w-4/6 flex flex-col flex-grow">
-
-          {/* Navbar */}
-          <Navbar />
-
-          <section className="min-h-full flex-grow">
-            <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-1 lg:space-x-6 space-y-6 lg:space-y-0 w-full h-full justify-center items-center lg:mt-12">
-              <div className="col-span-1 row-span-1 bg-[#f8f8f8] dark:bg-[#1d2029]">
-                {
-                  loadMap ? (
-                    <>
-                      <ReportMap mapCenter={mapCenter} markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
-                    </>
-                  ) : (
-                    <div className="flex flex-col justify-center items-center">
-                      <div className="bg-slate-50 shadow-lg w-full h-[87vh] lg:h-[65vh] rounded-b-xl lg:rounded-xl p-12 justify-center items-center">
-                        <h1 className="font-bold text-5xl text-center">Quering API</h1>
-                      </div>
-                    </div>
-                  )
-                }
-              </div>
-              <div className="col-span-1 row-span-1 bg-[#f8f8f8] dark:bg-[#1d2029]">
-                <div className="flex flex-col justify-center items-center w-full h-full lg:h-[65vh] space-y-5">
-
-                  <div className="flex justify-center items-center w-full h-full">
-                    <div className="bg-slate-50 shadow-lg rounded-lg px-12 py-6 w-full h-full">
-                      <h1 className="font-bold text-2xl text-left">Report</h1>
-                      <hr className="border-slate-300" />
-                      <form onSubmit={handleSubmit} className="">
-
-                        <div className="flex-auto mb-auto">
-
-                          {/* Location */}
-                          <p className="truncate overflow-hidden ...">Location: {formatAddress()}</p>
-                          <p className="">Latitude: {markerPosition.lat}</p>
-                          <p className="">Longitude: {markerPosition.lng}</p>
-
-                          <div className="mt-6 space-y-4">
-                            {/* Report Category - Dropdown box */}
-                            <div className="flex flex-col">
-                              <label className="font-bold text-left">Report Category</label>
-                              <div className="top-16 w-full">
-                                {selectedCategory !== undefined && comboBox()}
-                              </div>
-                            </div>
-
-                            {/* Description */}
-                            <div className="flex flex-col">
-                              <label className="font-bold text-left">Description</label>
-                              <textarea className="rounded-lg bg-white py-2 px-3 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-0 sm:text-sm h-[90px] m-h-[120px]" placeholder="Enter a description about the problem" value={reportDescription} onChange={(e) => setReportDescription(e.target.value)}></textarea>
-                            </div>
-
-                            {/* Severity range slider */}
-                            <div className="flex flex-col">
-                              <label className="font-bold text-left">Severity</label>
-                              <input className="accent-purple-500 w-full" type="range" min={"1"} max={"10"} onChange={(e) => setSeverity(parseInt(e.target.value))} defaultValue={5} />
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div className="sticky">
-                          {/* Photograph preview & upload */}
-                          <FileUpload files={files} setFiles={setFiles} />
-
-                          {/* Submit button for form */}
-                          <div className="flex justify-center">
-                            <button className="w-full block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Submit</button>
-                          </div>
-
-                        </div>
-
-
-                      </form>
-                    </div>
-                  </div>
+    <GeneralLayout>
+      <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-1 lg:space-x-6 space-y-6 lg:space-y-0 w-full h-full justify-center items-center lg:mt-12">
+        <div className="col-span-1 row-span-1 bg-[#f8f8f8] dark:bg-[#1d2029]">
+          {
+            loadMap ? (
+              <>
+                <ReportMap mapCenter={mapCenter} markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
+              </>
+            ) : (
+              <div className="flex flex-col justify-center items-center">
+                <div className="bg-slate-50 shadow-lg w-full h-[87vh] lg:h-[65vh] rounded-b-xl lg:rounded-xl p-12 justify-center items-center">
+                  <h1 className="font-bold text-5xl text-center">Quering API</h1>
                 </div>
               </div>
+            )
+          }
+        </div>
+        <div className="col-span-1 row-span-1 bg-[#f8f8f8] dark:bg-[#1d2029]">
+          <div className="flex flex-col justify-center items-center w-full h-full lg:h-[65vh] space-y-5">
+
+            <div className="flex justify-center items-center w-full h-full">
+              <div className="bg-slate-50 shadow-lg rounded-lg px-12 py-6 w-full h-full">
+                <h1 className="font-bold text-2xl text-left">Report</h1>
+                <hr className="border-slate-300" />
+                <form onSubmit={handleSubmit} className="">
+
+                  <div className="flex-auto mb-auto">
+
+                    {/* Location */}
+                    <p className="truncate overflow-hidden ...">Location: {formatAddress()}</p>
+                    <p className="">Latitude: {markerPosition.lat}</p>
+                    <p className="">Longitude: {markerPosition.lng}</p>
+
+                    <div className="mt-6 space-y-4">
+                      {/* Report Category - Dropdown box */}
+                      <div className="flex flex-col">
+                        <label className="font-bold text-left">Report Category</label>
+                        <div className="top-16 w-full">
+                          {selectedCategory !== undefined && comboBox()}
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <div className="flex flex-col">
+                        <label className="font-bold text-left">Description</label>
+                        <textarea className="rounded-lg bg-white py-2 px-3 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-0 sm:text-sm h-[90px] m-h-[120px]" placeholder="Enter a description about the problem" value={reportDescription} onChange={(e) => setReportDescription(e.target.value)}></textarea>
+                      </div>
+
+                      {/* Severity range slider */}
+                      <div className="flex flex-col">
+                        <label className="font-bold text-left">Severity</label>
+                        <input className="accent-purple-500 w-full" type="range" min={"1"} max={"10"} onChange={(e) => setSeverity(parseInt(e.target.value))} defaultValue={5} />
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div className="sticky">
+                    {/* Photograph preview & upload */}
+                    <FileUpload files={files} setFiles={setFiles} />
+
+                    {/* Submit button for form */}
+                    <div className="flex justify-center">
+                      <button className="w-full block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Submit</button>
+                    </div>
+
+                  </div>
+
+
+                </form>
+              </div>
             </div>
-          </section >
-        </div >
-        <Footer />
-      </div >
-    </>
+          </div>
+        </div>
+      </div>
+    </GeneralLayout>
   )
 
   function comboBox() {

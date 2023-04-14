@@ -10,6 +10,7 @@ import { ReportTable } from "../components/ReportTable";
 import { ReportService } from "../API/Services/ReportService";
 import { ImageService } from "../API/Services/ImageService";
 import { UseAuth } from "../API/Services/UseAuth";
+import { GeneralLayout } from "../layouts/general";
 
 export const Dashboard = (props: any) => {
 
@@ -75,20 +76,11 @@ export const Dashboard = (props: any) => {
 
 
   return (
-    <>
-      {/* Background image */}
-      <div className="fixed inset-0 -z-20 w-full h-full bg-[#f8f8f8] dark:bg-[#1d2029]"></div>
-      <div className="flex flex-col min-h-screen">
-        <div className="px-0 mx-auto w-full 2xl:w-4/6 flex flex-col flex-grow">
+    <GeneralLayout>
+      <div className="flex flex-col justify-center items-center">
 
-          {/* Navbar */}
-          <Navbar />
-
-          <section className="flex-grow">
-            <div className="flex flex-col justify-center items-center">
-
-              {/* User Personalized alerts */}
-              {/* <div className={`bg-green-100 rounded-lg w-full h-12 py-4 px-8 mt-4 border border-green-200 ${showAlert ? 'block' : 'hidden'}`}>
+        {/* User Personalized alerts */}
+        {/* <div className={`bg-green-100 rounded-lg w-full h-12 py-4 px-8 mt-4 border border-green-200 ${showAlert ? 'block' : 'hidden'}`}>
                 <div className="flex flex-row justify-between items-center h-full">
 
                   <HiInformationCircle className="text-green-800 text-xl" />
@@ -98,67 +90,63 @@ export const Dashboard = (props: any) => {
                 </div>
               </div> */}
 
-              <div className="mx-4 my-2">
-                {/* <h2 className="text-lg font-medium">Your personal statistics</h2> */}
-                {/* Grid container */}
-                <div className="mx-4 my-2">
-                  {/* Row Grid of 1x4 */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+        <div className="mx-4 my-2">
+          {/* <h2 className="text-lg font-medium">Your personal statistics</h2> */}
+          {/* Grid container */}
+          <div className="mx-4 my-2">
+            {/* Row Grid of 1x4 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
 
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
-                      <div className="flex flex-row items-center justify-between h-full w-full text-center">
-                        <h2 className="w-full">Your Reports: <a className="font-medium text-lg"> {reports.length} </a></h2>
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
-                      <div className="flex flex-row items-center justify-between h-full w-full text-center">
-                        <h2 className="w-full"><a className="font-medium text-lg">1</a> of these reports has been fixed</h2>
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
-                      <div className="flex flex-row items-center justify-between h-full w-full text-center">
-                        <h2 className="w-full">Your local council is <a className="font-medium text-lg">Gloucestershire County Council</a></h2>
-                      </div>
-                    </div>
-
-                  </div>
+              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
+                <div className="flex flex-row items-center justify-between h-full w-full text-center">
+                  <h2 className="w-full">Your Reports: <a className="font-medium text-lg"> {reports.length} </a></h2>
                 </div>
               </div>
 
-              {/* My Reports */}
-              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
-                <h2 className="text-2xl font-medium text-[#838383]">Your Reports</h2>
-                <hr className="border-[#dfdbdb] border-x-2" />
-
-                <div className="flex items-center justify-center">
-                  {/* Table */}
-                  <div className="flex flex-col mt-4 w-full items-center">
-                    <ReportTable data={userReports} />
-                  </div>
+              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
+                <div className="flex flex-row items-center justify-between h-full w-full text-center">
+                  <h2 className="w-full"><a className="font-medium text-lg">1</a> of these reports has been fixed</h2>
                 </div>
               </div>
 
-              {/* Recent reports in my area */}
-              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
-                <h2 className="text-2xl font-medium text-[#838383]">Recent reports in your area</h2>
-                <hr className="border-[#dfdbdb] border-x-2" />
-
-                <div className="flex items-center justify-center">
-                  {/* Table */}
-                  <div className="flex flex-col mt-4 w-full items-center">
-                    <ReportTable data={reports} />
-                  </div>
+              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
+                <div className="flex flex-row items-center justify-between h-full w-full text-center">
+                  <h2 className="w-full">Your local council is <a className="font-medium text-lg">Gloucestershire County Council</a></h2>
                 </div>
               </div>
 
             </div>
-          </section>
+          </div>
         </div>
-        <Footer />
+
+        {/* My Reports */}
+        <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
+          <h2 className="text-2xl font-medium text-[#838383]">Your Reports</h2>
+          <hr className="border-[#dfdbdb] border-x-2" />
+
+          <div className="flex items-center justify-center">
+            {/* Table */}
+            <div className="flex flex-col mt-4 w-full items-center">
+              <ReportTable data={userReports} />
+            </div>
+          </div>
+        </div>
+
+        {/* Recent reports in my area */}
+        <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
+          <h2 className="text-2xl font-medium text-[#838383]">Recent reports in your area</h2>
+          <hr className="border-[#dfdbdb] border-x-2" />
+
+          <div className="flex items-center justify-center">
+            {/* Table */}
+            <div className="flex flex-col mt-4 w-full items-center">
+              <ReportTable data={reports} />
+            </div>
+          </div>
+        </div>
+
       </div>
-    </>
+    </GeneralLayout>
   )
 }
 

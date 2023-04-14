@@ -9,28 +9,60 @@ import axios from './API/axios'
 import { PageNotFound } from './views/PageNotFound'
 import { Logout } from './views/verification/Logout'
 import { Report } from './views/Report'
-
+import { Template } from './views/Template'
+import { Dashboard } from './views/Dashboard'
+import { Reports } from './views/Reports'
+import { ViewReport } from './views/ViewReport'
+import { RequireAuth } from './components/RequireAuth'
+import { HelpPage } from './views/HelpPage'
+import { PerRole } from './components/PerRole'
+import { AdminDashboard } from './views/AdminDashboard'
 function App() {
+
+  const dashboardRoleRoutes = [
+    { role: "User", element: <Dashboard /> },
+    { role: "Employee", element: <Dashboard /> },
+    { role: "Manager", element: <Dashboard /> },
+    { role: "Administrator", element: <Dashboard /> },
+  ] as { role: String, element: JSX.Element }[]
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<Root />}>
-        <Route index element={<Home />}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/register' element={<Register />}/>
-        <Route path='/forgot' element={ <Forgot /> }/>
-        <Route path='/logout' element={ <Logout /> }/>
-        <Route path='/reset/:token' element={ <Reset /> }/>
-        <Route path='*' element={<PageNotFound />}/>
+        <Route index element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/forgot' element={<Forgot />} />
+        <Route path='/logout' element={<Logout />} />
+        <Route path='/reset/:token' element={<Reset />} />
+        <Route path='/template' element={<Template />} />
 
-        <Route path='/report' element={<Report />}/>
+        <Route path='/AdminDashboard' element={ <AdminDashboard />}/>  
+        <Route path='/report' element={<Report />} />
+        <Route path='/help' element={<HelpPage />} />
+
+        <Route path='/reports' element={<Reports />} />
+        <Route path='/reports/:report_uuid' element={<ViewReport />} />
+        <Route element={<RequireAuth allowedRoles={["User", "Employee", "Manager", "Administrator"]} />}>
+
+          {/* Protected Routes */}
+
+          {/* Dashboard switcher */}
+          <Route path='/dashboard' element={<PerRole roleElements={dashboardRoleRoutes}/>} />
+        </Route>
+
+        <Route path='/unauthorized' element={<PageNotFound />} />
+
+
+        {/* 404 Page */}
+        <Route path='*' element={<PageNotFound />} />
       </Route>
     )
   )
 
   return (
     <div className='App'>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
 
     </div>
   )

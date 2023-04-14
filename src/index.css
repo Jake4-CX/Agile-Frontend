@@ -3,7 +3,7 @@
 
 @layer components {
   .bg-theme-gray-slate {
-    @apply bg-cover bg-gradient-to-r from-gray-200 to-slate-200;
+    @apply bg-cover bg-gradient-to-r from-[#D3D3D3] to-[#eaeaea];
   }
 }
 
@@ -14,3 +14,26 @@
     font-family: 'Roboto', sans-serif;
   }
 }
+
+
+  table {
+  border: 2px solid white;
+  width: 95%;
+  height: 200px;
+  }
+  
+  th {
+  border-bottom: 1px solid grey;
+  color: white;
+  }
+  
+  td {
+  text-align: center;
+  border-bottom: 1px solid grey;
+
+  }
+  
+
+  tr{
+  
+  }

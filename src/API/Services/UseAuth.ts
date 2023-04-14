@@ -1,43 +1,27 @@
 import axios from "../axios";
 
-// type responseType = "success"| "error" | "fail";
-
 export const UseAuth = () => {
-  const loginRequest = (email: string, password: string) => {
+  const loginRequest = (email: string, password: string, recaptchaToken: string) => {
     return axios.post('/users/login', {
       user_email: email,
       user_password: password,
+      recaptcha_token: recaptchaToken
     })
   }
+
+  const registerRequest = (email: string, password: string, firstName: string, lastName: string, recaptchaToken: string) => {
+    return axios.post('/users/register', {
+      user_email: email,
+      user_password: password,
+      first_name: firstName,
+      last_name: lastName,
+      recaptcha_token: recaptchaToken
+    })
+  }
+
+  const getCurrentUser = () => {
+    return localStorage.getItem('user') !== null ? JSON.parse(localStorage.getItem('user') || '{}') as Users : null;
+  }
   
-return {loginRequest};
+return {loginRequest, registerRequest, getCurrentUser};
 }
-
-// export const loginRequest = (email: string, password: string) => {
-//   return axios.post('/users/login', {
-//     user_email: email,
-//     user_password: password,
-//   })
-//   // .then((res) => {
-//   //   console.log(res)
-
-//   //   if (res.status === 200) {
-//   //     localStorage.setItem('token', res.data.token);
-//   //     return "success";
-      
-//   //   } else {
-//   //     return "fail";
-//   //   }
-//   // }).catch((err) => {
-//   //   console.log(err)
-
-//   //   return "error";
-
-//   //   if (err.response.status === 500) {
-//   //     console.log(err.response.data.message);
-//   //     toast.error("Invalid credentials!");
-//   //   }
-//   // });
-// }
-
-// Return the response type to the axios call '/users/login' for provided user_email and user_password

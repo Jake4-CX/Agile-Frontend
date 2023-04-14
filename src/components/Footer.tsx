@@ -1,11 +1,79 @@
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 export function Footer() {
+
+  const navigate = useNavigate();
 
   return (
     <>
-      <footer className="relative inset-x-0 bottom-0 mb-0 mx-auto w-full 2xl:w-4/6">
-        <div className="bg-slate-100 w-full h-[96px] p-12">
-          <div className="flex flex-row justify-center items-center">
-            <p className="text-xs">&copy; Copyright companyname, 2023</p>
+      <footer className="bg-[#f8f8f8] dark:bg-gray-900 mt-16 relative inset-x-0 bottom-0 mb-0 mx-auto w-full 2xl:w-4/6">
+        <div className="container p-6 mx-auto">
+          <div className="lg:flex">
+            <div className="w-full -mx-6 lg:w-2/5">
+              <div className="px-6">
+                <img src="https://www.fixmystreet.com/cobrands/fixmystreet.com/images/site-logo-homepage.png" alt="logo" className="w-36" onClick={() => navigate("/")} />
+
+                <p className="max-w-sm mt-2 text-gray-500 dark:text-gray-400">Reporting local issues to your council made easy.</p>
+
+                <div className="flex w-2/3">
+                  <div className="flex flex-row space-x-2 mt-6 -mx-2">
+                    <div className="flex">
+                      <FaTwitter className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" aria-label="Twitter" />
+                    </div>
+
+                    <div className="flex">
+                      <FaFacebook className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" aria-label="Facebook" />
+                    </div>
+
+                    <div className="flex">
+                      <FaInstagram className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" aria-label="Instagram" />
+                    </div>
+
+                    <div className="flex">
+                      <FaYoutube className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" aria-label="YouTube" />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 lg:mt-0 lg:flex-1">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div>
+                  <h3 className="text-gray-700 uppercase dark:text-white">About</h3>
+                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Forgot Password</a>
+                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Login</a>
+                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Register</a>
+                </div>
+
+                <div>
+                  <h3 className="text-gray-700 uppercase dark:text-white">Report a problem</h3>
+                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Report a problem</a>
+                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Reports</a>
+                </div>
+
+                <div>
+                  <h3 className="text-gray-700 uppercase dark:text-white">About</h3>
+                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Contact Us</a>
+                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Carrers</a>
+                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Help</a>
+                </div>
+
+                <div>
+                  <h3 className="text-gray-700 uppercase dark:text-white">Contact</h3>
+                  <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">+44 01452 425000</span>
+                  <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">contact@fixmystreet.com</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr className="h-px my-6 bg-gray-200 border-none dark:bg-gray-700" />
+
+          <div>
+            <p className="text-center text-gray-500 dark:text-gray-400">© FixMyStreet 2023 - All rights reserved</p>
           </div>
         </div>
       </footer>

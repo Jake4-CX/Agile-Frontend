@@ -17,6 +17,7 @@ import { RequireAuth } from './components/RequireAuth'
 import { HelpPage } from './views/HelpPage'
 import { PerRole } from './components/PerRole'
 import { AdminDashboard } from './views/AdminDashboard'
+import { AdminUserDashboard } from './views/AdminUserDashboard'
 function App() {
 
   const dashboardRoleRoutes = [
@@ -38,6 +39,7 @@ function App() {
         <Route path='/template' element={<Template />} />
 
         <Route path='/AdminDashboard' element={ <AdminDashboard />}/>  
+        <Route path='/AdminUserDashboard' element={ <AdminUserDashboard />}/>  
         <Route path='/report' element={<Report />} />
         <Route path='/help' element={<HelpPage />} />
 

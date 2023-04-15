@@ -19,11 +19,12 @@ import { PerRole } from './components/PerRole'
 import { AdminDashboard } from './views/Admin/AdminDashboard'
 import { AdminUserDashboard } from './views/Admin/AdminUserDashboard'
 import { AdminUserDetailsDashboard } from './views/Admin/AdminUserDetailsDashboard'
+import { EmployeeDashboard } from './views/Employee/EmployeeDashboard'
 function App() {
 
   const dashboardRoleRoutes = [
     { role: "User", element: <Dashboard /> },
-    { role: "Employee", element: <Dashboard /> },
+    { role: "Employee", element: <EmployeeDashboard /> },
     { role: "Manager", element: <Dashboard /> },
     { role: "Administrator", element: <AdminDashboard /> },
   ] as { role: String, element: JSX.Element }[]

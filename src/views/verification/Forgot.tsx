@@ -4,18 +4,30 @@ import { useNavigate } from 'react-router-dom';
 import { Footer } from '../../components/Footer';
 import { Navbar } from '../../components/Navbar';
 import { GeneralLayout } from '../../layouts/general';
+import { VerifyService } from '../../API/Services/VerifyService';
+import { toast } from 'react-toastify';
 
 export const Forgot = (props: any) => {
 
   const [email, setEmail] = useState('')
   const navigate = useNavigate();
 
+  const { forgotPassword } = VerifyService()
+
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+
+
     try {
-      const res = await axios.post('/auth/forgot', { email })
-      console.log(res)
-      navigate('/login')
+      const res = await forgotPassword(email)
+
+      if (res.status === 200) {
+        toast.success("Email sent")
+        navigate('/login')
+      } else {
+        toast.error("Failed to send email")
+      }
+
     } catch (err) {
       console.log(err)
     }

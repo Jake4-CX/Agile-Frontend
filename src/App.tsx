@@ -20,6 +20,7 @@ import { AdminDashboard } from './views/Admin/AdminDashboard'
 import { AdminUserDashboard } from './views/Admin/AdminUserDashboard'
 import { AdminUserDetailsDashboard } from './views/Admin/AdminUserDetailsDashboard'
 import { EmployeeDashboard } from './views/Employee/EmployeeDashboard'
+import { Verify } from './views/verification/Verify'
 function App() {
 
   const dashboardRoleRoutes = [
@@ -35,9 +36,10 @@ function App() {
         <Route index element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/verify/:verification_uuid' element={<Verify />} />
         <Route path='/forgot' element={<Forgot />} />
         <Route path='/logout' element={<Logout />} />
-        <Route path='/reset/:token' element={<Reset />} />
+        <Route path='/reset/:verification_uuid' element={<Reset />} />
         <Route path='/template' element={<Template />} />
 
         <Route path='/AdminUserDashboard' element={ <AdminUserDashboard />}/>  

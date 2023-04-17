@@ -102,7 +102,7 @@ export const AdminUserDetailsDashboard = (props: any) => {
             <div className="px-3">
               <div className="w-full px-4 py-2 bg-[#3a4657] rounded-lg font-medium text-center">User Notes:</div>
             </div>
-            <div className="overflow-hidden">
+            <div className="overflow-x-auto">
               <table className="w-full border-separate border-spacing-3">
                 <thead>
                   <tr className="">
@@ -137,7 +137,7 @@ export const AdminUserDetailsDashboard = (props: any) => {
             <div className="px-3">
               <div className="w-full px-4 py-2 bg-[#3a4657] rounded-lg font-medium text-center">Active Issues:</div>
             </div>
-            <div className="overflow-hidden">
+            <div className="overflow-x-auto">
               <table className="w-full border-separate border-spacing-3 table-auto">
                 <thead>
                   <tr className="">

@@ -1,26 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "../components/Navbar";
-
 import { FaCompass } from "react-icons/fa";
-import { Footer } from "../components/Footer";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { ReportService } from "../API/Services/ReportService";
 import { ImageService } from "../API/Services/ImageService";
 import moment from "moment";
-import { Description } from "@headlessui/react/dist/components/description/description";
 import { GeneralLayout } from "../layouts/general";
 
 export const Home = (props: any) => {
 
   const [reports, setReports] = useState<Report[]>([])
-  const [reportImages, setReportImages] = useState<{ [key: number]: Image[] }>({})
   const [postalCode, setPostalCode] = useState('')
   const postcodeRegex = /^(([A-Z]{1,2}\d[A-Z\d]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|PCRN|TKCA) ?\d[A-Z]{2}|BFPO ?\d{1,4}|(KY\d|MSR|VG|AI)[ -]?\d{4}|[A-Z]{2} ?\d{2}|GE ?CX|GIR ?0A{2}|SAN ?TA1)$/    // UK postcode regex
 
   const navigate = useNavigate();
   const { getAllReportsRequest } = ReportService()
-  const { getImagesByImageGroupRequest } = ImageService()
 
   const baseUrl: string = import.meta.env.VITE_API_URL as string
 
@@ -65,27 +59,6 @@ export const Home = (props: any) => {
 
     getAllReports()
   }, [])
-
-  useEffect(() => {
-    const getImages = async (group_id: number) => {
-      return await getImagesByImageGroupRequest(group_id)
-    }
-
-    async function fetchImages() {
-      const imagePromises = reports.map((report: Report) => {
-        return getImages(report.image_group.id);
-      });
-      const results = await Promise.all(imagePromises);
-      const imageDict: { [key: number]: Image[] } = {};
-      reports.forEach((report: Report, index: number) => {
-        imageDict[report.image_group.id] = results[index].data;
-      });
-      setReportImages(imageDict);
-    }
-
-    fetchImages()
-
-  }, [reports])
 
 
   return (
@@ -155,11 +128,11 @@ export const Home = (props: any) => {
                   </div>
                   <div className="flex col-span-1 row-span-2 sm:row-span-1">
                     {
-                      reportImages[report.image_group.id] && reportImages[report.image_group.id].length > 0 ? (
+                      report.report_images && report.report_images.length > 0 ? (
                         // <img src={ baseUrl + "images/" + reportImages[report.image_group.id][0].image_uuid + "." + reportImages[report.image_group.id][0].image_file_type } alt="report" className="w-full h-full sm:w-24 sm:h-16 mr-0 m-auto cols-span-1" />
-                        <div className="w-full h-full mr-0 m-auto bg-cover bg-center bg-no-repeat rounded-sm" style={{ backgroundImage: `url('${baseUrl + "images/" + reportImages[report.image_group.id][0].image_uuid + "." + reportImages[report.image_group.id][0].image_file_type}')` }}></div>
+                        <div className="w-full h-full mr-0 m-auto bg-cover bg-center bg-no-repeat rounded-sm" style={{ backgroundImage: `url('${baseUrl + "images/" + report.report_images[0].image_uuid + "." + report.report_images[0].image_file_type}')` }}></div>
                       ) : (
-                        <div className="w-24 h-16 mr-0 m-auto"></div>
+                        <div className="w-24 h-16 mr-0 m-auto" style={{ backgroundImage: "url('/assets/images/default-no-image.jpg')" }}></div>
                       )
                     }
                   </div>

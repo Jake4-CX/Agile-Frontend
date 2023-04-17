@@ -2,11 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "react-toastify"
 import { ReportService } from "../API/Services/ReportService"
-import { ImageService } from "../API/Services/ImageService"
-import { Navbar } from "../components/Navbar"
-import { Footer } from "../components/Footer"
 import moment from "moment"
-import { usePopper } from "react-popper"
 
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { ViewReportCarousel } from "../components/ViewReportCarousel"
@@ -19,9 +15,7 @@ export const ViewReport = (props: any) => {
   const { report_uuid } = useParams()
 
   const [report, setReport] = useState<Report>()
-  const [reportImages, setReportImages] = useState<Image[]>([])
   const { getReportByUUIDRequest } = ReportService()
-  const { getImagesByImageGroupRequest } = ImageService()
 
   const uuid_regex = new RegExp("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$")
 
@@ -52,23 +46,10 @@ export const ViewReport = (props: any) => {
 
         if (response.status == 200) {
           setReport(response.data as Report)
-          getImagesByImageGroup(response.data.image_group.id as number)
           setMapPosition({ lat: parseFloat(response.data.report_latitude), lng: parseFloat(response.data.report_longitude) })
 
         } else {
           navigate(-1)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    const getImagesByImageGroup = async (image_group_id: number) => {
-      try {
-        const response = await getImagesByImageGroupRequest(image_group_id)
-
-        if (response.status === 200) {
-          setReportImages(response.data as Image[])
         }
       } catch (error) {
         console.log(error)
@@ -95,7 +76,7 @@ export const ViewReport = (props: any) => {
                 <>
                   <div className="w-full h-full">
                     <div className="w-full h-full p-3">
-                      <ViewReportCarousel reportImages={reportImages} reportUUID={report.report_uuid} />
+                      <ViewReportCarousel reportImages={report.report_images} reportUUID={report.report_uuid} />
                     </div>
                   </div>
                 </>
@@ -168,7 +149,6 @@ export const ViewReport = (props: any) => {
               !isLoaded ? (
                 <div className="w-full h-full rounded-xl shadow-lg flex justify-center items-center text-lg"><p>Loading...</p></div>
               ) : (
-                // <><p>{ mapPosition.lat !== undefined && (mapPosition.lat + " " + mapPosition.lng)}</p></>
                 <GoogleMap zoom={14} center={mapPosition} mapContainerClassName="w-full h-full rounded-xl shadow-lg" options={{ streetViewControl: false, mapTypeControl: false, fullscreenControl: false, minZoom: 10, maxZoom: 20 }} mapTypeId="">
                   <MarkerF position={mapPosition} options={{ draggable: false }} icon={{ url: '/assets/images/orange_pointer_maps.png', scaledSize: new window.google.maps.Size(22, 34) }} />
                 </GoogleMap>

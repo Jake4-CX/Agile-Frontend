@@ -60,6 +60,17 @@ interface Report {
   user: Users;
   report_images?: Image[];
   report_votes?: { upvotes: number; downvotes: number; }
+  address?: ReportAddress;
+}
+
+interface ReportAddress {
+  id: number;
+  address_street: string;
+  address_city: string;
+  address_county: string;
+  address_postcode: string;
+  address_latitude: number;
+  address_longitude: number;
 }
 
 interface ReportVote {

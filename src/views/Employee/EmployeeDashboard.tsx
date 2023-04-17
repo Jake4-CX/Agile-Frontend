@@ -36,7 +36,7 @@ export const EmployeeDashboard = (props: any) => {
           <div className="sm:flex flex-col sm:items-end sm:justify-between px-10 py-4">
           </div>
 
-          <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+          <div className="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 dark:bg-gray-800 table-auto">
                 <tr>

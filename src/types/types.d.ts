@@ -8,6 +8,9 @@ interface Users {
   registration_date?: Date;
   last_login_date?: Date;
   account_role?: AccountRoles;
+  address?: ReportAddress;
+  reports?: Report[];
+  report_info?: { total_reports: number; total_reports_open: number; total_reports_closed: number; }
 }
 
 interface AccountRoles {

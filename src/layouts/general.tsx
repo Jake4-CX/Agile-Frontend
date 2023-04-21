@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+import { useLocation } from "react-router-dom";
 
 
 type Props = {
@@ -8,6 +9,18 @@ type Props = {
 };
 
 export const GeneralLayout: React.FC<Props> = ({ children }: Props) => {
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location === undefined) {
+      document.title = "FixMyStreet - Home";
+      return;
+    }
+
+    const path = (location.pathname.split('/').pop() || "Home").replace(/-/g, ' ');
+    document.title = `FixMyStreet - ${path.charAt(0).toUpperCase() + path.slice(1)}`;
+  }, [location]);
 
   return (
     <>

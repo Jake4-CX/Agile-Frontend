@@ -18,5 +18,9 @@ export const ReportService = () => {
     return axios.get('/reports/all');
   }
 
-  return {createUserReportRequest, getAllUserReportsRequest, getReportByUUIDRequest, getAllReportsRequest}
+  const getAllNearbyReportsRequest = (latitude: number, longitude: number) => {
+    return axios.get(`/reports/radius/${latitude}/${longitude}`);
+  }
+
+  return {createUserReportRequest, getAllUserReportsRequest, getReportByUUIDRequest, getAllReportsRequest, getAllNearbyReportsRequest}
 }

@@ -112,7 +112,7 @@ export const AdminUserDetailsDashboard = (props: any) => {
                     </div>
                     <div className="flex flex-row gap-x-3">
                       <div className="px-4 py-2 w-1/2 bg-[#3a4657] rounded-lg font-medium">Creation Date:</div>
-                      <div className="px-4 py-2 w-1/2 bg-[#343536] rounded-lg font-medium truncate overflow-hidden"> {selectedUser.registration_date !== undefined ? selectedUser.registration_date : "No date found"} </div>
+                      <div className="px-4 py-2 w-1/2 bg-[#343536] rounded-lg font-medium truncate overflow-hidden"> {selectedUser.registration_date !== undefined ? moment(selectedUser.registration_date).format("DD/MM/YY") : "No date found"} </div>
                     </div>
                     <div className="flex flex-row gap-x-3">
                       <div className="px-4 py-2 w-1/2 bg-[#3a4657] rounded-lg font-medium">Account Type:</div>
@@ -165,46 +165,38 @@ export const AdminUserDetailsDashboard = (props: any) => {
                 </div>
               </div>
 
-              {
-                true == false && (
-                  <>
-                    {/* User notes */}
-                    <div id="user-notes" className="flex flex-col w-10/12 mt-4 md:mt-0">
-                      <div className="w-full gap-y-3 bg-[#181c22] rounded-md p-5 text-white">
-                        {/* Check if user notes exists before displaying */}
-                        <div className="px-3">
-                          <div className="w-full px-4 py-2 bg-[#3a4657] rounded-lg font-medium text-center">User Notes:</div>
-                        </div>
-                        <div className="overflow-x-auto">
-                          <table className="w-full border-separate border-spacing-3">
-                            <thead>
-                              <tr className="">
-                                <th className="px-4 py-2 bg-[#3a4657] rounded-lg font-medium">Date</th>
-                                <th className="px-4 py-2 bg-[#3a4657] rounded-lg font-medium">Type</th>
-                                <th className="px-4 py-2 bg-[#3a4657] rounded-lg font-medium">Note</th>
+              {/* User Notes - Disabled */}
+              {/* <div id="user-notes" className="flex flex-col w-10/12 mt-4 md:mt-0">
+                <div className="w-full gap-y-3 bg-[#181c22] rounded-md p-5 text-white">
+                  <div className="px-3">
+                    <div className="w-full px-4 py-2 bg-[#3a4657] rounded-lg font-medium text-center">User Notes:</div>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-separate border-spacing-3">
+                      <thead>
+                        <tr className="">
+                          <th className="px-4 py-2 bg-[#3a4657] rounded-lg font-medium">Date</th>
+                          <th className="px-4 py-2 bg-[#3a4657] rounded-lg font-medium">Type</th>
+                          <th className="px-4 py-2 bg-[#3a4657] rounded-lg font-medium">Note</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          [1, 2, 3].map((notes, key) => {
+                            return (
+                              <tr key={key} className="text-center">
+                                <td className="px-4 py-2 bg-[#343536] rounded-lg font-medium">21/03/23</td>
+                                <td className="px-4 py-2 bg-[#343536] rounded-lg font-medium">System</td>
+                                <td className="px-4 py-2 bg-[#343536] rounded-lg font-medium">Report number 001 closed complete</td>
                               </tr>
-                            </thead>
-                            <tbody>
-                              {
-                                [1, 2, 3].map((notes, key) => {
-                                  return (
-                                    <tr key={key} className="text-center">
-                                      <td className="px-4 py-2 bg-[#343536] rounded-lg font-medium">21/03/23</td>
-                                      <td className="px-4 py-2 bg-[#343536] rounded-lg font-medium">System</td>
-                                      <td className="px-4 py-2 bg-[#343536] rounded-lg font-medium">Report number 001 closed complete</td>
-                                    </tr>
-                                  )
-                                })
-                              }
-                            </tbody>
-                          </table>
-                        </div>
-
-                      </div>
-                    </div>
-                  </>
-                )
-              }
+                            )
+                          })
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div> */}
 
               {/* Active issues */}
               <div id="active-issues" className="flex flex-col w-10/12 mt-4 md:mt-0">

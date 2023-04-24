@@ -92,11 +92,21 @@ interface ReportType {
   report_type_icon: string;
 }
 
+interface ReportUpdate {
+  id: number;
+  report_date: string;
+  report_update_text: string;
+  report: Report;
+  user: Users;
+  image_group: ImageGroup;
+  report_images: Image[];
+}
+
 interface AssignedReport {
   id: number;
   assigned_date: Date;
-  report?: Report;
-  user?: Users;
+  report: Report;
+  user: Users;
 }
 
 interface ImageGroup {

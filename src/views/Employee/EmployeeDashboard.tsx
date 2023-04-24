@@ -5,6 +5,10 @@ import { toast } from "react-toastify"
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api"
 import { AssignedReportService } from "../../API/Services/AssignedReportService"
 import { useNavigate } from "react-router-dom"
+import { ReportUpdateService } from "../../API/Services/ReportUpdateService"
+import { FileUpload } from "../../components/FileUpload"
+import { ImageService } from "../../API/Services/ImageService"
+import moment from "moment"
 
 export const EmployeeDashboard = (props: any) => {
 
@@ -12,12 +16,25 @@ export const EmployeeDashboard = (props: any) => {
 
   const nagivate = useNavigate();
 
+  const { getReportUpdatesFromReportUUIDRequest, createReportUpdateRequest } = ReportUpdateService();
+  const { uploadImageRequest } = ImageService();
+
   const [reports, setReports] = useState<AssignedReport[]>([])
   const [selectedAssignedReport, setSelectedAssignedReport] = useState<AssignedReport>()
+
   const [checkApproval, setCheckApproval] = useState<boolean>(false)
 
   const { getAllUserAssignedReportsRequest } = ReportService();
   const { completeAssignedReportRequest } = AssignedReportService();
+
+
+  // report update
+  const [showNotes, setShowNotes] = useState<boolean>(false)
+  const [reportUpdates, setReportUpdates] = useState<ReportUpdate[]>([])
+  // form elements
+  const [updateMessage, setUpdateMessage] = useState<string>("")
+  const [files, setFiles] = useState()
+
 
   useEffect(() => {
     const getReports = async () => {
@@ -33,6 +50,26 @@ export const EmployeeDashboard = (props: any) => {
 
     getReports();
   }, []);
+
+  useEffect(() => {
+
+    const getReportUpdates = async (assignedReport: AssignedReport) => {
+      const response = await getReportUpdatesFromReportUUIDRequest(assignedReport.report.report_uuid);
+
+      if (response.status && response.status === 200) {
+        console.log("Report updates: " + response.data);
+        setReportUpdates(response.data as ReportUpdate[])
+      } else {
+        toast.error("Failed to get report updates");
+      }
+    }
+
+    if (!showNotes || !selectedAssignedReport) return;
+    getReportUpdates(selectedAssignedReport);
+
+
+
+  }, [selectedAssignedReport, showNotes])
 
   const { isLoaded } = useLoadScript({ googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY })
 
@@ -64,6 +101,11 @@ export const EmployeeDashboard = (props: any) => {
     setSelectedAssignedReport(assignedReport);
   }
 
+  function showReportNotes(assignedReport: AssignedReport) {
+    setShowNotes(true);
+    setSelectedAssignedReport(assignedReport);
+  }
+
   async function completeReport(reportUUID: string) {
     const response = await completeAssignedReportRequest(reportUUID);
 
@@ -72,6 +114,75 @@ export const EmployeeDashboard = (props: any) => {
       nagivate("/reports/" + reportUUID);
     } else {
       toast.error("Failed to complete report");
+    }
+  }
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (!selectedAssignedReport) {
+      toast.error("Please select a report");
+      return;
+    }
+
+    if (updateMessage.length === 0) {
+      toast.error("Please enter a message");
+      return;
+    }
+
+    const data = {
+      report_update_text: updateMessage,
+    }
+
+    try {
+
+      const response = await ReportUpdateService().createReportUpdateRequest(selectedAssignedReport.report.report_uuid, data);
+
+      if (response.status && response.status === 200) {
+        console.log("Report update created");
+
+        if (files !== undefined) {
+          const image_group_id = response.data.image_group.id;
+
+          const uploadFiles = files as File[];
+          Array.from(uploadFiles).map(async (file: File) => {
+            console.log("FileName: ", file.name)
+
+            if (!([["image/jpeg", "image/png", "image/gif"].includes(file.type)])) {
+              toast.warn(file.name + " must be a jpeg, png or gif")
+
+            } else if (file.size > 5000000) {
+              toast.warn(file.name + " must be less than 5MB")
+
+            } else {
+
+              const formData = new FormData()
+              formData.append("image", file)
+
+              try {
+                const resp = await uploadImageRequest(formData, image_group_id)
+                if (resp.status === 200) {
+                  console.log("Image uploaded successfully!")
+                } else {
+                  console.log("Image upload failed - ", resp.data.message)
+                }
+              } catch (e: any) {
+                console.warn("Error uploading image: ", e.message)
+              }
+
+            }
+
+          });
+        }
+
+        toast.success("note applied to report!")
+        setShowNotes(false);
+      }
+
+    } catch (error: any) {
+      toast.error("Error submitting report: " + error.message)
+      console.error(error.message)
+
     }
   }
 
@@ -152,14 +263,16 @@ export const EmployeeDashboard = (props: any) => {
                                           <div className="flex flex-col w-5/6 h-full">
                                             <div className="w-full grid grid-cols-5 gap-4 h-56">
                                               <div className="col-span-3">
-                                                <p>
-                                                  <span className="text-sm font-medium text-gray-500">Address: </span>
-                                                  <span className="text-sm text-gray-900 dark:text-gray-100">{assignedReport.report.address?.address_street + ", " + assignedReport.report.address?.address_city + ", " + assignedReport.report?.address?.address_county + ", " + assignedReport.report?.address?.address_postal_code}</span>
-                                                </p>
-                                                <p className="">
-                                                  <span className="text-sm font-medium text-gray-500">Description: </span>
-                                                  <span className="text-sm text-gray-900 dark:text-gray-100">{assignedReport.report.report_description}</span>
-                                                </p>
+                                                <div className="w-full h-full flex flex-col">
+                                                  <p className="text-sm">
+                                                    <span className="text-sm font-medium text-gray-500">Address: </span>
+                                                    <span className="text-sm text-gray-900 dark:text-gray-100">{assignedReport.report.address?.address_street + ", " + assignedReport.report.address?.address_city + ", " + assignedReport.report?.address?.address_county + ", " + assignedReport.report?.address?.address_postal_code}</span>
+                                                  </p>
+                                                  <p className="text-sm">
+                                                    <span className="text-sm font-medium text-gray-500">Description: </span>
+                                                    <span className="text-sm text-gray-900 dark:text-gray-100">{assignedReport.report.report_description}</span>
+                                                  </p>
+                                                </div>
                                               </div>
                                               <div className="col-span-2 space-y-2">
                                                 {
@@ -203,7 +316,7 @@ export const EmployeeDashboard = (props: any) => {
                                             {/* Button collection (same line with small gap between) */}
                                             <div className="flex flex-row gap-x-2 items-end justify-end">
                                               <button onClick={() => approveReport(assignedReport)} className="px-3 py-1 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600">Complete</button>
-                                              <button className="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">Add update</button>
+                                              <button onClick={() => showReportNotes(assignedReport)} className="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">Updates</button>
                                             </div>
                                           </div>
                                         </div>
@@ -258,11 +371,97 @@ export const EmployeeDashboard = (props: any) => {
                 </div>
               </div>
             </div>
-
           </>
         )
 
       }
-    </GeneralLayout>
+
+      {
+        showNotes && selectedAssignedReport && selectedAssignedReport.report && (
+          <>
+            <div className="absolute inset-0 z-50 overflow-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+              <div className="items-end justify-center h-screen text-center block">
+                <div onClick={() => setShowNotes(false)} className="fixed inset-0 bg-gray-500/25 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
+                <span className="inline-block align-middle h-screen" aria-hidden="true">&#8203;</span>
+                <div className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle max-w-xl w-full" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+                  <div className="bg-white px-4 pt-5 pb-4 p-6 sm:pb-4">
+                    <div className="flex flex-col items-start space-y-6">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        Report updates
+                      </h3>
+                      <div className="bg-gray-200 rounded-lg w-full h-[378px] p-4">
+                        {
+                          reportUpdates && reportUpdates.map((reportUpdate, index) => {
+
+                            return (
+                              <>
+                                <div className="flex flex-row items-center justify-between">
+                                  <div className="flex flex-row items-center gap-x-2">
+                                    <div className="w-8 h-8 rounded-full bg-gray-300">
+                                      <img className="pointer-events-none flex-shrink-0 object-cover rounded-full w-full h-full" src="/assets/images/default-user-icon.jpg" alt="avatar"/>
+                                    </div>
+                                    <div className="flex flex-col">
+                                      <p className="text-sm font-medium">{reportUpdate.user.first_name}</p>
+                                      <p className="text-xs text-gray-500">{moment(reportUpdate.report_date).calendar()}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex flex-row items-center justify-between p-2">
+                                  <div className="flex flex-col">
+                                    <p className="text-sm">{reportUpdate.report_update_text}</p>
+                                    {/* View attached images */}
+                                    <div className="flex flex-row items-center gap-x-2 mt-2">
+                                      {
+                                        reportUpdate.report_images && reportUpdate.report_images.map((image, index) => {
+                                          return (
+                                            <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+                                          )
+                                        })
+                                      }
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </>
+                            )
+
+                          })
+                        }
+                      </div>
+                      <div className="bg-gray-200 rounded-lg w-full max-h-[684px] p-4">
+
+                        <form onSubmit={handleSubmit}>
+                          {/* Title - Add report */}
+                          <h2 className="text-lg font-medium mb-2">Add update</h2>
+
+                          {/* Report update textarea */}
+                          <div className="flex flex-col">
+                            <label className="font-bold text-left">Message</label>
+                            <textarea className="rounded-lg bg-white py-2 px-3 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-0 sm:text-sm h-[60px]" placeholder="Write a message here" defaultValue={updateMessage} onChange={e => setUpdateMessage(e.target.value)} required></textarea>
+                          </div>
+
+                          <div className="sticky">
+
+                            {/* Image upload */}
+                            <div className="">
+                              <FileUpload files={files} setFiles={setFiles} limit={2} />
+                            </div>
+
+                            {/* Submit button */}
+                            <div className="flex justify-center">
+                              <button className="w-full block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Submit</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )
+      }
+    </GeneralLayout >
   )
 }

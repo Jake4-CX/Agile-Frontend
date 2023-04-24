@@ -3,7 +3,7 @@ import { FiUpload } from "react-icons/fi"
 import { ImCross } from "react-icons/im"
 import { toast } from "react-toastify"
 
-export const FileUpload = ({ files, setFiles }: any) => {
+export const FileUpload = ({ files, setFiles, limit }: any) => {
 
   const uploadFileRef = useRef<HTMLInputElement>(null)
   const [dragActive, setDragActive] = useState(false)
@@ -11,9 +11,10 @@ export const FileUpload = ({ files, setFiles }: any) => {
   const uploadFile = (e: any) => {
     console.log(e.target.files)
     const uploadFiles = Array.from(e.target.files)
+    const uploadLimit = limit as number || 4
 
-    if (uploadFiles.length > 4) {
-      toast.warn("You can only assign a maximum of 4 photographs to this report.")
+    if (uploadFiles.length > uploadLimit) {
+      toast.warn(`You can only assign a maximum of ${uploadLimit} photographs to this report.`)
       return
     }
 
@@ -41,8 +42,9 @@ export const FileUpload = ({ files, setFiles }: any) => {
     console.log("drop")
     console.log(e.dataTransfer.files)
 
-    if (e.dataTransfer.files.length > 4) {
-      toast.warn("You can only assign a maximum of 4 photographs to this report.")
+    const uploadLimit = limit as number || 4
+    if (e.dataTransfer.files.length > uploadLimit) {
+      toast.warn(`You can only assign a maximum of ${uploadLimit} photographs to this report.`)
       return
     }
 

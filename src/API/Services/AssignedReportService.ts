@@ -10,7 +10,7 @@ export const AssignedReportService = () => {
   }
 
   const completeAssignedReportRequest = (report_uuid: string) => {
-    return axios.put(`/reports/uuid/${report_uuid}/assigned/complete`);
+    return axios.post(`/reports/uuid/${report_uuid}/assigned/complete`);
   }
 
   return { assignReportRequest, completeAssignedReportRequest }

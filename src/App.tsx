@@ -21,12 +21,14 @@ import { AdminUserDashboard } from './views/Admin/Users'
 import { AdminUserDetailsDashboard } from './views/Admin/UserDetails'
 import { EmployeeDashboard } from './views/Employee/EmployeeDashboard'
 import { Verify } from './views/verification/Verify'
+import { ManagerDashboard } from './views/Manager/Dashboard'
+import { ManagerAssign } from './views/Manager/Assign'
 function App() {
 
   const dashboardRoleRoutes = [
     { role: "User", element: <Dashboard /> },
     { role: "Employee", element: <EmployeeDashboard /> },
-    { role: "Manager", element: <Dashboard /> },
+    { role: "Manager", element: <ManagerDashboard /> },
     { role: "Administrator", element: <AdminDashboard /> },
   ] as { role: String, element: JSX.Element }[]
 
@@ -48,6 +50,11 @@ function App() {
         <Route path='/report' element={<Report />} />
         <Route path='/reports' element={<Reports />} />
         <Route path='/reports/:report_uuid' element={<ViewReport />} />
+
+        {/* Manager routing */}
+        <Route element={<RequireAuth allowedRoles={["Manager", "Administrator"]} />}>
+          <Route path='/dashboard/assign/:report_uuid' element={<ManagerAssign />} />
+        </Route>
 
         {/* Admin routing */}
         <Route element={<RequireAuth allowedRoles={["Administrator"]} />}>

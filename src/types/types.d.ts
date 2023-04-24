@@ -11,6 +11,7 @@ interface Users {
   address?: ReportAddress;
   reports?: Report[];
   report_info?: { total_reports: number; total_reports_open: number; total_reports_closed: number; }
+  assigned_reports?: AssignedReport[];
 }
 
 interface AccountRoles {
@@ -71,7 +72,7 @@ interface ReportAddress {
   address_street: string;
   address_city: string;
   address_county: string;
-  address_postcode: string;
+  address_postal_code: string;
   address_latitude: number;
   address_longitude: number;
 }
@@ -89,6 +90,13 @@ interface ReportType {
   report_type_name: string;
   report_type_description: string;
   report_type_icon: string;
+}
+
+interface AssignedReport {
+  id: number;
+  assigned_date: Date;
+  report?: Report;
+  user?: Users;
 }
 
 interface ImageGroup {

@@ -10,6 +10,10 @@ export const ReportService = () => {
     return axios.get(`/reports/user/${userId}`);
   }
 
+  const getAllUserAssignedReportsRequest = () => {
+    return axios.get('/reports/assigned');
+  }
+
   const getReportByUUIDRequest = (uuid: string) => {
     return axios.get(`/reports/uuid/${uuid}`);
   }
@@ -22,5 +26,9 @@ export const ReportService = () => {
     return axios.get(`/reports/radius/${latitude}/${longitude}`);
   }
 
-  return {createUserReportRequest, getAllUserReportsRequest, getReportByUUIDRequest, getAllReportsRequest, getAllNearbyReportsRequest}
+  const getAllUnassignedReportsRequest = () => {
+    return axios.get('/reports/all/unassigned');
+  }
+
+  return {createUserReportRequest, getAllUserReportsRequest, getReportByUUIDRequest, getAllReportsRequest, getAllNearbyReportsRequest, getAllUnassignedReportsRequest, getAllUserAssignedReportsRequest}
 }

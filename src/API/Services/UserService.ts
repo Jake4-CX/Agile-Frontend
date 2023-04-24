@@ -10,5 +10,9 @@ export const UserService = () => {
     return axios.get('/users');
   }
 
-  return { getUserByIdRequest, getAllUsersRequest }
+  const getAllUsersWithRoleRequest = (roleId: number) => {
+    return axios.get(`/users/role/${roleId}`);
+  }
+
+  return { getUserByIdRequest, getAllUsersRequest, getAllUsersWithRoleRequest }
 }

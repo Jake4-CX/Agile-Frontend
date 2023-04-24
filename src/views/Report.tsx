@@ -18,6 +18,7 @@ import { GeneralLayout } from "../layouts/general";
 
 export const Report = (props: any) => {
 
+  const navigate = useNavigate()
   const location = useLocation();
   const user = UseAuth().getCurrentUser();
 
@@ -205,7 +206,16 @@ export const Report = (props: any) => {
 
   return (
     <GeneralLayout>
-      <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-1 lg:space-x-6 space-y-6 lg:space-y-0 w-full h-full justify-center items-center lg:mt-12">
+      <div className={`${user ? "grid grid-cols-1 lg:grid-cols-2 grid-rows-1 lg:space-x-6" : ""} space-y-6 lg:space-y-0 w-full h-full justify-center items-center lg:mt-12`}>
+        {
+          loadMap && !user && (
+            <>
+              <div className="flex w-full h-[72px] bg-gray-400 rounded-lg my-4 items-center justify-center">
+                <h1 className="text-white font-semibold text-2xl">Want to report a problem? <span onClick={() => navigate("/register")} className="text-gray-50 hover:text-white/50 duration-150 cursor-pointer">Create an account</span></h1>
+              </div>
+            </>
+          )
+        }
         <div className="col-span-1 row-span-1 bg-[#f8f8f8] dark:bg-[#1d2029]">
           {
             loadMap ? (
@@ -221,7 +231,7 @@ export const Report = (props: any) => {
             )
           }
         </div>
-        <div className="col-span-1 row-span-1 bg-[#f8f8f8] dark:bg-[#1d2029]">
+        <div className={`${!user ? "hidden" : ""} col-span-1 row-span-1 bg-[#f8f8f8] dark:bg-[#1d2029]`}>
           <div className="flex flex-col justify-center items-center w-full h-full lg:h-[65vh] space-y-5">
 
             <div className="flex justify-center items-center w-full h-full">

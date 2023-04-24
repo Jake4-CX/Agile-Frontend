@@ -149,7 +149,7 @@ export const AdminUserDetailsDashboard = (props: any) => {
                         </div>
                         <div className="row-span-1 col-span-1 flex flex-row gap-x-3">
                           <div className="px-4 py-2 w-1/2 bg-[#3a4657] rounded-lg font-medium">Postcode:</div>
-                          <div className="px-4 py-2 w-1/2 bg-[#343536] rounded-lg font-medium">{selectedUser.address.address_postcode}</div>
+                          <div className="px-4 py-2 w-1/2 bg-[#343536] rounded-lg font-medium">{selectedUser.address.address_postal_code}</div>
                         </div>
                         <div className="row-span-1 col-span-1 flex flex-row gap-x-3">
                           <div className="px-4 py-2 w-1/2 bg-[#3a4657] rounded-lg font-medium">Country:</div>

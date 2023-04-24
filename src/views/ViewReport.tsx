@@ -107,16 +107,23 @@ export const ViewReport = (props: any) => {
                       </div>
                     </div>
 
+                    {/* Report Address */}
+
+                    <div className="flex flex-col">
+                      <label className="font-bold text-left">Report Address</label>
+                      <p>{report.address ? report.address.address_street + ", " + report.address.address_city + ", " + report.address.address_county + ", " + report.address.address_postal_code : "No address found"}</p>
+                    </div>
+
                     {/* Report Type */}
                     <div className="flex flex-col">
                       <label className="font-bold text-left">Report Type</label>
                       <p>{report.report_type.report_type_name}</p>
                     </div>
 
-                    {/* Report Severity */}
+                    {/* Report Votes */}
                     <div className="flex flex-col">
-                      <label className="font-bold text-left">Report Severity</label>
-                      <input className="accent-purple-500 w-full" type="range" min={"1"} max={"10"} defaultValue={report.report_severity} disabled />
+                      <label className="font-bold text-left">Report Votes</label>
+                      <p>{ (report.report_votes?.upvotes || 0) - (report.report_votes?.downvotes || 0) }</p>
                     </div>
 
                     {/* Description */}
@@ -125,7 +132,6 @@ export const ViewReport = (props: any) => {
                       <textarea className="rounded-lg bg-white py-2 px-3 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-0 sm:text-sm h-[90px] m-h-[120px] resize-none" placeholder="Loading..." value={report.report_description} disabled />
                     </div>
 
-                    <p>Report Location: {report.report_latitude} , {report.report_longitude}</p>
                   </div>
 
                   <div className="mt-2">

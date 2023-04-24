@@ -81,7 +81,7 @@ export const AdminUserDashboard = (props: any) => {
                               <div className="text-sm text-gray-900 dark:text-gray-100 truncate overflow-hidden w-[82px] md:w-[102px]">{user.user_email}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-900 dark:text-gray-100">{user.address?.address_postcode || "N/A"}</div>
+                              <div className="text-sm text-gray-900 dark:text-gray-100">{user.address?.address_postal_code || "N/A"}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm text-gray-900 dark:text-gray-100">{user.report_info?.total_reports_open}</div>

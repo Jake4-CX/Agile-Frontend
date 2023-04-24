@@ -50,7 +50,7 @@ export const Reports = (props: any) => {
     <GeneralLayout>
       <div className="flex flex-col justify-center items-center">
         <div className="mt-6">
-          {reports.map((report: Report, index: number) => {
+          {reports.reverse().map((report: Report, index: number) => {
             return (
               <div key={report.id} className="bg-slate-200 rounded-lg cursor-pointer p-3" onClick={() => navigate(report.report_uuid)}>
                 <p>{index + 1}) {report.report_uuid}</p>

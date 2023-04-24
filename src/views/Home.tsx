@@ -119,7 +119,7 @@ export const Home = (props: any) => {
             <h1 className="text-2xl font-bold text-black"></h1>
 
             {
-              reports.slice(0, 3).map((report, index) => (
+              reports.reverse().slice(0, 3).map((report, index) => (
                 <div key={index} className="grid grid-cols-1 grid-rows-3 sm:grid-cols-3 sm:grid-rows-1 my-2 hover:bg-slate-200 duration-150 cursor-pointer p-2 rounded-lg" onClick={() => navigate("reports/" + report.report_uuid)}>
                   <div className="flex flex-col col-span-2">
                     <h3 className="text-lg font-semibold">{report.report_type.report_type_name}</h3>

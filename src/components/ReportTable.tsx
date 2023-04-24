@@ -57,7 +57,7 @@ export const ReportTable = (props: any) => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900 truncate overflow-hidden ... w-[82px] md:w-[128px] lg:w-[192px]">{ report.address ? (report.address.address_street + ", " + report.address.address_county + ", " + report.address.address_city + ", " + report.address.address_postcode) : "No Address Found" }</div>
+                          <div className="text-sm text-gray-900 truncate overflow-hidden ... w-[82px] md:w-[128px] lg:w-[192px]">{ report.address ? (report.address.address_street + ", " + report.address.address_county + ", " + report.address.address_city + ", " + report.address.address_postal_code) : "No Address Found" }</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="inline-flex text-xs leading-5 font-semibold">

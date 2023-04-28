@@ -32,3 +32,5 @@ VITE_API_URL=http://localhost:3000/
 1) This is just the frontend, so the backend will also have to run (on the API URL defined in the env file) to be able to do stuff which requires account authentication.
 2) The code can also be edited and ran though github codespaces.
 3) The development branch of the application is running here <https://agile-frontend.pages.dev/> but there is currently no backend running so some features will not work.
+
+Run preview here: https://ct503823grp2-ct5038.uogs.co.uk/

@@ -380,9 +380,9 @@ export const EmployeeDashboard = (props: any) => {
         showNotes && selectedAssignedReport && selectedAssignedReport.report && (
           <>
             <div className="absolute inset-0 z-50 overflow-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-              <div className="items-end justify-center h-screen text-center block">
+              <div className="items-end justify-center min-h-screen h-full text-center block">
                 <div onClick={() => setShowNotes(false)} className="fixed inset-0 bg-gray-500/25 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
-                <span className="inline-block align-middle h-screen" aria-hidden="true">&#8203;</span>
+                <span className="inline-block align-middle min-h-screen h-full" aria-hidden="true">&#8203;</span>
                 <div className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle max-w-xl w-full" role="dialog" aria-modal="true" aria-labelledby="modal-title">
                   <div className="bg-white px-4 pt-5 pb-4 p-6 sm:pb-4">
                     <div className="flex flex-col items-start space-y-6">
@@ -428,7 +428,7 @@ export const EmployeeDashboard = (props: any) => {
                           })
                         }
                       </div>
-                      <div className="bg-gray-200 rounded-lg w-full max-h-[684px] p-4">
+                      <div className="bg-gray-200 rounded-lg w-full h-fit p-4">
 
                         <form onSubmit={handleSubmit}>
                           {/* Title - Add report */}

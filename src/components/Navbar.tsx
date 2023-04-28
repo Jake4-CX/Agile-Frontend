@@ -116,8 +116,8 @@ function dropDown(user: Users) {
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      onClick={() => (navigate("/profile"))}
+                      className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm cursor-not-allowed`}
+                      disabled={true}
                     >
                       {active ? (
                         <BsPersonFill className="mr-2 h-5 w-5" aria-hidden="true" />
@@ -132,7 +132,7 @@ function dropDown(user: Users) {
                   {({ active }) => (
                     <button
                       className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      onClick={() => (navigate("/settings"))}
+                      disabled={true}
                     >
                       {active ? (
                         <FiSettings

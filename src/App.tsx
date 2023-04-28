@@ -23,6 +23,7 @@ import { EmployeeDashboard } from './views/Employee/EmployeeDashboard'
 import { Verify } from './views/verification/Verify'
 import { ManagerDashboard } from './views/Manager/Dashboard'
 import { ManagerAssign } from './views/Manager/Assign'
+import { ReportTypes } from './views/Admin/ReportTypes'
 function App() {
 
   const dashboardRoleRoutes = [
@@ -60,6 +61,7 @@ function App() {
         <Route element={<RequireAuth allowedRoles={["Administrator"]} />}>
           <Route path='/dashboard/users' element={ <AdminUserDashboard />}/>
           <Route path='/dashboard/users/:user_id' element={ <AdminUserDetailsDashboard />}/>
+          <Route path='/dashboard/types' element={ <ReportTypes />}/>
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["User", "Employee", "Manager", "Administrator"]} />}>

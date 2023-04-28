@@ -6,7 +6,7 @@ import { Navbar } from "../components/Navbar";
 import axios from "../API/axios";
 
 import { Combobox, Listbox, Transition } from '@headlessui/react'
-import { Options } from "../API/Services/Options";
+import { OptionsService } from "../API/Services/OptionsService";
 import { FiCheck, FiChevronDown, FiUpload } from "react-icons/fi";
 import { FileUpload } from "../components/FileUpload";
 import { ImCross } from "react-icons/im";
@@ -31,7 +31,7 @@ export const Report = (props: any) => {
   var [reportDescription, setReportDescription] = useState("")
   const [files, setFiles] = useState()
 
-  const { getOptionsRequest } = Options()
+  const { getOptionsRequest } = OptionsService()
   const [categories, setCategories] = useState([{ id: 0, report_type_name: "Loading report types...", report_type_description: "" }] as ReportType[])
   const [selectedCategory, setSelectedCategory] = useState({ id: 0, report_type_name: "Select a category", report_type_description: "abc" } as ReportType)
   const [severity, setSeverity] = useState(5)

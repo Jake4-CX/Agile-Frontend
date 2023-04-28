@@ -1,6 +1,6 @@
 import axios from "../axios";
 
-export const Options = () => {
+export const OptionsService = () => {
   
   const getOptionsRequest = () => {
     return axios.get('/reports/options');

@@ -25,6 +25,8 @@ Here are a few recommended IDEs to use to edit and run this application in devel
 ```env
 VITE_GOOGLE_MAPS_API_KEY=AIzaSyAMkITHwvzXynS_SG4BVyFzaZp4Z9vju1c
 VITE_API_URL=http://localhost:3000/
+VITE_RECAPTCHA_SITE_KEY="6LdmuO4kAAAAAKzXUrQFZTAyZyTLk1ayUWl-Omlo"
+VITE_G4A_TRACKING_ID="G-XMMFVF1K3F"
 ```
 
 ## Notes

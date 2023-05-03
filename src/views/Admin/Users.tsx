@@ -61,7 +61,7 @@ export const AdminUserDashboard = (props: any) => {
                     <thead className="bg-gray-50 dark:bg-gray-800 table-auto">
                       <tr>
                         {
-                          ["User ID", "Name", "Emaill address", "Home postcode", "Open reports", "Total reports", "Creation Date", "Actions"].map((columnName, key) => {
+                          ["User ID", "Name", "Emaill address", "Account Role", "Open reports", "Total reports", "Creation Date", "Actions"].map((columnName, key) => {
                             return <th key={key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{columnName}</th>
                           })
                         }
@@ -81,7 +81,7 @@ export const AdminUserDashboard = (props: any) => {
                               <div className="text-sm text-gray-900 dark:text-gray-100 truncate overflow-hidden w-[82px] md:w-[102px]">{user.user_email}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-900 dark:text-gray-100">{user.address?.address_postal_code || "N/A"}</div>
+                              <div className="text-sm text-gray-900 dark:text-gray-100">{user.account_role?.role_name || "N/A"}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm text-gray-900 dark:text-gray-100">{user.report_info?.total_reports_open}</div>

@@ -18,7 +18,7 @@ export const AdminUserDetailsDashboard = (props: any) => {
   const [reportsOpen, setReportsOpen] = useState<Report[]>()
   const [reportsClosed, setReportsClosed] = useState<Report[]>()
 
-  const { getUserByIdRequest } = UserService()
+  const { getUserByIdRequest, updateUsersRoleByIdRequest } = UserService()
 
   if (user_id === undefined) {
     useEffect(() => {
@@ -67,6 +67,32 @@ export const AdminUserDetailsDashboard = (props: any) => {
   function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text)
     toast.success("Copied to clipboard")
+  }
+
+  function changeRole(role: number) {
+    if (selectedUser === undefined) {
+      toast.error("No user selected")
+      return
+    }
+
+    const updateRole = async (user_id: number, role_id: number) => {
+
+      try {
+        const response = await updateUsersRoleByIdRequest(user_id, role_id)
+
+        if (response.status && response.status == 200) {
+          toast.success("User role updated")
+          window.location.reload()
+        } else {
+          toast.error("An error occurred while updating user role")
+        }
+      } catch (e) {
+        toast.error("An error occurred while updating user role")
+      }
+    }
+
+    updateRole(selectedUser.id, role)
+
   }
 
   return (
@@ -130,6 +156,33 @@ export const AdminUserDetailsDashboard = (props: any) => {
                   </div>
                 </div>
               </div>
+
+              {/* 4 Buttons on the same line displaying the different role names: ["User", "Employee", "Manager", "Administrator"] */}
+              <div id="role-switcher" className="flex flex-col w-10/12 mt-4 md:mt-0">
+                <div className="grid md:grid-cols-4 md:grid-rows-1 bg-[#181c22] rounded-md p-5 text-white gap-y-3 md:gap-y-0 md:gap-x-3">
+                  <div className="col-span-1 row-span-1">
+                    <button onClick={() => changeRole(1)} className="flex items-center justify-center w-full px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                      <span>User</span>
+                    </button>
+                  </div>
+                  <div className="col-span-1 row-span-1">
+                    <button onClick={() => changeRole(2)} className="flex items-center justify-center w-full px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                      <span>Employee</span>
+                    </button>
+                  </div>
+                  <div className="col-span-1 row-span-1">
+                    <button onClick={() => changeRole(3)} className="flex items-center justify-center w-full px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                      <span>Manager</span>
+                    </button>
+                  </div>
+                  <div className="col-span-1 row-span-1">
+                    <button onClick={() => changeRole(4)} className="flex items-center justify-center w-full px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                      <span>Administrator</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
 
               {/* Address */}
               <div id="address" className="flex flex-col w-10/12 mt-4 md:mt-0">

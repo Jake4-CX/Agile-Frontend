@@ -4,6 +4,9 @@
 export const MapKeys = (props: any) => {
 
   const setShowMapKeys = props.setShowMapKeys as React.Dispatch<React.SetStateAction<boolean>>;
+  const categories = props.categories as ReportType[];
+
+  console.log("Categories: ", categories)
 
   return (
     <>
@@ -21,10 +24,16 @@ export const MapKeys = (props: any) => {
                   <img className="z-20 w-6 text-center" src="assets/images/orange_pointer_maps.png" />
                 </div>
 
-                <div className="grid place-items-center grid-cols-3 col-span-1 w-full h-18" key={2}>
-                  <span className="font-semibold col-span-2">Open Report: </span>
-                  <img className="z-20 w-6" src="assets/images/brown_pointer_maps.png" />
-                </div>
+                {
+                  categories.map((category, index) => {
+                    return (
+                      <div className="grid place-items-center grid-cols-3 col-span-1 w-full h-18" key={index}>
+                        <span className="font-semibold col-span-2">{category.report_type_name}: </span>
+                        <img className="z-20 w-6 text-center" src={"assets/images/pointers/" + category.report_type_icon + ".png"} />
+                      </div>
+                    )
+                  })
+                }
 
               </div>
             </div>

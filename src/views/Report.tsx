@@ -220,7 +220,7 @@ export const Report = (props: any) => {
           {
             loadMap ? (
               <>
-                <ReportMap mapCenter={mapCenter} markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} />
+                <ReportMap mapCenter={mapCenter} markerPosition={markerPosition} setMarkerPosition={setMarkerPosition} categories={categories} />
               </>
             ) : (
               <div className="flex flex-col justify-center items-center">

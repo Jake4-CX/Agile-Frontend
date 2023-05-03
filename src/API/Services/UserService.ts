@@ -14,5 +14,9 @@ export const UserService = () => {
     return axios.get(`/users/role/${roleId}`);
   }
 
-  return { getUserByIdRequest, getAllUsersRequest, getAllUsersWithRoleRequest }
+  const updateUsersRoleByIdRequest = (userId: number, roleId: number) => {
+    return axios.patch(`/users/${userId}/${roleId}`);
+  }
+
+  return { getUserByIdRequest, getAllUsersRequest, getAllUsersWithRoleRequest, updateUsersRoleByIdRequest }
 }

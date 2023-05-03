@@ -14,6 +14,7 @@ export const ReportMap = (props: any) => {
 
   const user = UseAuth().getCurrentUser();
   
+  var categories = props.categories as ReportType[]
   var mapCenter = useMemo(() => ({ lat: parseFloat(props.mapCenter.lat), lng: parseFloat(props.mapCenter.lng) }), [])
   var markerPosition = props.markerPosition as { lat: number, lng: number }
   var setMarkerPosition = props.setMarkerPosition as React.Dispatch<React.SetStateAction<{ lat: number, lng: number }>>
@@ -150,7 +151,7 @@ export const ReportMap = (props: any) => {
 
           {
           showMapKeys && (
-            <MapKeys setShowMapKeys={setShowMapKeys} />
+            <MapKeys setShowMapKeys={setShowMapKeys} categories={categories} />
           )
         }
         </div>

@@ -262,11 +262,6 @@ export const Report = (props: any) => {
                         <textarea className="rounded-lg bg-white py-2 px-3 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-0 sm:text-sm h-[90px] m-h-[120px]" placeholder="Enter a description about the problem" value={reportDescription} onChange={(e) => setReportDescription(e.target.value)}></textarea>
                       </div>
 
-                      {/* Severity range slider */}
-                      <div className="flex flex-col">
-                        <label className="font-bold text-left">Severity</label>
-                        <input className="accent-purple-500 w-full" type="range" min={"1"} max={"10"} onChange={(e) => setSeverity(parseInt(e.target.value))} defaultValue={5} />
-                      </div>
                     </div>
                   </div>
 

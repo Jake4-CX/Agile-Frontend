@@ -18,6 +18,9 @@ export const Reset = (props: any) => {
 
   const { checkResetPasswordToken, resetPassword } = VerifyService();
 
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const [response, setResponse] = useState<boolean>()
+
   if (verification_uuid === undefined) {
     // Redirect user to previous page and display a toast message
     useEffect(() => {
@@ -35,13 +38,19 @@ export const Reset = (props: any) => {
         if (response.status !== 200) {
           console.log(response.data.message)
           toast.error("Invalid verification token!")
-          navigate(-1)
+          setResponse(true)
+          setIsLoaded(false)
+          return
+        } else {
+          setResponse(true)
+          setIsLoaded(true)
           return
         }
 
       } catch (error) {
         toast.error("Invalid token!")
-        navigate(-1)
+        setIsLoaded(true)
+        setResponse(false)
         return
       }
     }
@@ -142,21 +151,35 @@ export const Reset = (props: any) => {
 
           <hr className='h-0 my-2 -mx-8 border border-solid border-t-0 border-gray-600 opacity-10'></hr>
 
-          <section className='mt-6'>
-            <div className='flex flex-col'>
+          {
+            isLoaded && response === true ? (
+              <>
+                <section className='mt-6'>
+                  <div className='flex flex-col'>
 
-              <form onSubmit={handleSubmit}>
-                {/* Password */}
-                <div className='mb-6 pt-6 rounded bg-gray-200'>
-                  <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='password'>Password</label>
-                  <input ref={passwordInput} className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={password} onChange={(e) => setPassword(e.target.value)} type='password' placeholder='password' />
-                </div>
+                    <form onSubmit={handleSubmit}>
+                      {/* Password */}
+                      <div className='mb-6 pt-6 rounded bg-gray-200'>
+                        <label className='block text-gray-700 text-sm font-bold mb-2 ml-3' htmlFor='password'>Password</label>
+                        <input ref={passwordInput} className='bg-gray-200 rounded w-full text-geay-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 bg-clip-text' value={password} onChange={(e) => setPassword(e.target.value)} type='password' placeholder='password' />
+                      </div>
 
-                <button className='w-full block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200' type='submit'>Reset Password</button>
+                      <button className='w-full block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200' type='submit'>Reset Password</button>
 
-              </form>
-            </div>
-          </section>
+                    </form>
+                  </div>
+                </section>
+              </>
+            ) : isLoaded && response === false ? (
+              <>
+                <p>Invalid verification token!</p>
+              </>
+            ) : (
+              <>
+                <p>Loading</p>
+              </>
+            )
+          }
         </main>
       </div>
     </GeneralLayout>

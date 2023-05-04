@@ -27,7 +27,7 @@ export const ManagerAssign = (props: any) => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const response = await getAllUsersWithRoleRequest(3);
+      const response = await getAllUsersWithRoleRequest(2);
 
       if (response.status && response.status === 200) {
         setUsers(response.data as Users[]);

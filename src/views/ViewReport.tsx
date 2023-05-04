@@ -68,7 +68,7 @@ export const ViewReport = (props: any) => {
 
   return (
     <GeneralLayout>
-      <div className="grid md:grid-cols-2 grid-rows-6 gap-4 [h-125vh] md:h-[100vh] lg:h-[70vh] mt-12">
+      <div className="grid md:grid-cols-2 grid-rows-6 gap-4 h-[87em] md:h-[64em] lg:h-[62em] mt-12">
         <div className="col-span-1 row-span-2 md:row-span-3">
           <div className="flex w-full h-full bg-gray-200 rounded p-6">
             {

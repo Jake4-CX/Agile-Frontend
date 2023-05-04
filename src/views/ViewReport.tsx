@@ -8,6 +8,7 @@ import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { ViewReportCarousel } from "../components/ViewReportCarousel"
 import { ImSad2 } from "react-icons/im"
 import { GeneralLayout } from "../layouts/general"
+import { AiFillDelete } from "react-icons/ai"
 
 export const ViewReport = (props: any) => {
 
@@ -68,7 +69,20 @@ export const ViewReport = (props: any) => {
 
   return (
     <GeneralLayout>
-      <div className="grid md:grid-cols-2 grid-rows-6 gap-4 h-[87em] md:h-[64em] lg:h-[62em] mt-12">
+
+
+      {/* Administrator tool bar */}
+
+      <div className="flex flex-col sm:flex-row items-end justify-end space-y-3 sm:space-y-0 sm:space-x-3 bg-gray-200 rounded-lg p-6 w-full mt-12">
+        <h2 className="font-semibold my-auto">Admin Toolbar</h2>
+        {/* Button - Delete report */}
+        <button className="flex flex-row space-x-3 items-center justify-center bg-red-500 hover:bg-red-600 rounded-lg p-2 w-full sm:w-auto">
+          <AiFillDelete className="h-5 w-5 text-white" />
+          <span className="text-white text-sm font-semibold">Delete Report</span>
+        </button>
+      </div>
+
+      <div className="grid md:grid-cols-2 grid-rows-6 gap-4 h-[87em] md:h-[64em] lg:h-[62em] mt-4">
         <div className="col-span-1 row-span-2 md:row-span-3">
           <div className="flex w-full h-full bg-gray-200 rounded p-6">
             {
@@ -123,7 +137,7 @@ export const ViewReport = (props: any) => {
                     {/* Report Votes */}
                     <div className="flex flex-col">
                       <label className="font-bold text-left">Report Votes</label>
-                      <p>{ (report.report_votes?.upvotes || 0) - (report.report_votes?.downvotes || 0) }</p>
+                      <p>{(report.report_votes?.upvotes || 0) - (report.report_votes?.downvotes || 0)}</p>
                     </div>
 
                     {/* Description */}

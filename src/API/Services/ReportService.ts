@@ -30,5 +30,9 @@ export const ReportService = () => {
     return axios.get('/reports/all/unassigned');
   }
 
-  return {createUserReportRequest, getAllUserReportsRequest, getReportByUUIDRequest, getAllReportsRequest, getAllNearbyReportsRequest, getAllUnassignedReportsRequest, getAllUserAssignedReportsRequest}
+  const deleteReportByUUIDRequest = (uuid: string) => {
+    return axios.delete(`/reports/uuid/${uuid}`);
+  }
+
+  return {createUserReportRequest, getAllUserReportsRequest, getReportByUUIDRequest, getAllReportsRequest, getAllNearbyReportsRequest, getAllUnassignedReportsRequest, getAllUserAssignedReportsRequest, deleteReportByUUIDRequest}
 }

@@ -9,14 +9,21 @@ import { ViewReportCarousel } from "../components/ViewReportCarousel"
 import { ImSad2 } from "react-icons/im"
 import { GeneralLayout } from "../layouts/general"
 import { AiFillDelete } from "react-icons/ai"
+import { UseAuth } from "../API/Services/UseAuth"
+import { BsFillExclamationCircleFill } from "react-icons/bs"
 
 export const ViewReport = (props: any) => {
 
   const navigate = useNavigate()
   const { report_uuid } = useParams()
 
+  const { getCurrentUser } = UseAuth();
+  const user = getCurrentUser();
+
   const [report, setReport] = useState<Report>()
-  const { getReportByUUIDRequest } = ReportService()
+  const { getReportByUUIDRequest, deleteReportByUUIDRequest } = ReportService()
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const uuid_regex = new RegExp("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$")
 
@@ -64,6 +71,31 @@ export const ViewReport = (props: any) => {
 
   const { isLoaded } = useLoadScript({ googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY })
 
+  function deleteReport() {
+    console.log("Deleting report")
+    setShowDeleteModal(false)
+
+    const deleteReport = async () => {
+      try {
+        const response = await deleteReportByUUIDRequest(report_uuid as string)
+
+        if (response && response.status == 200) {
+          toast.success("Report deleted successfully")
+          navigate(-1)
+        }
+      } catch (error) {
+        console.log(error)
+        toast.error("Failed to delete report")
+      }
+    }
+
+    deleteReport()
+  }
+
+
+  function confirmDeleteReport() {
+    setShowDeleteModal(true)
+  }
 
 
 
@@ -73,14 +105,19 @@ export const ViewReport = (props: any) => {
 
       {/* Administrator tool bar */}
 
-      <div className="flex flex-col sm:flex-row items-end justify-end space-y-3 sm:space-y-0 sm:space-x-3 bg-gray-200 rounded-lg p-6 w-full mt-12">
-        <h2 className="font-semibold my-auto">Admin Toolbar</h2>
-        {/* Button - Delete report */}
-        <button className="flex flex-row space-x-3 items-center justify-center bg-red-500 hover:bg-red-600 rounded-lg p-2 w-full sm:w-auto">
-          <AiFillDelete className="h-5 w-5 text-white" />
-          <span className="text-white text-sm font-semibold">Delete Report</span>
-        </button>
-      </div>
+      {
+        user && user.account_role && ["Manager", "Administrator"].includes(user.account_role.role_name) && (
+          <>
+            <div className="flex flex-col sm:flex-row items-end justify-end space-y-3 sm:space-y-0 sm:space-x-3 bg-gray-200 rounded-lg p-6 w-full mt-12">
+              {/* Button - Delete report */}
+              <button onClick={confirmDeleteReport} className="flex flex-row space-x-3 items-center justify-center bg-red-500 hover:bg-red-600 rounded-lg p-2 w-full sm:w-auto">
+                <AiFillDelete className="h-5 w-5 text-white" />
+                <span className="text-white text-sm font-semibold">Delete Report</span>
+              </button>
+            </div>
+          </>
+        )
+      }
 
       <div className="grid md:grid-cols-2 grid-rows-6 gap-4 h-[87em] md:h-[64em] lg:h-[62em] mt-4">
         <div className="col-span-1 row-span-2 md:row-span-3">
@@ -177,6 +214,48 @@ export const ViewReport = (props: any) => {
           </div>
         </div>
       </div>
+
+      {/* Confirmation modal for Deletion of report */}
+      {
+        showDeleteModal && (
+          <>
+            <div className="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+              <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div onClick={() => setShowDeleteModal(false)} className="fixed inset-0 bg-gray-500/25 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
+                <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div className="sm:flex sm:items-start">
+                      <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <BsFillExclamationCircleFill className="h-6 w-6 text-red-600" aria-hidden="true" />
+                      </div>
+                      <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                          Delete Report
+                        </h3>
+                        <div className="mt-2">
+                          <p className="text-sm text-gray-500">
+                            Are you sure you want to delete this report? All of the data will be permanently removed. This action cannot be undone.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button onClick={deleteReport} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm">
+                      Delete
+                    </button>
+                    <button onClick={() => setShowDeleteModal(false)} type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:text-sm">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )
+      }
+
     </GeneralLayout>
   )
 

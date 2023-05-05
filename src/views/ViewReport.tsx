@@ -11,6 +11,7 @@ import { GeneralLayout } from "../layouts/general"
 import { AiFillDelete } from "react-icons/ai"
 import { UseAuth } from "../API/Services/UseAuth"
 import { BsFillExclamationCircleFill } from "react-icons/bs"
+import { ReportUpdateService } from "../API/Services/ReportUpdateService"
 
 export const ViewReport = (props: any) => {
 
@@ -21,7 +22,9 @@ export const ViewReport = (props: any) => {
   const user = getCurrentUser();
 
   const [report, setReport] = useState<Report>()
+  const [reportUpdates, setReportUpdates] = useState<ReportUpdate[]>()
   const { getReportByUUIDRequest, deleteReportByUUIDRequest } = ReportService()
+  const { getReportUpdatesFromReportUUIDRequest } = ReportUpdateService()
 
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
@@ -66,6 +69,25 @@ export const ViewReport = (props: any) => {
 
     getReportByUUID()
   }, [])
+
+  useEffect(() => {
+
+    const getReportUpdates = async (report: Report) => {
+      const response = await getReportUpdatesFromReportUUIDRequest(report.report_uuid);
+
+      if (response.status && response.status === 200) {
+        console.log("Report updates: " + response.data);
+        setReportUpdates(response.data as ReportUpdate[])
+      } else {
+        toast.error("Failed to get report updates");
+      }
+    }
+
+    if (!report) return;
+    getReportUpdates(report);
+
+
+  }, [report])
 
   var [mapPosition, setMapPosition] = useState({ lat: 0, lng: 0 } as { lat: number, lng: number })
 
@@ -187,55 +209,55 @@ export const ViewReport = (props: any) => {
 
                   <div className="mt-2">
                     <label className="font-bold">Recent Updates: </label>
-                    <div className="flex bg-gray-300 rounded-lg px-4 py-12 h-fit">
-                      {
-                        [].length > 1 ? (
-                          <>
-                          </>
-                          // reportUpdates.map((reportUpdate, index) => {
+                    <div className="overflow-y-scroll flex bg-gray-300 rounded-lg px-4 py-4 h-[8em]">
+                      <div className="flex-row">
+                        {
+                          reportUpdates && reportUpdates.length > 1 ? (
+                            reportUpdates.map((reportUpdate, index) => {
 
-                          //   return (
-                          //     <>
-                          //       <div className="flex flex-row items-center justify-between">
-                          //         <div className="flex flex-row items-center gap-x-2">
-                          //           <div className="w-8 h-8 rounded-full bg-gray-300">
-                          //             <img className="pointer-events-none flex-shrink-0 object-cover rounded-full w-full h-full" src="/assets/images/default-user-icon.jpg" alt="avatar"/>
-                          //           </div>
-                          //           <div className="flex flex-col">
-                          //             <p className="text-sm font-medium">{reportUpdate.user.first_name}</p>
-                          //             <p className="text-xs text-gray-500">{moment(reportUpdate.report_date).calendar()}</p>
-                          //           </div>
-                          //         </div>
-                          //       </div>
-                          //       <div className="flex flex-row items-center justify-between p-2">
-                          //         <div className="flex flex-col">
-                          //           <p className="text-sm">{reportUpdate.report_update_text}</p>
-                          //           {/* View attached images */}
-                          //           <div className="flex flex-row items-center gap-x-2 mt-2">
-                          //             {
-                          //               reportUpdate.report_images && reportUpdate.report_images.map((image, index) => {
-                          //                 return (
-                          //                   <div className="w-8 h-8 rounded-full bg-gray-300"></div>
-                          //                 )
-                          //               })
-                          //             }
-                          //           </div>
-                          //         </div>
-                          //       </div>
+                              return (
+                                <>
+                                  <div className="flex flex-row items-center justify-between">
+                                    <div className="flex flex-row items-center gap-x-2">
+                                      <div className="w-8 h-8 rounded-full bg-gray-300">
+                                        <img className="pointer-events-none flex-shrink-0 object-cover rounded-full w-full h-full" src="/assets/images/default-user-icon.jpg" alt="avatar" />
+                                      </div>
+                                      <div className="flex flex-col">
+                                        <p className="text-sm font-medium">{reportUpdate.user.first_name}</p>
+                                        <p className="text-xs text-gray-500">{moment(reportUpdate.report_date).calendar()}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-row items-center justify-between p-2">
+                                    <div className="flex flex-col">
+                                      <p className="text-sm">{reportUpdate.report_update_text}</p>
+                                      {/* View attached images */}
+                                      <div className="flex flex-row items-center gap-x-2 mt-2">
+                                        {
+                                          reportUpdate.report_images && reportUpdate.report_images.map((image, index) => {
+                                            return (
+                                              <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+                                            )
+                                          })
+                                        }
+                                      </div>
+                                    </div>
+                                  </div>
 
-                          //     </>
-                          //   )
+                                </>
+                              )
 
-                          // })
-                        ) : (
-                          <>
-                            <div className="flex flex-row items-center justify-center text-gray-900 opacity-50 gap-x-3 w-full">
-                              <h1 className="text-2xl font-semibold">None found</h1>
-                              <ImSad2 className="h-6 w-6" />
-                            </div>
-                          </>
-                        )
-                      }
+                            })
+                          ) : (
+                            <>
+                              <div className="flex flex-row items-center justify-center text-gray-900 opacity-50 gap-x-3 w-full">
+                                <h1 className="text-2xl font-semibold">None found</h1>
+                                <ImSad2 className="h-6 w-6" />
+                              </div>
+                            </>
+                          )
+                        }
+                      </div>
                     </div>
                   </div>
 

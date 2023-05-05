@@ -10,11 +10,12 @@ import { GeneralLayout } from "../layouts/general";
 export const Home = (props: any) => {
 
   const [reports, setReports] = useState<Report[]>([])
+  const [reportStatistics, setReportStatistics] = useState<{reports_submitted_last_week: number, reports_completed_last_week: number, total_reports_submitted: number}>()
   const [postalCode, setPostalCode] = useState('')
   const postcodeRegex = /^(([A-Z]{1,2}\d[A-Z\d]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|PCRN|TKCA) ?\d[A-Z]{2}|BFPO ?\d{1,4}|(KY\d|MSR|VG|AI)[ -]?\d{4}|[A-Z]{2} ?\d{2}|GE ?CX|GIR ?0A{2}|SAN ?TA1)$/    // UK postcode regex
 
   const navigate = useNavigate();
-  const { getAllReportsRequest } = ReportService()
+  const { getAllReportsRequest, getReportStatisticsRequest } = ReportService()
 
   const baseUrl: string = import.meta.env.VITE_API_URL as string
 
@@ -58,6 +59,22 @@ export const Home = (props: any) => {
     }
 
     getAllReports()
+  }, [])
+
+  useEffect(() => {
+    const getReportStatistics = async () => {
+      try {
+        const response = await getReportStatisticsRequest()
+
+        if (response.status === 200) {
+          setReportStatistics(response.data as {reports_submitted_last_week: number, reports_completed_last_week: number, total_reports_submitted: number})
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getReportStatistics()
   }, [])
 
 
@@ -152,17 +169,17 @@ export const Home = (props: any) => {
         <div className="grid lg:grid-cols-3 grid-cols-1 gap-6 lg:gap-24 pt-4">
 
           <div className="flex flex-col justify-center items-center border-2 border-dashed rounded-lg h-[180px] text-center">
-            <h3 className="text-5xl font-medium text-white">100</h3>
+            <h3 className="text-5xl font-medium text-white">{(reportStatistics && reportStatistics.reports_submitted_last_week) || "0"}</h3>
             <p className="text-base">Reports in the past week</p>
           </div>
 
           <div className="flex flex-col justify-center items-center border-2 border-dashed rounded-lg h-[180px] text-center">
-            <h3 className="text-5xl font-medium text-white">239</h3>
-            <p className="text-base">Completed in the past month</p>
+            <h3 className="text-5xl font-medium text-white">{(reportStatistics && reportStatistics.reports_completed_last_week) || "0"}</h3>
+            <p className="text-base">Completed in the past week</p>
           </div>
 
           <div className="flex flex-col justify-center items-center border-2 border-dashed rounded-lg h-[180px] text-center">
-            <h3 className="text-5xl font-medium text-white">5,430</h3>
+            <h3 className="text-5xl font-medium text-white">{(reportStatistics && reportStatistics.total_reports_submitted) || "0"}</h3>
             <p className="text-base">Total reports submitted</p>
           </div>
 

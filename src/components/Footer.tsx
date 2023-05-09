@@ -57,7 +57,7 @@ export function Footer() {
                 <div>
                   <h3 className="text-gray-700 uppercase dark:text-white">About</h3>
                   <a onClick={() => navigate("/help")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Contact Us</a>
-                  <a onClick={() => navigate("/help")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Carrers</a>
+                  <a onClick={() => navigate("/help")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Careers</a>
                   <a onClick={() => navigate("/help")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Help</a>
                 </div>
 

@@ -62,8 +62,8 @@ export const HelpPage = (props: any) => {
         <div className="flex col-span-1">
           <div className="flex flex-col py-16 px-8 lg:px-16">
             <h1 className="text-1xl font-bold text-black">Need to Contact us?</h1>
-            <p className=""><span className="font-semibold">Call us on:</span> +44 01452 425000</p>
-            <p className=""><span className="font-semibold">Email us:</span>   contact@fixmystreet.com</p>
+            <p className=""><span className="font-semibold">Call us on:</span> <a href="tel:+4401452425000">+44 01452 425000</a></p>
+            <p className=""><span className="font-semibold">Email us:</span>   <a href="mailto:contact@fixmystreet.com?subject=Support">contact@fixmystreet.com</a></p>
           </div>
         </div>
       </div>

@@ -80,7 +80,7 @@ export const FileUpload = ({ files, setFiles, limit }: any) => {
   function uploadPhotos() {
     return (
       <>
-        <div className="flex flex-wrap mt-6 mb-6 justify-center"
+        <div className="flex flex-wrap my-2 justify-center"
           onClick={() => uploadFileRef.current?.click()}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}

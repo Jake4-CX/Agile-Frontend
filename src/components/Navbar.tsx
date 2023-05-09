@@ -16,7 +16,7 @@ export function Navbar() {
 
   const navLinks = [
     { "title": "Home", "link": "/" },
-    { "title": "All reports", "link": "/reports" },
+    { "title": "Recent reports", "link": "/reports" },
     { "title": "Help", "link": "/help" }
   ]
 

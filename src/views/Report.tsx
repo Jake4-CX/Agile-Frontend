@@ -244,14 +244,16 @@ export const Report = (props: any) => {
 
                     {/* Location */}
                     <p className="truncate overflow-hidden ...">Location: {formatAddress()}</p>
-                    <p className="">Latitude: {markerPosition.lat}</p>
-                    <p className="">Longitude: {markerPosition.lng}</p>
+                    <div className="">
+                      <p className="text-xs">Latitude: {markerPosition.lat}</p>
+                      <p className="text-xs">Longitude: {markerPosition.lng}</p>
+                    </div>
 
-                    <div className="mt-6 space-y-4">
+                    <div className="mt-4 space-y-2">
                       {/* Report Category - Dropdown box */}
                       <div className="flex flex-col">
                         <label className="font-bold text-left">Report Category</label>
-                        <div className="top-16 w-full">
+                        <div className="top-16 w-full z-50">
                           {selectedCategory !== undefined && comboBox()}
                         </div>
                       </div>

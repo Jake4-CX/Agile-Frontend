@@ -8,6 +8,10 @@ interface Users {
   registration_date?: Date;
   last_login_date?: Date;
   account_role?: AccountRoles;
+  address?: ReportAddress;
+  reports?: Report[];
+  report_info?: { total_reports: number; total_reports_open: number; total_reports_closed: number; }
+  assigned_reports?: AssignedReport[];
 }
 
 interface AccountRoles {
@@ -60,6 +64,17 @@ interface Report {
   user: Users;
   report_images?: Image[];
   report_votes?: { upvotes: number; downvotes: number; }
+  address?: ReportAddress;
+}
+
+interface ReportAddress {
+  id: number;
+  address_street: string;
+  address_city: string;
+  address_county: string;
+  address_postal_code: string;
+  address_latitude: number;
+  address_longitude: number;
 }
 
 interface ReportVote {
@@ -75,6 +90,23 @@ interface ReportType {
   report_type_name: string;
   report_type_description: string;
   report_type_icon: string;
+}
+
+interface ReportUpdate {
+  id: number;
+  report_date: string;
+  report_update_text: string;
+  report: Report;
+  user: Users;
+  image_group: ImageGroup;
+  report_images: Image[];
+}
+
+interface AssignedReport {
+  id: number;
+  assigned_date: Date;
+  report: Report;
+  user: Users;
 }
 
 interface ImageGroup {

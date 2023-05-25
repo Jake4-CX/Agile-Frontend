@@ -25,6 +25,8 @@ Here are a few recommended IDEs to use to edit and run this application in devel
 ```env
 VITE_GOOGLE_MAPS_API_KEY=AIzaSyAMkITHwvzXynS_SG4BVyFzaZp4Z9vju1c
 VITE_API_URL=http://localhost:3000/
+VITE_RECAPTCHA_SITE_KEY="6LdmuO4kAAAAAKzXUrQFZTAyZyTLk1ayUWl-Omlo"
+VITE_G4A_TRACKING_ID="G-XMMFVF1K3F"
 ```
 
 ## Notes
@@ -32,3 +34,5 @@ VITE_API_URL=http://localhost:3000/
 1) This is just the frontend, so the backend will also have to run (on the API URL defined in the env file) to be able to do stuff which requires account authentication.
 2) The code can also be edited and ran though github codespaces.
 3) The development branch of the application is running here <https://agile-frontend.pages.dev/> but there is currently no backend running so some features will not work.
+
+Run preview here: https://ct503823grp2-ct5038.uogs.co.uk/

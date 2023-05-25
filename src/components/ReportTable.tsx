@@ -9,28 +9,28 @@ export const ReportTable = (props: any) => {
   const navigate = useNavigate();
   var yourReports = props.data as Report[];
 
-  var [addresses, setAddresses] = useState<{[key: number]: string}>({})
+  // var [addresses, setAddresses] = useState<{[key: number]: string}>({})
 
-  useEffect(() => {
-    async function fetchAddresses() {
-      const addressPromises = yourReports.map((report: Report) => {
-        return getAddress(report.report_latitude, report.report_longitude);
-      });
-      const results = await Promise.all(addressPromises);
-      const addressDict: {[key: number]: string} = {};
-      yourReports.forEach((report: Report, index: number) => {
-        addressDict[report.id] = results[index];
-      });
-      setAddresses(addressDict);
-    }
-    fetchAddresses();
-  }, [yourReports]);
+  // useEffect(() => {
+  //   async function fetchAddresses() {
+  //     const addressPromises = yourReports.map((report: Report) => {
+  //       return getAddress(report.report_latitude, report.report_longitude);
+  //     });
+  //     const results = await Promise.all(addressPromises);
+  //     const addressDict: {[key: number]: string} = {};
+  //     yourReports.forEach((report: Report, index: number) => {
+  //       addressDict[report.id] = results[index];
+  //     });
+  //     setAddresses(addressDict);
+  //   }
+  //   fetchAddresses();
+  // }, [yourReports]);
 
   return (
     <>
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 w-full h-full">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-          <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+          <div className="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 table-auto">
                 <tr>
@@ -57,7 +57,7 @@ export const ReportTable = (props: any) => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900 truncate overflow-hidden ... w-[82px] md:w-[128px] lg:w-[192px]">{ addresses[report.id] || "Loading ..." }</div>
+                          <div className="text-sm text-gray-900 truncate overflow-hidden ... w-[82px] md:w-[128px] lg:w-[192px]">{ report.address ? (report.address.address_street + ", " + report.address.address_county + ", " + report.address.address_city + ", " + report.address.address_postal_code) : "No Address Found" }</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="inline-flex text-xs leading-5 font-semibold">

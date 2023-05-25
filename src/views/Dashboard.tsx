@@ -1,15 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../API/axios";
-import { Footer } from "../components/Footer";
-import { Navbar } from "../components/Navbar";
 
-import { HiInformationCircle, HiOutlineLibrary } from "react-icons/hi";
-import { ImCross } from "react-icons/im";
 import { ReportTable } from "../components/ReportTable";
 import { ReportService } from "../API/Services/ReportService";
 import { ImageService } from "../API/Services/ImageService";
 import { UseAuth } from "../API/Services/UseAuth";
+import { GeneralLayout } from "../layouts/general";
 
 export const Dashboard = (props: any) => {
 
@@ -17,24 +13,13 @@ export const Dashboard = (props: any) => {
 
   const [showAlert, setShowAlert] = useState(true);
 
-  // var [yourReports, setYourReports] = useState<Report[]>([
-  //   { id: 1, title: "Report 1", reportType: reportTypes.Graffiti, reportStatus: reportStatuses.open, reportLocation: { lat: 50, lng: 0, address: "Cheltenham Town Hall, Imperial Square, Cheltenham, GL50 1QA" }, date: new Date() },
-  //   { id: 2, title: "Report 2", reportType: reportTypes.Flytipping, reportStatus: reportStatuses.closed, reportLocation: { lat: 50, lng: 0, address: "Lansdown House, 48 Lansdown Road, Cheltenham, GL50 2PP" }, date: new Date() },
-  //   { id: 3, title: "Report 3", reportType: reportTypes.Pothole, reportStatus: reportStatuses.closed, reportLocation: { lat: 50, lng: 0, address: "John Lewis, 123 High Street, Cheltenham, GL50 1DQ" }, date: new Date() }
-  // ])
-
-  // var [localReports, setLocalReports] = useState<Report[]>([
-  //   { id: 12, title: "Report 12", reportType: reportTypes.Pothole, reportStatus: reportStatuses.open, reportLocation: { lat: 50, lng: 0, address: "Cheltenham Town Hall, Imperial Square, Cheltenham, GL50 1QA" }, date: new Date() },
-  //   { id: 13, title: "Report 13", reportType: reportTypes.Other, reportStatus: reportStatuses.closed, reportLocation: { lat: 50, lng: 0, address: "Lansdown House, 48 Lansdown Road, Cheltenham, GL50 2PP" }, date: new Date() },
-  //   { id: 14, title: "Report 14", reportType: reportTypes.Pothole, reportStatus: reportStatuses.open, reportLocation: { lat: 50, lng: 0, address: "John Lewis, 123 High Street, Cheltenham, GL50 1DQ" }, date: new Date() },
-  //   { id: 15, title: "Report 15", reportType: reportTypes.Graffiti, reportStatus: reportStatuses.open, reportLocation: { lat: 50, lng: 0, address: "John Lewis, 123 High Street, Cheltenham, GL50 1DQ" }, date: new Date() }
-  // ])
+  const [userLocation, setUserLocation] = useState<{ lat: number, lng: number }>();
 
   const user = UseAuth().getCurrentUser();
   const [userReports, setUserReports] = useState<Report[]>([])
-  const [reports, setReports] = useState<Report[]>([])
+  const [localReports, setLocalReports] = useState<Report[]>([])
   const [imageGroupImages, setImageGroupImages] = useState<Image[]>([])
-  const { getAllUserReportsRequest, getAllReportsRequest } = ReportService()
+  const { getAllUserReportsRequest, getAllReportsRequest, getAllNearbyReportsRequest } = ReportService()
   const { getImagesByImageGroupRequest } = ImageService()
 
   useEffect(() => {
@@ -44,121 +29,110 @@ export const Dashboard = (props: any) => {
 
         if (response.status === 200) {
           setUserReports(response.data as Report[])
-          // response.data.map((report: Report, index: number) => {
-          //   // getImagesByImageGroup(report.image_group.id as number)
-          // })
         }
 
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    const getAllReports = async () => {
-      try {
-        const response = await getAllReportsRequest()
-
-        if (response.status === 200) {
-          setReports(response.data as Report[])
-          // response.data.map((report: Report, index: number) => {
-          // })
-        }
       } catch (error) {
         console.log(error)
       }
     }
 
     getAllUserReports(user?.id as number)
-    getAllReports()
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setUserLocation({ lat: position.coords.latitude, lng: position.coords.longitude })
+    });
   }, [])
+
+  useEffect(() => {
+    const getNearbyReports = async (location: { lat: number, lng: number }) => {
+      try {
+        const response = await getAllNearbyReportsRequest(location.lat, location.lng)
+
+        if (response.status === 200) {
+          setLocalReports(response.data as Report[])
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    if (userLocation) {
+      getNearbyReports(userLocation)
+    }
+  }, [userLocation])
+
+  function fixedReports(): number {
+    return userReports.filter(report => report.report_status === true).length
+  }
 
 
 
   return (
-    <>
-      {/* Background image */}
-      <div className="fixed inset-0 -z-20 w-full h-full bg-[#f8f8f8] dark:bg-[#1d2029]"></div>
-      <div className="flex flex-col min-h-screen">
-        <div className="px-0 mx-auto w-full 2xl:w-4/6 flex flex-col flex-grow">
+    <GeneralLayout>
+      <div className="flex flex-col justify-center items-center">
 
-          {/* Navbar */}
-          <Navbar />
+        {/* User Personalized alerts
+        <div className={`bg-green-100 rounded-lg w-full h-12 py-4 px-8 mt-4 border border-green-200 ${showAlert ? 'block' : 'hidden'}`}>
+          <div className="flex flex-row justify-between items-center h-full">
 
-          <section className="flex-grow">
-            <div className="flex flex-col justify-center items-center">
+            <HiInformationCircle className="text-green-800 text-xl" />
+            <p className="text-green-800 font-[500] pointer-events-none">Some text</p>
+            <ImCross className="text-green-800 cursor-pointer" onClick={() => setShowAlert(!showAlert)} />
 
-              {/* User Personalized alerts */}
-              {/* <div className={`bg-green-100 rounded-lg w-full h-12 py-4 px-8 mt-4 border border-green-200 ${showAlert ? 'block' : 'hidden'}`}>
-                <div className="flex flex-row justify-between items-center h-full">
+          </div>
+        </div> */}
 
-                  <HiInformationCircle className="text-green-800 text-xl" />
-                  <p className="text-green-800 font-[500] pointer-events-none">Some text</p>
-                  <ImCross className="text-green-800 cursor-pointer" onClick={() => setShowAlert(!showAlert)} />
+        <div className="mx-4 my-2 w-full sm:w-fit">
+          {/* <h2 className="text-lg font-medium">Your personal statistics</h2> */}
+          {/* Grid container */}
+          <div className="mx-4 my-2">
+            {/* Row Grid of 1x4 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
 
-                </div>
-              </div> */}
-
-              <div className="mx-4 my-2">
-                {/* <h2 className="text-lg font-medium">Your personal statistics</h2> */}
-                {/* Grid container */}
-                <div className="mx-4 my-2">
-                  {/* Row Grid of 1x4 */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
-
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
-                      <div className="flex flex-row items-center justify-between h-full w-full text-center">
-                        <h2 className="w-full">Your Reports: <a className="font-medium text-lg"> {reports.length} </a></h2>
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
-                      <div className="flex flex-row items-center justify-between h-full w-full text-center">
-                        <h2 className="w-full"><a className="font-medium text-lg">1</a> of these reports has been fixed</h2>
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
-                      <div className="flex flex-row items-center justify-between h-full w-full text-center">
-                        <h2 className="w-full">Your local council is <a className="font-medium text-lg">Gloucestershire County Council</a></h2>
-                      </div>
-                    </div>
-
-                  </div>
+              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
+                <div className="flex flex-row items-center justify-between h-full w-full text-center">
+                  <h2 className="w-full">Your Reports: <a className="font-medium text-lg"> {userReports.length} </a></h2>
                 </div>
               </div>
 
-              {/* My Reports */}
-              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
-                <h2 className="text-2xl font-medium text-[#838383]">Your Reports</h2>
-                <hr className="border-[#dfdbdb] border-x-2" />
-
-                <div className="flex items-center justify-center">
-                  {/* Table */}
-                  <div className="flex flex-col mt-4 w-full items-center">
-                    <ReportTable data={userReports} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Recent reports in my area */}
-              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
-                <h2 className="text-2xl font-medium text-[#838383]">Recent reports in your area</h2>
-                <hr className="border-[#dfdbdb] border-x-2" />
-
-                <div className="flex items-center justify-center">
-                  {/* Table */}
-                  <div className="flex flex-col mt-4 w-full items-center">
-                    <ReportTable data={reports} />
-                  </div>
+              <div className="bg-white rounded-md shadow-lg px-6 py-4 w-full sm:w-72 lg:w-80 h-36 hover:bg-slate-50 duration-200">
+                <div className="flex flex-row items-center justify-between h-full w-full text-center">
+                  <h2 className="w-full"><a className="font-medium text-lg">{ fixedReports() }</a> of these reports has been fixed</h2>
                 </div>
               </div>
 
             </div>
-          </section>
+          </div>
         </div>
-        <Footer />
+
+        {/* My Reports */}
+        <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
+          <h2 className="text-2xl font-medium text-[#838383]">Your Reports</h2>
+          <hr className="border-[#dfdbdb] border-x-2" />
+
+          <div className="flex items-center justify-center">
+            {/* Table */}
+            <div className="flex flex-col mt-4 w-full items-center">
+              <ReportTable data={userReports} />
+            </div>
+          </div>
+        </div>
+
+        {/* local reports */}
+        <div className="bg-white rounded-md shadow-lg px-6 py-4 w-11/12 md:w-9/12 h-[428px] my-4">
+          <h2 className="text-2xl font-medium text-[#838383]">Nearby reports</h2>
+          <hr className="border-[#dfdbdb] border-x-2" />
+
+          <div className="flex items-center justify-center">
+            {/* Table */}
+            <div className="flex flex-col mt-4 w-full items-center">
+              <ReportTable data={localReports} />
+            </div>
+          </div>
+        </div>
+
       </div>
-    </>
+    </GeneralLayout>
   )
 }
 

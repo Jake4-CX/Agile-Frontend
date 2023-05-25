@@ -8,9 +8,13 @@ import { FaThumbsDown, FaThumbsUp } from "react-icons/fa";
 import { ImageService } from "../API/Services/ImageService";
 import { ReportVoteService } from "../API/Services/ReportVoteService";
 import { MapKeys } from "./MapKeys";
+import { UseAuth } from "../API/Services/UseAuth";
 
 export const ReportMap = (props: any) => {
 
+  const user = UseAuth().getCurrentUser();
+  
+  var categories = props.categories as ReportType[]
   var mapCenter = useMemo(() => ({ lat: parseFloat(props.mapCenter.lat), lng: parseFloat(props.mapCenter.lng) }), [])
   var markerPosition = props.markerPosition as { lat: number, lng: number }
   var setMarkerPosition = props.setMarkerPosition as React.Dispatch<React.SetStateAction<{ lat: number, lng: number }>>
@@ -147,7 +151,7 @@ export const ReportMap = (props: any) => {
 
           {
           showMapKeys && (
-            <MapKeys setShowMapKeys={setShowMapKeys} />
+            <MapKeys setShowMapKeys={setShowMapKeys} categories={categories} />
           )
         }
         </div>
@@ -156,6 +160,11 @@ export const ReportMap = (props: any) => {
   )
 
   async function voteButtonClick(vote_type: string) {
+
+    if (!user) {
+      toast.error('You must be logged in to vote')
+      return
+    }
 
     const waitDuration: number = 3
 

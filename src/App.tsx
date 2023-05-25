@@ -16,39 +16,58 @@ import { ViewReport } from './views/ViewReport'
 import { RequireAuth } from './components/RequireAuth'
 import { HelpPage } from './views/HelpPage'
 import { PerRole } from './components/PerRole'
-import { AdminDashboard } from './views/AdminDashboard'
+import { AdminDashboard } from './views/Admin/Dashboard'
+import { AdminUserDashboard } from './views/Admin/Users'
+import { AdminUserDetailsDashboard } from './views/Admin/UserDetails'
+import { EmployeeDashboard } from './views/Employee/EmployeeDashboard'
+import { Verify } from './views/verification/Verify'
+import { ManagerDashboard } from './views/Manager/Dashboard'
+import { ManagerAssign } from './views/Manager/Assign'
+import { ReportTypes } from './views/Admin/ReportTypes'
 function App() {
 
   const dashboardRoleRoutes = [
     { role: "User", element: <Dashboard /> },
-    { role: "Employee", element: <Dashboard /> },
-    { role: "Manager", element: <Dashboard /> },
-    { role: "Administrator", element: <Dashboard /> },
+    { role: "Employee", element: <EmployeeDashboard /> },
+    { role: "Manager", element: <ManagerDashboard /> },
+    { role: "Administrator", element: <AdminDashboard /> },
   ] as { role: String, element: JSX.Element }[]
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<Root />}>
         <Route index element={<Home />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/forgot' element={<Forgot />} />
-        <Route path='/logout' element={<Logout />} />
-        <Route path='/reset/:token' element={<Reset />} />
-        <Route path='/template' element={<Template />} />
-
-        <Route path='/AdminDashboard' element={ <AdminDashboard />}/>  
-        <Route path='/report' element={<Report />} />
         <Route path='/help' element={<HelpPage />} />
 
+        {/* Regular Authentication related routes */}
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/verify/:verification_uuid' element={<Verify />} />
+        <Route path='/forgot' element={<Forgot />} />
+        <Route path='/reset/:verification_uuid' element={<Reset />} />
+
+        <Route path='/template' element={<Template />} /> {/* Remove on final build */}
+
+        <Route path='/report' element={<Report />} />
         <Route path='/reports' element={<Reports />} />
         <Route path='/reports/:report_uuid' element={<ViewReport />} />
+
+        {/* Manager routing */}
+        <Route element={<RequireAuth allowedRoles={["Manager", "Administrator"]} />}>
+          <Route path='/dashboard/assign/:report_uuid' element={<ManagerAssign />} />
+        </Route>
+
+        {/* Admin routing */}
+        <Route element={<RequireAuth allowedRoles={["Administrator"]} />}>
+          <Route path='/dashboard/users' element={ <AdminUserDashboard />}/>
+          <Route path='/dashboard/users/:user_id' element={ <AdminUserDetailsDashboard />}/>
+          <Route path='/dashboard/types' element={ <ReportTypes />}/>
+        </Route>
+
         <Route element={<RequireAuth allowedRoles={["User", "Employee", "Manager", "Administrator"]} />}>
-
-          {/* Protected Routes */}
-
           {/* Dashboard switcher */}
           <Route path='/dashboard' element={<PerRole roleElements={dashboardRoleRoutes}/>} />
+          <Route path='/logout' element={<Logout />} />
         </Route>
 
         <Route path='/unauthorized' element={<PageNotFound />} />

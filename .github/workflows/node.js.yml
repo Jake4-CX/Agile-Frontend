@@ -17,6 +17,7 @@ jobs:
       VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
       VITE_API_URL: ${{ secrets.VITE_API_URL }}
       VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
+      VITE_G4A_TRACKING_ID: ${{ secrets.VITE_G4A_TRACKING_ID }}
 
     strategy:
       matrix:

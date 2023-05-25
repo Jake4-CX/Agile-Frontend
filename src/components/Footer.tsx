@@ -43,28 +43,28 @@ export function Footer() {
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 <div>
                   <h3 className="text-gray-700 uppercase dark:text-white">About</h3>
-                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Forgot Password</a>
-                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Login</a>
-                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Register</a>
+                  <a onClick={() => navigate("/forgot")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Forgot Password</a>
+                  <a onClick={() => navigate("/login")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Login</a>
+                  <a onClick={() => navigate("/register")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Register</a>
                 </div>
 
                 <div>
                   <h3 className="text-gray-700 uppercase dark:text-white">Report a problem</h3>
-                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Report a problem</a>
-                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Reports</a>
+                  <a onClick={() => navigate("/report")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Report a problem</a>
+                  <a onClick={() => navigate("/reports")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Reports</a>
                 </div>
 
                 <div>
                   <h3 className="text-gray-700 uppercase dark:text-white">About</h3>
-                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Contact Us</a>
-                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Carrers</a>
-                  <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Help</a>
+                  <a onClick={() => navigate("/help")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Contact Us</a>
+                  <a onClick={() => navigate("/help")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Careers</a>
+                  <a onClick={() => navigate("/help")} className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline cursor-pointer">Help</a>
                 </div>
 
                 <div>
                   <h3 className="text-gray-700 uppercase dark:text-white">Contact</h3>
-                  <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">+44 01452 425000</span>
-                  <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">contact@fixmystreet.com</span>
+                  <a href="tel:+4401452425000" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">+44 01452 425000</a>
+                  <a href="mailto:contact@fixmystreet.com?subject=Support" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">contact@fixmystreet.com</a>
                 </div>
               </div>
             </div>

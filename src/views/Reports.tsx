@@ -23,7 +23,7 @@ export const Reports = (props: any) => {
         const response = await getAllReportsRequest()
 
         if (response.status === 200) {
-          setReports(response.data as Report[])
+          setReports(response.data.reverse() as Report[])
         }
 
       } catch (error) {
@@ -50,7 +50,7 @@ export const Reports = (props: any) => {
     <GeneralLayout>
       <div className="flex flex-col justify-center items-center">
         <div className="mt-6 space-y-1">
-          {reports.reverse().map((report: Report, index: number) => {
+          {reports.map((report: Report, index: number) => {
             return (
               <div key={report.id} className="bg-slate-200 rounded-lg cursor-pointer p-3" onClick={() => navigate(report.report_uuid)}>
                 <p>{index + 1}) {report.report_uuid}</p>

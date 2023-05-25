@@ -51,7 +51,7 @@ export const Home = (props: any) => {
         const response = await getAllReportsRequest()
 
         if (response.status === 200) {
-          setReports(response.data as Report[])
+          setReports(response.data.reverse() as Report[])
         }
       } catch (error) {
         console.log(error)
@@ -87,7 +87,7 @@ export const Home = (props: any) => {
         <div className="absolute inset-0 bg-[url('/assets/images/hero_bg.jpg')] bg-center bg-cover backdrop-opacity-25 blur-[3px] opacity-60 -z-10"></div>
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-4xl font-bold text-white ">Fix My Street</h1>
-          <p className="text-4xl text-white">Report a problem in your area here!</p>
+          <p className="text-sm lg:text-base text-white">Report a problem in your area here!</p>
         </div>
 
         {/* Search bar */}
@@ -136,7 +136,7 @@ export const Home = (props: any) => {
             <h1 className="text-2xl font-bold text-black"></h1>
 
             {
-              reports.reverse().slice(0, 3).map((report, index) => (
+              reports.slice(0, 3).map((report, index) => (
                 <div key={index} className="grid grid-cols-1 grid-rows-3 sm:grid-cols-3 sm:grid-rows-1 my-2 hover:bg-slate-200 duration-150 cursor-pointer p-2 rounded-lg" onClick={() => navigate("reports/" + report.report_uuid)}>
                   <div className="flex flex-col col-span-2">
                     <h3 className="text-lg font-semibold">{report.report_type.report_type_name}</h3>

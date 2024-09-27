@@ -5,9 +5,9 @@ name: Build and deploy Vite Application
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [] # [ "dev" ] # Disabled
   pull_request:
-    branches: [ "dev" ]
+    branches: [] # [ "dev" ] # Disabled
 
 jobs:
   build:

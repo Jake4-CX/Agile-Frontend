@@ -54,6 +54,7 @@ jobs:
             VITE_API_URL=${{ env.VITE_API_URL }}
             VITE_GOOGLE_MAPS_API_KEY=${{ env.VITE_GOOGLE_MAPS_API_KEY }}
             VITE_RECAPTCHA_SITE_KEY=${{ env.VITE_RECAPTCHA_SITE_KEY }}
+            VITE_MAPS_CO_API_KEY=${{ env.VITE_MAPS_CO_API_KEY }}
             VITE_G4A_TRACKING_ID=${{ env.VITE_G4A_TRACKING_ID }}
           tags: |
             ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest

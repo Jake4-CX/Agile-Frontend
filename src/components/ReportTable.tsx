@@ -83,7 +83,7 @@ export const ReportTable = (props: any) => {
   )
 
   async function getAddress(lat: number, lng: number): Promise<string> {
-    const response = await axios.get<any>(`https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}`);
+    const response = await axios.get<any>(`https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}&api_key=${import.meta.env.VITE_MAPS_CO_API_KEY}`);
     if (response.data.error) {
       toast.error(response.data.error);
       return 'ERROR';

@@ -337,7 +337,7 @@ export const Report = (props: any) => {
   }
 
   function getAddress(lat: number, lng: number) {
-    axios.get(`https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}`)
+    axios.get(`https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}&api_key=${import.meta.env.VITE_MAPS_CO_API_KEY}`)
       .then((response) => {
         if (response.data.error) {
           toast.error(response.data.error)
@@ -353,7 +353,7 @@ export const Report = (props: any) => {
   }
 
   async function getGeoLocation(address: string) {
-    return axios.get(`https://geocode.maps.co/search?q=${address}`)
+    return axios.get(`https://geocode.maps.co/search?q=${address}&api_key=${import.meta.env.VITE_MAPS_CO_API_KEY}`)
   }
 
   function formatAddress() {

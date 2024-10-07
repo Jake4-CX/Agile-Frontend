@@ -17,7 +17,7 @@ on:
 env:
   DOCKER_USERNAME: jake4
   DOCKER_IMAGE_NAME: council-report-system-frontend
-  VITE_API_URL: https://api-council-report-system-portfolio.jack.lat
+  VITE_API_URL: https://api-council-report-system-portfolio.jack.lat/
   VITE_GOOGLE_MAPS_API_KEY: AIzaSyAMkITHwvzXynS_SG4BVyFzaZp4Z9vju1c
   VITE_RECAPTCHA_SITE_KEY: 6LdmuO4kAAAAAKzXUrQFZTAyZyTLk1ayUWl-Omlo
   VITE_G4A_TRACKING_ID: G-XMMFVF1K3F
